@@ -1,0 +1,8 @@
+------------
+GPX Viewer
+------------
+
+GPX Viewer is a simple app to look through your GPX trace files that you have
+from your journeys. This application processes these GPX files and then outputs
+useful information like Average and Maximum Speeds. You are also able to see
+the route on a map overlay.

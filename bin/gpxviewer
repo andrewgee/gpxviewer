@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+#
+#  gpxviewer - Launcher File
+#
+#  Copyright (C) 2009 Andrew Gee
+#
+#  GPX Viewer is free software: you can redistribute it and/or modify it
+#  under the terms of the GNU General Public License as published by the
+#  Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#  
+#  GPX Viewer is distributed in the hope that it will be useful, but
+#  WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#  See the GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License along
+#  with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#
+#  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
+#
+
+import gtk.gdk
+from gpxviewer.ui import MainWindow
+import os.path
+
+POSSIBLE_SHARE_DIRS = ["/usr/local/share/gpxviewer/","/usr/share/gpxviewer/"]
+ 
+gtk.gdk.threads_init()
+
+prefix = ""
+for share_dir in POSSIBLE_SHARE_DIRS:
+	if os.path.exists(share_dir):
+		prefix = share_dir
+
+gui = MainWindow(ui_dir="%sui/" % prefix)
+ 
+gtk.main()

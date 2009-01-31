@@ -1,0 +1,5 @@
+Simply, to install, just use the setup.py script...
+
+./setup.py install
+
+from within the right directory, of course!
