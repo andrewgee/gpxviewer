@@ -60,9 +60,6 @@ class MainWindow:
 		self.wTree.get_widget("windowMain").show_all()
 		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer"))
 		
-		self.zoom = 2
-		self.zoomMapIn(None)
-		
 	def updateForNewFile(self):
 		self.zoom = 12
 		
@@ -131,12 +128,12 @@ class MainWindow:
 		self.updateForNewFile()
 	
 	def zoomMapIn(self,w):
-		self.zoom = self.zoom + 1
-		self.map.set_zoom(self.zoom)
+		zoom = self.map.get_property("zoom")
+		self.map.set_zoom(zoom + 1)
 	
 	def zoomMapOut(self,w):
-		self.zoom = self.zoom - 1
-		self.map.set_zoom(self.zoom)
+		zoom = self.map.get_property("zoom")
+		self.map.set_zoom(zoom - 1)
 		
 	def addTrack(self,points):
 		self.map.add_track(points)
