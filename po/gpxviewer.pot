@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-31 23:41+0000\n"
+"POT-Creation-Date: 2009-02-01 22:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,37 +20,37 @@ msgstr ""
 msgid "GPX Viewer"
 msgstr ""
 
-#: ../gpxviewer/ui.py:87
+#: ../gpxviewer/ui.py:84
 #, python-format
 msgid "GPX Viewer - %s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:100
+#: ../gpxviewer/ui.py:97
 msgid "Choose a GPX file to Load"
 msgstr ""
 
-#: ../gpxviewer/ui.py:113
+#: ../gpxviewer/ui.py:109
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
 msgstr ""
 
-#: ../gpxviewer/ui.py:151
+#: ../gpxviewer/ui.py:150
 #, python-format
 msgid "<b>Distance:</b> %s km"
 msgstr ""
 
-#: ../gpxviewer/ui.py:154
+#: ../gpxviewer/ui.py:153
 #, python-format
 msgid "<b>Average Speed:</b> %s m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:157
+#: ../gpxviewer/ui.py:156
 #, python-format
 msgid "<b>Maximum Speed:</b> %s m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:160
+#: ../gpxviewer/ui.py:159
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
 msgstr ""

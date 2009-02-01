@@ -22,7 +22,7 @@
 import xml.dom.minidom as minidom
 from utils.iso8601 import parse_date as parse_xml_date
 
-__all__ = ["import_gpx_trace"]
+__all__ = ["import_gpx_trace","check_gpx_file"]
 
 
 class ParseError(Exception):
@@ -135,4 +135,17 @@ def import_gpx_trace(filename):
 	except:
 		raise Exception
 
-	return trace	
+	return trace
+	
+def check_gpx_file(filename):
+	try:
+		doc = minidom.parse(filename)
+
+		doce = doc.documentElement
+	except:
+		return False
+
+	if doce.nodeName != "gpx":
+		return False
+	
+	return True

@@ -33,7 +33,7 @@ except:
    sys.exit(1) 
 
 import osmgpsmap
-from gpx import GPXTrace
+from gpx import GPXTrace, check_file
 
 import gettext
 _ = gettext.lgettext
@@ -97,16 +97,15 @@ class MainWindow:
 		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.wTree.get_widget("windowMain"))
 		filechooser.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_DELETE_EVENT)
 		filechooser.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_OK)
-		filechooser.set_position(gtk.WIN_POS_CENTER)
+		filechooser.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
 		response = filechooser.run()
 		filename = filechooser.get_filename()
 		
 		if response == gtk.RESPONSE_DELETE_EVENT:
+			filechooser.destroy()
 			return False
 		
-		try:
-			trace = GPXTrace(filename)
-		except:
+		if check_file(filename) != True:
 			message_box = gtk.MessageDialog(parent=filechooser,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
 			message_box.run()
 			message_box.destroy()
@@ -114,6 +113,9 @@ class MainWindow:
 			return None
 		
 		filechooser.destroy()
+		
+		trace = GPXTrace(filename)
+		
 		return trace
 		
 	def quit(self,w):

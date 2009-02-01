@@ -153,3 +153,6 @@ class GPXTrace:
 				pointp = point
 
 		return round(mspeed,2)
+	
+def check_file(filename):
+	return check_gpx_file(filename)
