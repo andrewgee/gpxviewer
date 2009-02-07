@@ -47,6 +47,7 @@ class MainWindow:
 			"on_menuitemOpen_activate": self.opengpx,
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
+			"on_menuitemAbout_activate": self.openAboutDialog,
 		}
 		
 		self.wTree.get_widget("windowMain").set_icon_from_file("%sgpxviewer.svg" % ui_dir)
@@ -59,6 +60,11 @@ class MainWindow:
 		
 		self.wTree.get_widget("windowMain").show_all()
 		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer"))
+	
+	def openAboutDialog(self,w):
+		dialog = self.wTree.get_widget("dialogAbout")
+		dialog.connect("response", lambda *a: dialog.hide())
+		dialog.show_all()
 		
 	def updateForNewFile(self):
 		self.zoom = 12
@@ -146,14 +152,14 @@ class MainWindow:
 	def setCentre(self,lat,lon):
 		self.map.set_mapcenter(lat,lon,self.zoom)
 		
-	def setDistanceLabel(self,distance):
+	def setDistanceLabel(self,distance="--"):
 		self.wTree.get_widget("labelDistance").set_markup(_("<b>Distance:</b> %s km" % distance))
 		
-	def setAverageSpeedLabel(self,average_speed):
+	def setAverageSpeedLabel(self,average_speed="--"):
 		self.wTree.get_widget("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %s m/s" % average_speed))
 		
-	def setMaximumSpeedLabel(self,maximum_speed):
+	def setMaximumSpeedLabel(self,maximum_speed="--"):
 		self.wTree.get_widget("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s" % maximum_speed))
 		
-	def setDurationLabel(self,minutes,seconds):
+	def setDurationLabel(self,minutes="--",seconds="--"):
 		self.wTree.get_widget("labelDuration").set_markup(_("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds" % {"minutes": minutes, "seconds": seconds}))

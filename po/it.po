@@ -1,0 +1,60 @@
+# Italian translation for gpxviewer
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the gpxviewer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+# Diego Donati <diegodonati@yahoo.it>, 2009
+msgid ""
+msgstr ""
+"Project-Id-Version: gpxviewer\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-01-31 23:41+0000\n"
+"PO-Revision-Date: 2009-02-06 20:07+0000\n"
+"Last-Translator: Diego Donati <diegodonati@yahoo.it>\n"
+"Language-Team: DiegoDonatiTranslations, Italy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2009-02-07 19:03+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"Language: en\n"
+
+#: ../gpxviewer/ui.py:61
+msgid "GPX Viewer"
+msgstr "GPX Viewer"
+
+#: ../gpxviewer/ui.py:87
+#, python-format
+msgid "GPX Viewer - %s"
+msgstr "GPX Viewer - %s"
+
+#: ../gpxviewer/ui.py:100
+msgid "Choose a GPX file to Load"
+msgstr "Scegliere un file GPX da caricare"
+
+#: ../gpxviewer/ui.py:113
+msgid ""
+"You selected an invalid GPX file. \n"
+" Please try again"
+msgstr ""
+"È stato selezionato un file GPX non valido. \n"
+" Riprovare ancora"
+
+#: ../gpxviewer/ui.py:151
+#, python-format
+msgid "<b>Distance:</b> %s km"
+msgstr "<b>Distanza:</b> %s km"
+
+#: ../gpxviewer/ui.py:154
+#, python-format
+msgid "<b>Average Speed:</b> %s m/s"
+msgstr "<b>Velocità media:</b> %s m/s"
+
+#: ../gpxviewer/ui.py:157
+#, python-format
+msgid "<b>Maximum Speed:</b> %s m/s"
+msgstr "<b>Velocità massima:</b> %s m/s"
+
+#: ../gpxviewer/ui.py:160
+#, python-format
+msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
+msgstr "<b>Durata:</b> %(minutes)s minuti, %(seconds)s secondi"
