@@ -52,6 +52,8 @@ class MainWindow:
 		
 		self.wTree.get_widget("windowMain").set_icon_from_file("%sgpxviewer.svg" % ui_dir)
 		
+		self.ui_dir = ui_dir
+		
 		self.map = osmgpsmap.GpsMap()
 		self.wTree.get_widget("vbox3").add(self.map)
 		self.wTree.get_widget("vbox3").reorder_child(self.map, 0)
@@ -63,6 +65,7 @@ class MainWindow:
 	
 	def openAboutDialog(self,w):
 		dialog = self.wTree.get_widget("dialogAbout")
+		self.wTree.get_widget("dialogAbout").set_icon_from_file("%sgpxviewer.svg" % self.ui_dir)
 		dialog.connect("response", lambda *a: dialog.hide())
 		dialog.show_all()
 		
