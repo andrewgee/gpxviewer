@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Feb  7 19:49:54 2009 -->
+<!--Generated with glade3 3.4.5 on Sat Feb  7 22:32:06 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="windowMain">
     <property name="title" translatable="yes">GPX Viewer</property>
@@ -80,12 +80,28 @@
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <child>
-              <widget class="GtkLabel" id="labelDistance">
+              <widget class="GtkLabel" id="labelDuration">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Distance:&lt;/b&gt; -- km</property>
+                <property name="label" translatable="yes">&lt;b&gt;Duration:&lt;/b&gt; -- minutes, -- seconds</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="y_padding">4</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="labelMaximumSpeed">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Maximum Speed:&lt;/b&gt; -- m/s</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
                 <property name="y_padding">3</property>
               </packing>
             </child>
@@ -102,29 +118,13 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="labelMaximumSpeed">
+              <widget class="GtkLabel" id="labelDistance">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Maximum Speed:&lt;/b&gt; -- m/s</property>
+                <property name="label" translatable="yes">&lt;b&gt;Distance:&lt;/b&gt; -- km</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
                 <property name="y_padding">3</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="labelDuration">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Duration:&lt;/b&gt; -- minutes, -- seconds</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_padding">4</property>
               </packing>
             </child>
           </widget>
@@ -198,7 +198,7 @@
   </widget>
   <widget class="GtkAboutDialog" id="dialogAbout">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">About GPX Reviewer</property>
+    <property name="title" translatable="yes">About GPX Viewer</property>
     <property name="resizable">False</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
@@ -210,7 +210,7 @@
 users to easily view GPS traces they 
 have created in the GPX file format.</property>
     <property name="website">http://andrewgee.org/blog/gpxreviewergpxreviewer/</property>
-    <property name="website_label" translatable="yes">GPX Reviewer Website</property>
+    <property name="website_label" translatable="yes">GPX Viewer Website</property>
     <property name="license">                    GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 

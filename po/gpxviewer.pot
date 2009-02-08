@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-07 20:32+0000\n"
+"POT-Creation-Date: 2009-02-07 22:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../gpxviewer/ui.py:64 ../ui/gps.glade.h:8
+#: ../gpxviewer/ui.py:64 ../ui/gps.glade.h:7
 msgid "GPX Viewer"
 msgstr ""
 
@@ -72,15 +72,15 @@ msgid "<b>Maximum Speed:</b> -- m/s"
 msgstr ""
 
 #: ../ui/gps.glade.h:5
-msgid "About GPX Reviewer"
+msgid "About GPX Viewer"
 msgstr ""
 
 #: ../ui/gps.glade.h:6
 msgid "Copyright (C) Andrew Gee 2009"
 msgstr ""
 
-#: ../ui/gps.glade.h:7
-msgid "GPX Reviewer Website"
+#: ../ui/gps.glade.h:8
+msgid "GPX Viewer Website"
 msgstr ""
 
 #: ../ui/gps.glade.h:9
