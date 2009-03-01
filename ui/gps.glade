@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Feb 12 18:01:01 2009 -->
+<!--Generated with glade3 3.4.5 on Sun Mar  1 11:30:51 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="windowMain">
     <property name="title" translatable="yes">GPX Viewer</property>
@@ -57,6 +57,32 @@
                   <widget class="GtkMenu" id="menu3">
                     <property name="visible">True</property>
                     <child>
+                      <widget class="GtkMenuItem" id="menuitemHelp">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Get Help Online...</property>
+                        <property name="use_underline">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitemTranslate">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Translate This Application...</property>
+                        <property name="use_underline">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuitemReportProblem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Report a Problem...</property>
+                        <property name="use_underline">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkImageMenuItem" id="menuitemAbout">
                         <property name="visible">True</property>
                         <property name="label">gtk-about</property>
@@ -80,12 +106,28 @@
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <child>
-              <widget class="GtkLabel" id="labelDistance">
+              <widget class="GtkLabel" id="labelDuration">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Distance:&lt;/b&gt; -- km</property>
+                <property name="label" translatable="yes">&lt;b&gt;Duration:&lt;/b&gt; -- minutes, -- seconds</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="y_padding">4</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="labelMaximumSpeed">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Maximum Speed:&lt;/b&gt; -- m/s</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
                 <property name="y_padding">3</property>
               </packing>
             </child>
@@ -102,29 +144,13 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="labelMaximumSpeed">
+              <widget class="GtkLabel" id="labelDistance">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Maximum Speed:&lt;/b&gt; -- m/s</property>
+                <property name="label" translatable="yes">&lt;b&gt;Distance:&lt;/b&gt; -- km</property>
                 <property name="use_markup">True</property>
               </widget>
               <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
                 <property name="y_padding">3</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="labelDuration">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Duration:&lt;/b&gt; -- minutes, -- seconds</property>
-                <property name="use_markup">True</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
-                <property name="y_padding">4</property>
               </packing>
             </child>
           </widget>

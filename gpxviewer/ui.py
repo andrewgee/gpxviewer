@@ -35,6 +35,13 @@ except:
 import osmgpsmap
 from gpx import GPXTrace, check_file
 
+try:
+	import gnome
+	def show_url(url): gnome.url_show(url)
+except:
+	import os
+	def show_url(url): os.system("xdg-open %s" % url)
+
 import gettext
 _ = gettext.lgettext
 
@@ -62,6 +69,10 @@ class MainWindow:
 		
 		self.wTree.get_widget("windowMain").show_all()
 		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer"))
+		
+		self.wTree.get_widget("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
+		self.wTree.get_widget("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
+		self.wTree.get_widget("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
 	
 	def openAboutDialog(self,w):
 		dialog = self.wTree.get_widget("dialogAbout")
