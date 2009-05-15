@@ -1,3 +1,7 @@
+0.1.1:
+ * Removed Encoding key in desktop file, that is now depreciated.
+ * Updated translations
+
 0.1:
 
  * Initial Release of hopefully many to come :)
