@@ -4,4 +4,4 @@ Type=Application
 _Comment=GPS Trace Viewer
 Exec=gpxviewer
 Icon=gpxviewer
-Categories=Education
+Categories=Internet
