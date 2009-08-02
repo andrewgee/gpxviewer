@@ -1,4 +1,4 @@
-# Slovenian translation for gpxviewer
+# Russian translation for gpxviewer
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the gpxviewer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: gpxviewer\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-05-15 15:48+0100\n"
-"PO-Revision-Date: 2009-08-01 01:45+0000\n"
-"Last-Translator: Andrew Gee <andrew@andrewgee.org>\n"
-"Language-Team: Slovenian <sl@li.org>\n"
+"PO-Revision-Date: 2009-08-01 10:12+0000\n"
+"Last-Translator: Nkolay Parukhin <parukhin@gmail.com>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,68 +19,72 @@ msgstr ""
 
 #: ../gpxviewer/ui.py:71 ../ui/gps.glade.h:7
 msgid "GPX Viewer"
-msgstr "Pregledovalnik datotek GPX"
+msgstr "GPX Viewer"
 
 #: ../gpxviewer/ui.py:104
 #, python-format
 msgid "GPX Viewer - %s"
-msgstr "Pregledovalnik datotek GPX - %s"
+msgstr "GPX Viewer - %s"
 
 #: ../gpxviewer/ui.py:117
 msgid "Choose a GPX file to Load"
-msgstr "Izberite datoteko GPX"
+msgstr "Выберите GPX файл для загрузки"
 
 #: ../gpxviewer/ui.py:129
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
 msgstr ""
-"Izbrali ste neveljavno datoteko GPX. \n"
-" Prosimo, poizkusite znova"
+"Вы выбрали неверный GPX файл. \n"
+" Пожалуйста, попробуйте ещё раз"
 
 #: ../gpxviewer/ui.py:170
 #, python-format
 msgid "<b>Distance:</b> %s km"
-msgstr "<b>Razdalja:</b> %s km"
+msgstr "<b>Расстояние:</b> %s км"
 
 #: ../gpxviewer/ui.py:173
 #, python-format
 msgid "<b>Average Speed:</b> %s m/s"
-msgstr "<b>Povprečna hitrost:</b> %s m/s"
+msgstr "<b>Средняя скорость:</b> %s м/с"
 
 #: ../gpxviewer/ui.py:176
 #, python-format
 msgid "<b>Maximum Speed:</b> %s m/s"
-msgstr "<b>Najvišja hitrost:</b> %s m/s"
+msgstr "<b>Максимальная скорость:</b> %s м/с"
 
 #: ../gpxviewer/ui.py:179
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
-msgstr "<b>Trajanje:</b> %(minutes)s minut, %(seconds)s sekund"
+msgstr "<b>Длительность:</b> %(minutes)s минут, %(seconds)s секунд"
 
 #: ../ui/gps.glade.h:1
 msgid "<b>Average Speed:</b> -- m/s"
-msgstr "<b>Povprečna hitrost:</b> -- m/s"
+msgstr "<b>Средняя скорость:</b> -- м/с"
 
 #: ../ui/gps.glade.h:2
 msgid "<b>Distance:</b> -- km"
-msgstr "<b>Razdalja:</b> -- km"
+msgstr "<b>Расстояние:</b> -- км"
 
 #: ../ui/gps.glade.h:3
 msgid "<b>Duration:</b> -- minutes, -- seconds"
-msgstr "<b>Trajanje:</b> -- minut, -- sekund"
+msgstr "<b>Длительность:</b> -- минут, -- секунд"
 
 #: ../ui/gps.glade.h:4
 msgid "<b>Maximum Speed:</b> -- m/s"
-msgstr "<b>Najvišja hitrost:</b> -- m/s"
+msgstr "<b>Максимальная скорость:</b> -- м/с"
 
 #: ../ui/gps.glade.h:5
 msgid "About GPX Viewer"
-msgstr "O pregledovalniku datotek GPX"
+msgstr "О GPX Viewer"
+
+#: ../ui/gps.glade.h:6
+msgid "Copyright (C) Andrew Gee 2009"
+msgstr "Copyright (C) Andrew Gee 2009"
 
 #: ../ui/gps.glade.h:8
 msgid "GPX Viewer Website"
-msgstr "Domača stran pregledovalnika datotek GPX"
+msgstr "Вебсайт GPX Viewer"
 
 #: ../ui/gps.glade.h:9
 msgid ""
@@ -88,38 +92,34 @@ msgid ""
 "users to easily view GPS traces they \n"
 "have created in the GPX file format."
 msgstr ""
-"Pregledovalnik GPX datotek je program, ki \n"
-"uporabnikom omogoča enostavno pregledovanje \n"
-"GPS sledi, shranjenih v datotekah GPX."
+"GPX Viewer - приложение, которое позволяет \n"
+"пользователям легко просматривать GPS треки, \n"
+"которые они создаются в формате GPX файлов."
 
 #: ../ui/gps.glade.h:12
 msgid "Get Help Online..."
-msgstr "Pomoč na spletu..."
+msgstr "Справка в сети..."
 
 #: ../ui/gps.glade.h:13
 msgid "Report a Problem..."
-msgstr "Prijavi težavo..."
+msgstr "Сообщить о проблеме..."
 
 #: ../ui/gps.glade.h:14
 msgid "Translate This Application..."
-msgstr "Prevedi ta program..."
+msgstr "Перевести это приложение..."
 
 #: ../ui/gps.glade.h:15
 msgid "Zoom In"
-msgstr "Povečaj"
+msgstr "Приблизить"
 
 #: ../ui/gps.glade.h:16
 msgid "Zoom Out"
-msgstr "Pomanjšaj"
+msgstr "Отдалить"
 
 #: ../ui/gps.glade.h:17
 msgid "_File"
-msgstr "_Datoteka"
+msgstr "_Файл"
 
 #: ../ui/gps.glade.h:18
 msgid "_Help"
-msgstr "_Pomoč"
-
-#: ../ui/gps.glade.h:6
-msgid "Copyright (C) Andrew Gee 2009"
-msgstr ""
+msgstr "_Справка"
