@@ -1,3 +1,7 @@
+0.1.2:
+ * Fixed blank descriptions and duplicate points (Thanks Stef Sijben)
+ * Moved to more appropriate network category
+
 0.1.1:
  * Removed Encoding key in desktop file, that is now depreciated.
  * Updated translations
