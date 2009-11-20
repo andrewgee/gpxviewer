@@ -35,7 +35,10 @@ def fetch_metadata(node):
 			metadata['name'] = mnode.childNodes[0].nodeValue
 			
 		elif mnode.nodeName == "desc":
-			metadata['description'] = mnode.childNodes[0].nodeValue
+			try:
+				metadata['description'] = mnode.childNodes[0].nodeValue
+			except:
+				metadata['description'] = "" #no description
 			
 		elif mnode.nodeName == "time":
 			metadata['time'] = mnode.childNodes[0].nodeValue

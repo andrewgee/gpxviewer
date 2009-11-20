@@ -145,10 +145,10 @@ class GPXTrace:
 				if pointp != None:
 					d = calculate_distance(point['lat'], pointp['lat'], point['lon'], pointp['lon'])
 					t = (point['time'] - pointp['time']).microseconds + ((point['time'] - pointp['time']).seconds * 1000000)
-					s = (d/t)*1000000
-		
-					if s > mspeed:
-						mspeed = s
+					if t > 0:
+						s = (d/t)*1000000	
+						if s > mspeed:
+							mspeed = s
 		
 				pointp = point
 
