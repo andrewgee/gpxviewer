@@ -1,3 +1,6 @@
+0.1.3:
+ * Fixed < 0 'a' value in calculate_distance() in gpx.py
+
 0.1.2:
  * Fixed blank descriptions and duplicate points (Thanks Stef Sijben)
  * Moved to more appropriate network category
