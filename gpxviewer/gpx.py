@@ -21,7 +21,7 @@
 #
 
 from gpximport import *
-from math import sqrt, radians, sin, cos, atan2
+from math import sqrt, radians, sin, cos, atan2, fabs
 from os.path import basename
 
 def calculate_distance(lat1, lat2, lon1, lon2):
@@ -29,7 +29,7 @@ def calculate_distance(lat1, lat2, lon1, lon2):
 	#Haversine formula to work out distance between two lats and lons, using the radius of the world 
 	dlat = radians(lat1 - lat2)
 	dlon = radians(lon1 - lon2)
-	a = (sin(dlat/2) * sin(dlat/2)) + cos(radians(lat1)) * cos(radians(lon2)) * sin(dlon/2) * sin(dlon/2)
+	a = fabs((sin(dlat/2) * sin(dlat/2)) + cos(radians(lat1)) * cos(radians(lon2)) * sin(dlon/2) * sin(dlon/2))
 	c = 2 * atan2(sqrt(a), sqrt(1-a))
 	d = R * c
 	
