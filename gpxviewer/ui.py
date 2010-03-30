@@ -87,7 +87,7 @@ class MainWindow:
 		maximum_speed = self.trace.get_maximum_speed()
 		average_speed = self.trace.get_average_speed()
 		duration = self.trace.get_duration()
-		segments = self.trace.get_points()
+		tracks = self.trace.get_points()
 		clat, clon = self.trace.get_centre()
 		
 		self.setDistanceLabel(round(distance/1000,2))
@@ -97,9 +97,9 @@ class MainWindow:
 		self.setCentre(clat,clon)
 		
 		self.clearTrack()
-		
-		for segment in segments:
-			self.addTrack(segment)
+		for track in tracks:
+		  for segment in track:
+			  self.addTrack(segment)
 		
 		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer - %s" % self.trace.get_filename()))
 			

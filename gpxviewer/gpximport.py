@@ -127,6 +127,7 @@ def import_gpx_trace(filename):
 		
 	trace = {}
 	trace['filename'] = filename
+	trace['tracks'] = []
 	
 	try:
 		e = doce.childNodes
@@ -134,7 +135,7 @@ def import_gpx_trace(filename):
 			if node.nodeName == "metadata":
 				trace['metadata'] = fetch_metadata(node)
 			elif node.nodeName == "trk":
-				trace['track'] = fetch_track(node)
+				trace['tracks'].append(fetch_track(node))
 	except:
 		raise Exception
 
