@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpxviewer\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-05-15 15:48+0100\n"
+"POT-Creation-Date: 2009-11-20 14:10+0000\n"
 "PO-Revision-Date: 2009-08-01 01:45+0000\n"
 "Last-Translator: Nick Vallianos <nick@vallianos.org>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-02 21:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-30 14:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../gpxviewer/ui.py:71 ../ui/gps.glade.h:7
@@ -95,6 +95,18 @@ msgstr ""
 "Ο Απεικονιστής GPX είναι μια εφαρμογή που επιτρέπει\n"
 "στους χρήστες να"
 
+#: ../ui/gps.glade.h:12
+msgid "Get Help Online..."
+msgstr ""
+
+#: ../ui/gps.glade.h:13
+msgid "Report a Problem..."
+msgstr ""
+
+#: ../ui/gps.glade.h:14
+msgid "Translate This Application..."
+msgstr ""
+
 #: ../ui/gps.glade.h:15
 msgid "Zoom In"
 msgstr "Μεγέθυνση"
@@ -110,15 +122,3 @@ msgstr "_Αρχείο"
 #: ../ui/gps.glade.h:18
 msgid "_Help"
 msgstr "_Βοήθεια"
-
-#: ../ui/gps.glade.h:12
-msgid "Get Help Online..."
-msgstr ""
-
-#: ../ui/gps.glade.h:13
-msgid "Report a Problem..."
-msgstr ""
-
-#: ../ui/gps.glade.h:14
-msgid "Translate This Application..."
-msgstr ""
