@@ -43,7 +43,15 @@ except:
 	import os
 	def show_url(url): os.system("xdg-open %s" % url)
 
+import locale
 import gettext
+locale.setlocale(locale.LC_ALL, '')
+# see http://bugzilla.gnome.org/show_bug.cgi?id=344926 for why the
+# next two commands look repeated.
+gtk.glade.bindtextdomain('gpxviewer')
+gtk.glade.textdomain('gpxviewer')
+gettext.bindtextdomain('gpxviewer')
+gettext.textdomain('gpxviewer')
 _ = gettext.lgettext
 
 class MainWindow:
@@ -190,19 +198,19 @@ class MainWindow:
 		self.map.set_mapcenter(lat,lon,self.zoom)
 		
 	def setDistanceLabel(self,distance="--"):
-		self.wTree.get_widget("labelDistance").set_markup(_("<b>Distance:</b> %s km" % distance))
+		self.wTree.get_widget("labelDistance").set_markup(_("<b>Distance:</b> %s km") % distance)
 		
 	def setAverageSpeedLabel(self,average_speed="--"):
-		self.wTree.get_widget("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %s m/s" % average_speed))
+		self.wTree.get_widget("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %s m/s") % average_speed)
 		
 	def setMaximumSpeedLabel(self,maximum_speed="--"):
-		self.wTree.get_widget("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s" % maximum_speed))
+		self.wTree.get_widget("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s") % maximum_speed)
 		
 	def setDurationLabel(self,minutes="--",seconds="--"):
-		self.wTree.get_widget("labelDuration").set_markup(_("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds" % {"minutes": minutes, "seconds": seconds}))
+		self.wTree.get_widget("labelDuration").set_markup(_("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds") % {"minutes": minutes, "seconds": seconds})
 	
 	def setLoggingDateLabel(self,gpxdate="--"):
-		self.wTree.get_widget("labelLoggingDate").set_markup(_("<b>Logging Date:</b> %s" % gpxdate))
+		self.wTree.get_widget("labelLoggingDate").set_markup(_("<b>Logging Date:</b> %s") % gpxdate)
 
 	def setLoggingTimeLabel(self,gpxfrom="--",gpxto="--"):
-		self.wTree.get_widget("labelLoggingTime").set_markup(_("<b>Logging Time:</b> %(from)s - %(to)s" % {"from": gpxfrom, "to": gpxto}))
+		self.wTree.get_widget("labelLoggingTime").set_markup(_("<b>Logging Time:</b> %(from)s - %(to)s") % {"from": gpxfrom, "to": gpxto})
