@@ -20,6 +20,7 @@
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
 import sys
+from datetime import *
 try: 
    import pygtk 
    pygtk.require("2.0") 
@@ -89,11 +90,15 @@ class MainWindow:
 		duration = self.trace.get_duration()
 		tracks = self.trace.get_points()
 		clat, clon = self.trace.get_centre()
+		gpxfrom = self.trace.get_gpxfrom()
+		gpxto = self.trace.get_gpxto()
 		
 		self.setDistanceLabel(round(distance/1000,2))
 		self.setMaximumSpeedLabel(maximum_speed)
 		self.setAverageSpeedLabel(average_speed)
 		self.setDurationLabel(int(duration/60),duration-(int(duration/60)*60))
+		self.setLoggingDateLabel(gpxfrom.strftime("%x"))
+		self.setLoggingTimeLabel(gpxfrom.strftime("%X"),gpxto.strftime("%X"))
 		self.setCentre(clat,clon)
 		
 		self.clearTrack()
@@ -177,3 +182,9 @@ class MainWindow:
 		
 	def setDurationLabel(self,minutes="--",seconds="--"):
 		self.wTree.get_widget("labelDuration").set_markup(_("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds" % {"minutes": minutes, "seconds": seconds}))
+	
+	def setLoggingDateLabel(self,gpxdate="--"):
+		self.wTree.get_widget("labelLoggingDate").set_markup(_("<b>Logging Date:</b> %s" % gpxdate))
+
+	def setLoggingTimeLabel(self,gpxfrom="--",gpxto="--"):
+		self.wTree.get_widget("labelLoggingTime").set_markup(_("<b>Logging Time:</b> %(from)s - %(to)s" % {"from": gpxfrom, "to": gpxto}))

@@ -104,7 +104,7 @@
           <widget class="GtkTable" id="table1">
             <property name="visible">True</property>
             <property name="n_rows">2</property>
-            <property name="n_columns">2</property>
+            <property name="n_columns">3</property>
             <child>
               <widget class="GtkLabel" id="labelDuration">
                 <property name="visible">True</property>
@@ -150,6 +150,32 @@
                 <property name="use_markup">True</property>
               </widget>
               <packing>
+                <property name="y_padding">3</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="labelLoggingDate">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Logging Date:&lt;/b&gt; --</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="y_padding">3</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="labelLoggingTime">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Logging Time:&lt;/b&gt; from -- to -- </property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="left_attach">2</property>
+                <property name="right_attach">3</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
                 <property name="y_padding">3</property>
               </packing>
             </child>

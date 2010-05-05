@@ -20,6 +20,7 @@
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
 
+from datetime import *
 from gpximport import *
 from math import sqrt, radians, sin, cos, atan2, fabs
 from os.path import basename
@@ -147,6 +148,20 @@ class GPXTrace:
         seconds = seconds + (segment['points'][len(segment['points'])-1]['time'] - segment['points'][0]['time']).seconds
     
     return seconds
+    
+  def get_gpxfrom(self):
+    fromtime = datetime.now()
+    
+    fromtime = self.trace['tracks'][0]['segments'][0]['points'][0]['time']
+
+    return fromtime
+
+  def get_gpxto(self):
+    totime = datetime.now()
+      
+    totime = self.trace['tracks'][-1]['segments'][-1]['points'][-1]['time']
+
+    return totime
   
   def get_maximum_speed(self):
     mspeed = 0
