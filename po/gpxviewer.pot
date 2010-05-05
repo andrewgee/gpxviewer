@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-30 15:52+0100\n"
+"POT-Creation-Date: 2010-05-05 13:28+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,43 +16,53 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../gpxviewer/ui.py:71 ../ui/gps.glade.h:7
+#: ../gpxviewer/ui.py:81 ../ui/gps.glade.h:9
 msgid "GPX Viewer"
 msgstr ""
 
-#: ../gpxviewer/ui.py:104
+#: ../gpxviewer/ui.py:118
 #, python-format
 msgid "GPX Viewer - %s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:117
+#: ../gpxviewer/ui.py:136
 msgid "Choose a GPX file to Load"
 msgstr ""
 
-#: ../gpxviewer/ui.py:129
+#: ../gpxviewer/ui.py:148
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
 msgstr ""
 
-#: ../gpxviewer/ui.py:170
+#: ../gpxviewer/ui.py:201
 #, python-format
 msgid "<b>Distance:</b> %s km"
 msgstr ""
 
-#: ../gpxviewer/ui.py:173
+#: ../gpxviewer/ui.py:204
 #, python-format
 msgid "<b>Average Speed:</b> %s m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:176
+#: ../gpxviewer/ui.py:207
 #, python-format
 msgid "<b>Maximum Speed:</b> %s m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:179
+#: ../gpxviewer/ui.py:210
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
+msgstr ""
+
+#: ../gpxviewer/ui.py:213
+#, python-format
+msgid "<b>Logging Date:</b> %s"
+msgstr ""
+
+#: ../gpxviewer/ui.py:216
+#, python-format
+msgid "<b>Logging Time:</b> %(from)s - %(to)s"
 msgstr ""
 
 #: ../ui/gps.glade.h:1
@@ -68,52 +78,60 @@ msgid "<b>Duration:</b> -- minutes, -- seconds"
 msgstr ""
 
 #: ../ui/gps.glade.h:4
-msgid "<b>Maximum Speed:</b> -- m/s"
+msgid "<b>Logging Date:</b> --"
 msgstr ""
 
 #: ../ui/gps.glade.h:5
-msgid "About GPX Viewer"
+msgid "<b>Logging Time:</b> from -- to -- "
 msgstr ""
 
 #: ../ui/gps.glade.h:6
-msgid "Copyright (C) Andrew Gee 2009"
+msgid "<b>Maximum Speed:</b> -- m/s"
+msgstr ""
+
+#: ../ui/gps.glade.h:7
+msgid "About GPX Viewer"
 msgstr ""
 
 #: ../ui/gps.glade.h:8
+msgid "Copyright (C) Andrew Gee 2009"
+msgstr ""
+
+#: ../ui/gps.glade.h:10
 msgid "GPX Viewer Website"
 msgstr ""
 
-#: ../ui/gps.glade.h:9
+#: ../ui/gps.glade.h:11
 msgid ""
 "GPX Viewer is an application that allows\n"
 "users to easily view GPS traces they \n"
 "have created in the GPX file format."
 msgstr ""
 
-#: ../ui/gps.glade.h:12
+#: ../ui/gps.glade.h:14
 msgid "Get Help Online..."
 msgstr ""
 
-#: ../ui/gps.glade.h:13
+#: ../ui/gps.glade.h:15
 msgid "Report a Problem..."
 msgstr ""
 
-#: ../ui/gps.glade.h:14
+#: ../ui/gps.glade.h:16
 msgid "Translate This Application..."
 msgstr ""
 
-#: ../ui/gps.glade.h:15
+#: ../ui/gps.glade.h:17
 msgid "Zoom In"
 msgstr ""
 
-#: ../ui/gps.glade.h:16
+#: ../ui/gps.glade.h:18
 msgid "Zoom Out"
 msgstr ""
 
-#: ../ui/gps.glade.h:17
+#: ../ui/gps.glade.h:19
 msgid "_File"
 msgstr ""
 
-#: ../ui/gps.glade.h:18
+#: ../ui/gps.glade.h:20
 msgid "_Help"
 msgstr ""
