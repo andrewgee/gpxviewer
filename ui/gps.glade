@@ -7,6 +7,7 @@
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <signal name="destroy" handler="on_windowMain_destroy"/>
+    <signal name="show" handler="on_windowMain_show"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>

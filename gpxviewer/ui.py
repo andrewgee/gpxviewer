@@ -56,6 +56,7 @@ class MainWindow:
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
+			"on_windowMain_show": self.initgpx,
 		}
 		
 		self.wTree.get_widget("windowMain").set_icon_from_file("%sgpxviewer.svg" % ui_dir)
@@ -109,13 +110,18 @@ class MainWindow:
 		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer - %s" % self.trace.get_filename()))
 			
 	def loadGPX(self, filename=None):
+		result = None
 		if filename == None:
-			result = None
 			while result == None:
 				result = self.chooseGPX()
 			if result == False:
 				return False
-		
+		else:
+			if check_file(filename) != True:
+				return False
+			else:
+				result = GPXTrace(filename)
+
 		return result
 		
 	def chooseGPX(self):
@@ -154,6 +160,18 @@ class MainWindow:
 		
 		self.updateForNewFile()
 	
+	def initgpx(self,w):
+		if len(sys.argv) < 2:
+			return None
+
+		gpxfile = sys.argv[1]
+		self.trace = self.loadGPX(gpxfile)
+
+		if self.trace == False:
+			return None
+
+		self.updateForNewFile()
+
 	def zoomMapIn(self,w):
 		zoom = self.map.get_property("zoom")
 		self.map.set_zoom(zoom + 1)
