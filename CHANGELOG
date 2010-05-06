@@ -1,3 +1,9 @@
+0.1.5:
+ * Patches contributed by Hiroshi Miura
+	* Accept gpx file as cli argument
+	* Fixed translation gettext support
+	* Trace time shown on the interface
+
 0.1.4:
  * Now shows multiple trk elements
  * Updated translations (New: cs, nl, zh_CN)
