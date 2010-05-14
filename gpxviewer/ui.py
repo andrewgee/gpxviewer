@@ -19,7 +19,7 @@
 #
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
-import sys
+import sys,os
 from datetime import *
 try: 
    import pygtk 
@@ -64,14 +64,16 @@ class MainWindow:
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
-			"on_windowMain_show": self.initgpx,
 		}
 		
 		self.wTree.get_widget("windowMain").set_icon_from_file("%sgpxviewer.svg" % ui_dir)
 		
 		self.ui_dir = ui_dir
 		
-		self.map = osmgpsmap.GpsMap()
+		home_dir = os.getenv('HOME','/var/tmp')
+		cache_dir= home_dir + '/.cache/gpxviewer/tiles/'
+
+		self.map = osmgpsmap.GpsMap(tile_cache=cache_dir)
 		self.wTree.get_widget("vbox3").add(self.map)
 		self.wTree.get_widget("vbox3").reorder_child(self.map, 0)
 		
@@ -79,6 +81,11 @@ class MainWindow:
 		
 		self.wTree.get_widget("windowMain").show_all()
 		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer"))
+
+		if filename != None:
+			self.trace = self.loadGPX(filename)
+			if self.trace != False:
+				self.updateForNewFile()
 		
 		self.wTree.get_widget("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_widget("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
@@ -115,7 +122,7 @@ class MainWindow:
 		  for segment in track:
 			  self.addTrack(segment)
 		
-		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer - %s" % self.trace.get_filename()))
+		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer - %s") % self.trace.get_filename())
 			
 	def loadGPX(self, filename=None):
 		result = None
@@ -126,6 +133,7 @@ class MainWindow:
 				return False
 		else:
 			if check_file(filename) != True:
+				self.showGPXError(None)
 				return False
 			else:
 				result = GPXTrace(filename)
@@ -145,9 +153,7 @@ class MainWindow:
 			return False
 		
 		if check_file(filename) != True:
-			message_box = gtk.MessageDialog(parent=filechooser,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
-			message_box.run()
-			message_box.destroy()
+			self.showGPXError(filechooser)
 			filechooser.destroy()		
 			return None
 		
@@ -156,6 +162,13 @@ class MainWindow:
 		trace = GPXTrace(filename)
 		
 		return trace
+
+	def showGPXError(self,p):
+                message_box = gtk.MessageDialog(parent=p,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
+                message_box.run()
+                message_box.destroy()
+                return None
+
 		
 	def quit(self,w):
 		gtk.main_quit()
@@ -168,18 +181,6 @@ class MainWindow:
 		
 		self.updateForNewFile()
 	
-	def initgpx(self,w):
-		if len(sys.argv) < 2:
-			return None
-
-		gpxfile = sys.argv[1]
-		self.trace = self.loadGPX(gpxfile)
-
-		if self.trace == False:
-			return None
-
-		self.updateForNewFile()
-
 	def zoomMapIn(self,w):
 		zoom = self.map.get_property("zoom")
 		self.map.set_zoom(zoom + 1)

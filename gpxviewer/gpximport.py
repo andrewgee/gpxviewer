@@ -27,6 +27,7 @@ __all__ = ["import_gpx_trace","check_gpx_file"]
 
 class ParseError(Exception):
     """Raised when there is a problem parsing any part of the GPX XML"""
+    pass
 
 def fetch_metadata(node):
 	metadata = {}

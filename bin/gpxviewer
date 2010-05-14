@@ -24,16 +24,21 @@
 import gtk.gdk
 from gpxviewer.ui import MainWindow
 import os.path
+import sys
 
 POSSIBLE_SHARE_DIRS = ["/usr/local/share/gpxviewer/","/usr/share/gpxviewer/"]
  
 gtk.gdk.threads_init()
 
 prefix = ""
+gpxfile = None
 for share_dir in POSSIBLE_SHARE_DIRS:
 	if os.path.exists(share_dir):
 		prefix = share_dir
 
-gui = MainWindow(ui_dir="%sui/" % prefix)
+if len(sys.argv) > 1:
+	gpxfile = sys.argv[1]
+
+gui = MainWindow(ui_dir="%sui/" % prefix,filename=gpxfile)
  
 gtk.main()

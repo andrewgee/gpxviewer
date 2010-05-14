@@ -20,12 +20,16 @@
 #
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
+import sys
 
 import gtk.gdk
 from gpxviewer.ui import MainWindow
  
 gtk.gdk.threads_init()
 
-gui = MainWindow(ui_dir="ui/")
+if len(sys.argv) > 1:
+	gpxfile = sys.argv[1]
+
+gui = MainWindow(ui_dir="ui/",filename=gpxfile)
  
 gtk.main()
