@@ -23,7 +23,7 @@ import sys,os
 from datetime import *
 try: 
    import pygtk 
-   pygtk.require("2.0") 
+   pygtk.require("2.16") 
 except: 
    pass 
 try: 
@@ -56,7 +56,8 @@ _ = gettext.lgettext
 
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
-		self.wTree = gtk.glade.XML("%sgps.glade" % ui_dir)
+		self.wTree = gtk.Builder()
+		self.wTree.add_from_file("%sgpxviewer.ui" % ui_dir)
 		signals = {
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
@@ -66,7 +67,7 @@ class MainWindow:
 			"on_menuitemAbout_activate": self.openAboutDialog,
 		}
 		
-		self.wTree.get_widget("windowMain").set_icon_from_file("%sgpxviewer.svg" % ui_dir)
+		self.wTree.get_object("windowMain").set_icon_from_file("%sgpxviewer.svg" % ui_dir)
 		
 		self.ui_dir = ui_dir
 		
@@ -74,26 +75,26 @@ class MainWindow:
 		cache_dir= home_dir + '/.cache/gpxviewer/tiles/'
 
 		self.map = osmgpsmap.GpsMap(tile_cache=cache_dir)
-		self.wTree.get_widget("vbox3").add(self.map)
-		self.wTree.get_widget("vbox3").reorder_child(self.map, 0)
+		self.wTree.get_object("vbox3").add(self.map)
+		self.wTree.get_object("vbox3").reorder_child(self.map, 0)
 		
-		self.wTree.signal_autoconnect(signals)
+		self.wTree.connect_signals(signals)
 		
-		self.wTree.get_widget("windowMain").show_all()
-		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer"))
+		self.wTree.get_object("windowMain").show_all()
+		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
 
 		if filename != None:
 			self.trace = self.loadGPX(filename)
 			if self.trace != False:
 				self.updateForNewFile()
 		
-		self.wTree.get_widget("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
-		self.wTree.get_widget("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
-		self.wTree.get_widget("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
+		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
+		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
+		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
 	
 	def openAboutDialog(self,w):
-		dialog = self.wTree.get_widget("dialogAbout")
-		self.wTree.get_widget("dialogAbout").set_icon_from_file("%sgpxviewer.svg" % self.ui_dir)
+		dialog = self.wTree.get_object("dialogAbout")
+		self.wTree.get_object("dialogAbout").set_icon_from_file("%sgpxviewer.svg" % self.ui_dir)
 		dialog.connect("response", lambda *a: dialog.hide())
 		dialog.show_all()
 		
@@ -122,7 +123,7 @@ class MainWindow:
 		  for segment in track:
 			  self.addTrack(segment)
 		
-		self.wTree.get_widget("windowMain").set_title(_("GPX Viewer - %s") % self.trace.get_filename())
+		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % self.trace.get_filename())
 			
 	def loadGPX(self, filename=None):
 		result = None
@@ -141,7 +142,7 @@ class MainWindow:
 		return result
 		
 	def chooseGPX(self):
-		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.wTree.get_widget("windowMain"))
+		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.wTree.get_object("windowMain"))
 		filechooser.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_DELETE_EVENT)
 		filechooser.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_OK)
 		filechooser.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
@@ -199,19 +200,19 @@ class MainWindow:
 		self.map.set_mapcenter(lat,lon,self.zoom)
 		
 	def setDistanceLabel(self,distance="--"):
-		self.wTree.get_widget("labelDistance").set_markup(_("<b>Distance:</b> %s km") % distance)
+		self.wTree.get_object("labelDistance").set_markup(_("<b>Distance:</b> %s km") % distance)
 		
 	def setAverageSpeedLabel(self,average_speed="--"):
-		self.wTree.get_widget("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %s m/s") % average_speed)
+		self.wTree.get_object("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %s m/s") % average_speed)
 		
 	def setMaximumSpeedLabel(self,maximum_speed="--"):
-		self.wTree.get_widget("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s") % maximum_speed)
+		self.wTree.get_object("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s") % maximum_speed)
 		
 	def setDurationLabel(self,minutes="--",seconds="--"):
-		self.wTree.get_widget("labelDuration").set_markup(_("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds") % {"minutes": minutes, "seconds": seconds})
+		self.wTree.get_object("labelDuration").set_markup(_("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds") % {"minutes": minutes, "seconds": seconds})
 	
 	def setLoggingDateLabel(self,gpxdate="--"):
-		self.wTree.get_widget("labelLoggingDate").set_markup(_("<b>Logging Date:</b> %s") % gpxdate)
+		self.wTree.get_object("labelLoggingDate").set_markup(_("<b>Logging Date:</b> %s") % gpxdate)
 
 	def setLoggingTimeLabel(self,gpxfrom="--",gpxto="--"):
-		self.wTree.get_widget("labelLoggingTime").set_markup(_("<b>Logging Time:</b> %(from)s - %(to)s") % {"from": gpxfrom, "to": gpxto})
+		self.wTree.get_object("labelLoggingTime").set_markup(_("<b>Logging Time:</b> %(from)s - %(to)s") % {"from": gpxfrom, "to": gpxto})
