@@ -1,117 +1,123 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.12 -->
+<interface>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <widget class="GtkWindow" id="windowMain">
+  <object class="GtkWindow" id="windowMain">
     <property name="title" translatable="yes">GPX Viewer</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
+    <accel-groups>
+      <group name="accelgroup1"/>
+    </accel-groups>
     <signal name="destroy" handler="on_windowMain_destroy"/>
     <child>
-      <widget class="GtkVBox" id="vbox1">
+      <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkMenuBar" id="menubar1">
+          <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkMenuItem" id="menuitem1">
+              <object class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
-                <child>
-                  <widget class="GtkMenu" id="menu1">
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkImageMenuItem" id="menuitemOpen">
+                      <object class="GtkImageMenuItem" id="menuitemOpen">
                         <property name="label">gtk-open</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_menuitemOpen_activate"/>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="menuitemQuit">
+                      <object class="GtkImageMenuItem" id="menuitemQuit">
                         <property name="label">gtk-quit</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_menuitemQuit_activate"/>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
             </child>
             <child>
-              <widget class="GtkMenuItem" id="menuitem4">
+              <object class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
-                <child>
-                  <widget class="GtkMenu" id="menu3">
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu3">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkMenuItem" id="menuitemHelp">
+                      <object class="GtkMenuItem" id="menuitemHelp">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Get Help Online...</property>
                         <property name="use_underline">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="menuitemTranslate">
+                      <object class="GtkMenuItem" id="menuitemTranslate">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Translate This Application...</property>
                         <property name="use_underline">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkMenuItem" id="menuitemReportProblem">
+                      <object class="GtkMenuItem" id="menuitemReportProblem">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Report a Problem...</property>
                         <property name="use_underline">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem2">
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
                         <property name="visible">True</property>
-                      </widget>
+                      </object>
                     </child>
                     <child>
-                      <widget class="GtkImageMenuItem" id="menuitemAbout">
+                      <object class="GtkImageMenuItem" id="menuitemAbout">
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">accelgroup1</property>
                         <signal name="activate" handler="on_menuitemAbout_activate"/>
-                      </widget>
+                      </object>
                     </child>
-                  </widget>
+                  </object>
                 </child>
-              </widget>
+              </object>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkTable" id="table1">
+          <object class="GtkTable" id="table1">
             <property name="visible">True</property>
             <property name="n_rows">2</property>
             <property name="n_columns">3</property>
             <child>
-              <widget class="GtkLabel" id="labelDuration">
+              <object class="GtkLabel" id="labelDuration">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Duration:&lt;/b&gt; -- minutes, -- seconds</property>
                 <property name="use_markup">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -121,11 +127,11 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="labelMaximumSpeed">
+              <object class="GtkLabel" id="labelMaximumSpeed">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Maximum Speed:&lt;/b&gt; -- m/s</property>
                 <property name="use_markup">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
@@ -133,11 +139,11 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="labelAverageSpeed">
+              <object class="GtkLabel" id="labelAverageSpeed">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Average Speed:&lt;/b&gt; -- m/s</property>
                 <property name="use_markup">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
@@ -145,21 +151,21 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="labelDistance">
+              <object class="GtkLabel" id="labelDistance">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Distance:&lt;/b&gt; -- km</property>
                 <property name="use_markup">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="y_padding">3</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="labelLoggingDate">
+              <object class="GtkLabel" id="labelLoggingDate">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Logging Date:&lt;/b&gt; --</property>
                 <property name="use_markup">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
@@ -167,11 +173,11 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="labelLoggingTime">
+              <object class="GtkLabel" id="labelLoggingTime">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">&lt;b&gt;Logging Time:&lt;/b&gt; from -- to -- </property>
                 <property name="use_markup">True</property>
-              </widget>
+              </object>
               <packing>
                 <property name="left_attach">2</property>
                 <property name="right_attach">3</property>
@@ -180,7 +186,7 @@
                 <property name="y_padding">3</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
@@ -189,44 +195,44 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox1">
+          <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkVBox" id="vbox3">
+              <object class="GtkVBox" id="vbox3">
                 <property name="visible">True</property>
                 <child>
                   <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox2">
+                  <object class="GtkHBox" id="hbox2">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkButton" id="buttonZoomIn">
+                      <object class="GtkButton" id="buttonZoomIn">
                         <property name="label" translatable="yes">Zoom In</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <signal name="clicked" handler="on_buttonZoomIn_clicked"/>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="buttonZoomOut">
+                      <object class="GtkButton" id="buttonZoomOut">
                         <property name="label" translatable="yes">Zoom Out</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <signal name="clicked" handler="on_buttonZoomOut_clicked"/>
-                      </widget>
+                      </object>
                       <packing>
                         <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </widget>
+                  </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
@@ -234,22 +240,22 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
-              </widget>
+              </object>
               <packing>
                 <property name="padding">3</property>
                 <property name="position">0</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="padding">3</property>
             <property name="position">2</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-  <widget class="GtkAboutDialog" id="dialogAbout">
+  </object>
+  <object class="GtkAboutDialog" id="dialogAbout">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">About GPX Viewer</property>
     <property name="resizable">False</property>
@@ -943,24 +949,25 @@ Hiroshi Miura &lt;miurahr@linux.com&gt;</property>
     <property name="translator_credits">Many wonderful people at:
 http://translations.launchpad.net/gpxviewer</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="spacing">2</property>
         <child>
           <placeholder/>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+  <object class="GtkAccelGroup" id="accelgroup1"/>
+</interface>
