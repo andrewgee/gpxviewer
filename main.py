@@ -27,6 +27,8 @@ from gpxviewer.ui import MainWindow
  
 gtk.gdk.threads_init()
 
+gpxfile = None
+
 if len(sys.argv) > 1:
 	gpxfile = sys.argv[1]
 
