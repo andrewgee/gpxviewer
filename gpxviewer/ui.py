@@ -47,8 +47,8 @@ import gettext
 locale.setlocale(locale.LC_ALL, '')
 # see http://bugzilla.gnome.org/show_bug.cgi?id=344926 for why the
 # next two commands look repeated.
-gtk.glade.bindtextdomain('gpxviewer')
-gtk.glade.textdomain('gpxviewer')
+#gtk.glade.bindtextdomain('gpxviewer')
+#gtk.glade.textdomain('gpxviewer')
 gettext.bindtextdomain('gpxviewer')
 gettext.textdomain('gpxviewer')
 _ = gettext.lgettext
@@ -56,6 +56,7 @@ _ = gettext.lgettext
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
 		self.wTree = gtk.Builder()
+		self.wTree.set_translation_domain('gpxviewer')
 		self.wTree.add_from_file("%sgpxviewer.ui" % ui_dir)
 		signals = {
 			"on_windowMain_destroy": self.quit,
