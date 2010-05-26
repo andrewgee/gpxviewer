@@ -28,7 +28,6 @@ except:
    pass 
 try: 
    import gtk 
-   import gtk.glade 
 except: 
    print "GTK is not installed" 
    sys.exit(1) 
