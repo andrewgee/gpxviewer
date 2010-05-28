@@ -16,7 +16,7 @@ setup(name="gpxviewer",
 	platforms="linux",
 	packages=["gpxviewer","gpxviewer.utils","gpxviewer.utils.iso8601"],
 	data_files=[
-		('share/gpxviewer/ui/', ['ui/gps.glade','ui/gpxviewer.png','ui/gpxviewer.svg']),
+		('share/gpxviewer/ui/', ['ui/gpxviewer.ui','ui/gpxviewer.png','ui/gpxviewer.svg']),
 		('share/pixmaps', ['ui/gpxviewer.svg']) 
 	],
 	scripts = ['bin/gpxviewer'],
