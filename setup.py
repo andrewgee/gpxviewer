@@ -14,7 +14,7 @@ setup(name="gpxviewer",
 	url="http://andrewgee.org/blog/gpxviewer",
 	license="GNU General Public License (GPL)",
 	platforms="linux",
-	packages=["gpxviewer","gpxviewer.utils","gpxviewer.utils.iso8601"],
+	packages=["gpxviewer","gpxviewer.utils","gpxviewer.utils.iso8601","gpxviewer.utils.timezone"],
 	data_files=[
 		('share/gpxviewer/ui/', ['ui/gps.glade','ui/gpxviewer.png','ui/gpxviewer.svg']),
 		('share/pixmaps', ['ui/gpxviewer.svg']) 
