@@ -1,1 +1,1 @@
-from timezone import LocalTimezone, USTimezone
+from timezone import LocalTimezone
