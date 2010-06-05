@@ -42,6 +42,8 @@ except:
 	import os
 	def show_url(url): os.system("xdg-open %s" % url)
 
+from utils.timezone import LocalTimezone
+
 import locale
 import gettext
 locale.setlocale(locale.LC_ALL, '')
@@ -55,9 +57,12 @@ _ = gettext.lgettext
 
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
+		self.localtz = LocalTimezone()
+		
 		self.wTree = gtk.Builder()
 		self.wTree.set_translation_domain('gpxviewer')
 		self.wTree.add_from_file("%sgpxviewer.ui" % ui_dir)
+		
 		signals = {
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
@@ -107,8 +112,8 @@ class MainWindow:
 		duration = self.trace.get_duration()
 		tracks = self.trace.get_points()
 		clat, clon = self.trace.get_centre()
-		gpxfrom = self.trace.get_gpxfrom()
-		gpxto = self.trace.get_gpxto()
+		gpxfrom = self.trace.get_gpxfrom().astimezone(self.localtz)
+		gpxto = self.trace.get_gpxto().astimezone(self.localtz)
 		
 		self.setDistanceLabel(round(distance/1000,2))
 		self.setMaximumSpeedLabel(maximum_speed)
