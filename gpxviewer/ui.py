@@ -33,6 +33,7 @@ except:
    sys.exit(1) 
 
 import osmgpsmap
+assert osmgpsmap.__version__ >= "0.7.1"
 
 from gpx import GPXTrace, check_file
 
@@ -202,13 +203,16 @@ class MainWindow:
 		self.map.zoom_out()
 		
 	def addTrack(self,points):
-		self.map.add_track(points)
+		track = osmgpsmap.GpsMapTrack()
+		for rlat,rlon in points:
+			track.add_point(osmgpsmap.point_new_radians(rlat, rlon))
+		self.map.track_add(track)
 		
 	def clearTrack(self):
-		self.map.clear_tracks()
+		self.map.track_remove_all()
 		
 	def setCentre(self,lat,lon):
-		self.map.set_mapcenter(lat,lon,self.zoom)
+		self.map.set_center_and_zoom(lat,lon,self.zoom)
 		
 	def setDistanceLabel(self,distance="--"):
 		self.wTree.get_object("labelDistance").set_markup(_("<b>Distance:</b> %s km") % distance)
