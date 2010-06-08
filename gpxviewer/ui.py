@@ -105,8 +105,7 @@ class MainWindow:
 		
 		self.wTree.connect_signals(signals)
 		
-		self.map.show() #FIXME: BUG
-		self.wTree.get_object("windowMain").show()
+		self.wTree.get_object("windowMain").show_all()
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
 
 		if filename != None:
@@ -117,6 +116,8 @@ class MainWindow:
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
+
+		self.spinner.hide()
 
 	def updateTilesQueued(self, map_, paramspec):
 		if self.map.props.tiles_queued > 0:
