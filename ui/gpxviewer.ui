@@ -13,6 +13,7 @@
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="spacing">4</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -189,8 +190,6 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="padding">5</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -198,58 +197,23 @@
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <child>
-              <object class="GtkVBox" id="vbox3">
-                <property name="visible">True</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <object class="GtkHBox" id="hbox2">
-                    <property name="visible">True</property>
-                    <child>
-                      <object class="GtkButton" id="buttonZoomIn">
-                        <property name="label" translatable="yes">Zoom In</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_buttonZoomIn_clicked"/>
-                      </object>
-                      <packing>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="buttonZoomOut">
-                        <property name="label" translatable="yes">Zoom Out</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_buttonZoomOut_clicked"/>
-                      </object>
-                      <packing>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="padding">5</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="padding">3</property>
-                <property name="position">0</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
             <property name="padding">3</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="statusbar1">
+            <property name="visible">True</property>
+            <property name="spacing">4</property>
+            <property name="has_resize_grip">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>

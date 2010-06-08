@@ -89,12 +89,24 @@ class MainWindow:
 						show_scale=True,
 						show_coordinates=False))
 
-		self.wTree.get_object("vbox3").add(self.map)
-		self.wTree.get_object("vbox3").reorder_child(self.map, 0)
+		sb = self.wTree.get_object("statusbar1")
+		#move zoom control into apple like slider
+		self.zoomSlider = MapZoomSlider(self.map)
+		self.zoomSlider.show_all()
+		sb.pack_end(self.zoomSlider, False, False)
+
+		#animate a spinner when downloading tiles
+		self.spinner = gtk.Spinner()
+		self.map.connect("notify::tiles-queued", self.updateTilesQueued)
+		self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
+		sb.pack_end(self.spinner, False, False)
+
+		self.wTree.get_object("hbox1").pack_start(self.map, True, True)
 		
 		self.wTree.connect_signals(signals)
 		
-		self.wTree.get_object("windowMain").show_all()
+		self.map.show() #FIXME: BUG
+		self.wTree.get_object("windowMain").show()
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
 
 		if filename != None:
@@ -105,6 +117,14 @@ class MainWindow:
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
+
+	def updateTilesQueued(self, map_, paramspec):
+		if self.map.props.tiles_queued > 0:
+			self.spinner.show()
+			self.spinner.start()
+		else:
+			self.spinner.stop()
+			self.spinner.hide()
 	
 	def openAboutDialog(self,w):
 		dialog = self.wTree.get_object("dialogAbout")
@@ -231,3 +251,48 @@ class MainWindow:
 
 	def setLoggingTimeLabel(self,gpxfrom="--",gpxto="--"):
 		self.wTree.get_object("labelLoggingTime").set_markup(_("<b>Logging Time:</b> %(from)s - %(to)s") % {"from": gpxfrom, "to": gpxto})
+
+class MapZoomSlider(gtk.HBox):
+    def __init__(self, _map):
+        gtk.HBox.__init__(self)
+
+        zo = gtk.EventBox()
+        zo.add(gtk.image_new_from_stock (gtk.STOCK_ZOOM_OUT, gtk.ICON_SIZE_MENU))
+        zo.connect("button-press-event", self._on_zoom_out_pressed, _map)
+        self.pack_start(zo, False, False)
+
+        self.zoom = gtk.Adjustment(
+                            value=_map.props.zoom,
+                            lower=_map.props.min_zoom,
+                            upper=_map.props.max_zoom,
+                            step_incr=1,
+                            page_incr=1,
+                            page_size=0)
+        self.zoom.connect("value-changed", self._on_zoom_slider_value_changed, _map)
+        hs = gtk.HScale(self.zoom)
+        hs.props.digits = 0
+        hs.props.draw_value = False
+        hs.set_size_request(100,-1)
+        hs.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+        self.pack_start(hs, True, True)
+
+        zi = gtk.EventBox()
+        zi.add(gtk.image_new_from_stock (gtk.STOCK_ZOOM_IN, gtk.ICON_SIZE_MENU))
+        zi.connect("button-press-event", self._on_zoom_in_pressed, _map)
+        self.pack_start(zi, False, False)
+
+        _map.connect("notify::zoom", self._on_map_zoom_changed)
+
+    def _on_zoom_in_pressed(self, box, event, _map):
+        _map.zoom_in()
+
+    def _on_zoom_out_pressed(self, box, event, _map):
+        _map.zoom_out()
+
+    def _on_zoom_slider_value_changed(self, adj, _map):
+        zoom = adj.get_value()
+        if zoom != _map.props.zoom:
+            _map.set_zoom( int(zoom) )
+
+    def _on_map_zoom_changed(self, _map, paramspec):
+        self.zoom.set_value(_map.props.zoom)
