@@ -68,7 +68,7 @@ class MainWindow:
 		signals = {
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
-			"on_menuitemOpen_activate": self.opengpx,
+			"on_menuitemOpen_activate": self.loadGPX,
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
@@ -109,9 +109,7 @@ class MainWindow:
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
 
 		if filename != None:
-			self.trace = self.loadGPX(filename)
-			if self.trace != False:
-				self.updateForNewFile()
+			self.loadGPX(filename=filename)
 		
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
@@ -160,8 +158,9 @@ class MainWindow:
 		
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % self.trace.get_filename())
 			
-	def loadGPX(self, filename=None):
+	def loadGPX(self, *args, **kwargs): 
 		result = None
+		filename = kwargs.get("filename")
 		if filename == None:
 			while result == None:
 				result = self.chooseGPX()
@@ -173,6 +172,10 @@ class MainWindow:
 				return False
 			else:
 				result = GPXTrace(filename)
+
+		if result:
+			self.trace = result
+			self.updateForNewFile()
 
 		return result
 		
@@ -209,14 +212,6 @@ class MainWindow:
 	def quit(self,w):
 		gtk.main_quit()
 		
-	def opengpx(self,w):
-		self.trace = self.loadGPX()
-		
-		if self.trace == False:
-			return None
-		
-		self.updateForNewFile()
-	
 	def zoomMapIn(self,w):
 		self.map.zoom_in()
 	
