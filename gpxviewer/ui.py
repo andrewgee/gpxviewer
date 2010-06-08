@@ -196,12 +196,10 @@ class MainWindow:
 		self.updateForNewFile()
 	
 	def zoomMapIn(self,w):
-		zoom = self.map.get_property("zoom")
-		self.map.set_zoom(zoom + 1)
+		self.map.zoom_in()
 	
 	def zoomMapOut(self,w):
-		zoom = self.map.get_property("zoom")
-		self.map.set_zoom(zoom - 1)
+		self.map.zoom_out()
 		
 	def addTrack(self,points):
 		self.map.add_track(points)
