@@ -33,6 +33,7 @@ except:
    sys.exit(1) 
 
 import osmgpsmap
+
 from gpx import GPXTrace, check_file
 
 try:
@@ -80,6 +81,13 @@ class MainWindow:
 		cache_dir= home_dir + '/.cache/gpxviewer/tiles/'
 
 		self.map = osmgpsmap.GpsMap(tile_cache=cache_dir)
+		self.map.layer_add(
+					osmgpsmap.GpsMapOsd(
+						show_dpad=False,
+						show_zoom=False,
+						show_scale=True,
+						show_coordinates=False))
+
 		self.wTree.get_object("vbox3").add(self.map)
 		self.wTree.get_object("vbox3").reorder_child(self.map, 0)
 		
