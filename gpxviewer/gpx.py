@@ -23,7 +23,7 @@
 from datetime import *
 from gpximport import *
 from math import sqrt, radians, sin, cos, atan2, fabs
-from os.path import basename
+from os.path import basename, abspath
 
 def calculate_distance(lat1, lat2, lon1, lon2):
   R = 6371000 #Earth's radius =~ 6371km
@@ -59,6 +59,9 @@ class GPXTrace:
   
   def get_filename(self):
     return basename(self.trace['filename'])
+
+  def get_full_path(self):
+    return abspath(self.trace['filename'])
   
   def get_max_lat(self):
     maxlat = self.trace['tracks'][0]['segments'][0]['points'][0]['lat']
