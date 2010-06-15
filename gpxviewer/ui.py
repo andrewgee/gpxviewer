@@ -69,6 +69,7 @@ class MainWindow:
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
 			"on_menuitemOpen_activate": self.opengpx,
+			"on_menuitemOpenFromJOSM_activate": self.openfromjosm,
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
@@ -216,7 +217,11 @@ class MainWindow:
 			return None
 		
 		self.updateForNewFile()
-	
+
+	def openfromjosm(self,w):
+		filename = self.trace.get_filename()
+		pid = os.spawnlp(os.P_NOWAIT,'josm','josm',filename)
+ 	
 	def zoomMapIn(self,w):
 		self.map.zoom_in()
 	
