@@ -59,6 +59,9 @@ class GPXTrace:
   
   def get_filename(self):
     return basename(self.trace['filename'])
+
+  def get_filepath(self):
+    return self.trace['filename']
   
   def get_max_lat(self):
     maxlat = self.trace['tracks'][0]['segments'][0]['points'][0]['lat']

@@ -69,7 +69,6 @@ class MainWindow:
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
 			"on_menuitemOpen_activate": self.opengpx,
-			"on_menuitemOpenFromJOSM_activate": self.openfromjosm,
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
@@ -102,12 +101,24 @@ class MainWindow:
 		self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
 		sb.pack_end(self.spinner, False, False)
 
+		#add openby submenu items
+		menuitem_openby = self.wTree.get_object('menuitemOpenBy')
+		submenu_openby = gtk.Menu() 
+		menuitem_josm = gtk.MenuItem('JOSM') 
+		menuitem_merkaartor = gtk.MenuItem('Merkaartor')
+		submenu_openby.append(menuitem_josm)
+		submenu_openby.append(menuitem_merkaartor)
+		menuitem_openby.set_submenu(submenu_openby)
+		menuitem_josm.connect("activate", self.openby,'josm') 
+		menuitem_merkaartor.connect("activate", self.openby,'merkaartor') 
+
 		self.wTree.get_object("hbox1").pack_start(self.map, True, True)
 		
 		self.wTree.connect_signals(signals)
 		
 		self.wTree.get_object("windowMain").show_all()
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
+
 
 		if filename != None:
 			self.trace = self.loadGPX(filename)
@@ -218,9 +229,9 @@ class MainWindow:
 		
 		self.updateForNewFile()
 
-	def openfromjosm(self,w):
-		filename = self.trace.get_filename()
-		pid = os.spawnlp(os.P_NOWAIT,'josm','josm',filename)
+	def openby(self,w,app):
+		filepath = self.trace.get_filepath()
+		pid = os.spawnlp(os.P_NOWAIT,app,app,filepath)
  	
 	def zoomMapIn(self,w):
 		self.map.zoom_in()
