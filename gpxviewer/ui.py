@@ -71,7 +71,9 @@ class MainWindow:
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
 			"on_menuitemOpen_activate": self.opengpx,
+			"on_menuitemZoomIn_activate": self.zoomMapIn,
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
+			"on_menuitemZoomOut_activate": self.zoomMapOut,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
 		}
