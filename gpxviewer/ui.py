@@ -57,6 +57,8 @@ gettext.bindtextdomain('gpxviewer')
 gettext.textdomain('gpxviewer')
 _ = gettext.lgettext
 
+def N_(message): return message
+
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
 		self.localtz = LocalTimezone()
@@ -101,17 +103,6 @@ class MainWindow:
 		self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
 		sb.pack_end(self.spinner, False, False)
 
-		#add openby submenu items
-		menuitem_openby = self.wTree.get_object('menuitemOpenBy')
-		submenu_openby = gtk.Menu() 
-		menuitem_josm = gtk.MenuItem('JOSM') 
-		menuitem_merkaartor = gtk.MenuItem('Merkaartor')
-		submenu_openby.append(menuitem_josm)
-		submenu_openby.append(menuitem_merkaartor)
-		menuitem_openby.set_submenu(submenu_openby)
-		menuitem_josm.connect("activate", self.openby,'josm') 
-		menuitem_merkaartor.connect("activate", self.openby,'merkaartor') 
-
 		self.wTree.get_object("hbox1").pack_start(self.map, True, True)
 		
 		self.wTree.connect_signals(signals)
@@ -119,6 +110,19 @@ class MainWindow:
 		self.wTree.get_object("windowMain").show_all()
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
 
+		#add openby submenu items and actions
+		programs = {
+			'josm':N_('JOSM Editor'),
+			'merkaartor':N_('Merkaartor'),
+		}
+		submenu_openby = gtk.Menu() 
+		for prog,progname in programs.iteritems():
+			submenuitem_openby = gtk.MenuItem(_(progname))
+			submenu_openby.append(submenuitem_openby)
+			submenuitem_openby.connect("activate", self.openby, prog) 
+			submenuitem_openby.show()
+
+		self.wTree.get_object('menuitemOpenBy').set_submenu(submenu_openby)
 
 		if filename != None:
 			self.trace = self.loadGPX(filename)
@@ -230,8 +234,12 @@ class MainWindow:
 		self.updateForNewFile()
 
 	def openby(self,w,app):
-		filepath = self.trace.get_filepath()
-		pid = os.spawnlp(os.P_NOWAIT,app,app,filepath)
+		try: self.trace
+		except AttributeError:
+			return
+		else:
+			filepath = self.trace.get_filepath()
+			pid = os.spawnlp(os.P_NOWAIT,app,app,filepath)
  	
 	def zoomMapIn(self,w):
 		self.map.zoom_in()
