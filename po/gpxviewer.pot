@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-26 22:39+0100\n"
+"POT-Creation-Date: 2010-06-26 22:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../gpxviewer/ui.py:113 ../ui/gps.glade.h:9
+#: ../gpxviewer/ui.py:113 ../ui/gpxviewer.ui.h:9
 msgid "GPX Viewer"
 msgstr ""
 
@@ -73,73 +73,85 @@ msgstr ""
 msgid "<b>Logging Time:</b> %(from)s - %(to)s"
 msgstr ""
 
-#: ../ui/gps.glade.h:1
+#: ../ui/gpxviewer.ui.h:1
 msgid "<b>Average Speed:</b> -- m/s"
 msgstr ""
 
-#: ../ui/gps.glade.h:2
+#: ../ui/gpxviewer.ui.h:2
 msgid "<b>Distance:</b> -- km"
 msgstr ""
 
-#: ../ui/gps.glade.h:3
+#: ../ui/gpxviewer.ui.h:3
 msgid "<b>Duration:</b> -- minutes, -- seconds"
 msgstr ""
 
-#: ../ui/gps.glade.h:4
+#: ../ui/gpxviewer.ui.h:4
 msgid "<b>Logging Date:</b> --"
 msgstr ""
 
-#: ../ui/gps.glade.h:5
+#: ../ui/gpxviewer.ui.h:5
 msgid "<b>Logging Time:</b> from -- to -- "
 msgstr ""
 
-#: ../ui/gps.glade.h:6
+#: ../ui/gpxviewer.ui.h:6
 msgid "<b>Maximum Speed:</b> -- m/s"
 msgstr ""
 
-#: ../ui/gps.glade.h:7
+#: ../ui/gpxviewer.ui.h:7
 msgid "About GPX Viewer"
 msgstr ""
 
-#: ../ui/gps.glade.h:8
+#: ../ui/gpxviewer.ui.h:8
 msgid "Copyright (C) Andrew Gee 2009"
 msgstr ""
 
-#: ../ui/gps.glade.h:10
+#: ../ui/gpxviewer.ui.h:10
 msgid "GPX Viewer Website"
 msgstr ""
 
-#: ../ui/gps.glade.h:11
+#: ../ui/gpxviewer.ui.h:11
 msgid ""
 "GPX Viewer is an application that allows\n"
 "users to easily view GPS traces they \n"
 "have created in the GPX file format."
 msgstr ""
 
-#: ../ui/gps.glade.h:14
+#: ../ui/gpxviewer.ui.h:14
 msgid "Get Help Online..."
 msgstr ""
 
-#: ../ui/gps.glade.h:15
+#: ../ui/gpxviewer.ui.h:15
+msgid "Open by External Programs..."
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:16
 msgid "Report a Problem..."
 msgstr ""
 
-#: ../ui/gps.glade.h:16
+#: ../ui/gpxviewer.ui.h:17
 msgid "Translate This Application..."
 msgstr ""
 
-#: ../ui/gps.glade.h:17
-msgid "Zoom In"
+#: ../ui/gpxviewer.ui.h:18
+msgid "Zoom _In"
 msgstr ""
 
-#: ../ui/gps.glade.h:18
-msgid "Zoom Out"
+#: ../ui/gpxviewer.ui.h:19
+msgid "Zoom _Out"
 msgstr ""
 
-#: ../ui/gps.glade.h:19
+#: ../ui/gpxviewer.ui.h:20
 msgid "_File"
 msgstr ""
 
-#: ../ui/gps.glade.h:20
+#: ../ui/gpxviewer.ui.h:21
 msgid "_Help"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:22
+msgid "_Tools"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:23
+msgid "_View"
 msgstr ""

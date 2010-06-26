@@ -1,2 +1,2 @@
 gpxviewer/ui.py
-ui/gps.glade
+[type: gettext/glade] ui/gpxviewer.ui
