@@ -57,6 +57,8 @@ gettext.bindtextdomain('gpxviewer')
 gettext.textdomain('gpxviewer')
 _ = gettext.lgettext
 
+def N_(message): return message
+
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
 		self.localtz = LocalTimezone()
@@ -69,7 +71,9 @@ class MainWindow:
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
 			"on_menuitemOpen_activate": self.loadGPX,
+			"on_menuitemZoomIn_activate": self.zoomMapIn,
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
+			"on_menuitemZoomOut_activate": self.zoomMapOut,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
 		}
@@ -108,6 +112,20 @@ class MainWindow:
 		self.wTree.get_object("windowMain").show_all()
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
 
+		#add openby submenu items and actions
+		programs = {
+			'josm':N_('JOSM Editor'),
+			'merkaartor':N_('Merkaartor'),
+		}
+		submenu_openby = gtk.Menu() 
+		for prog,progname in programs.iteritems():
+			submenuitem_openby = gtk.MenuItem(_(progname))
+			submenu_openby.append(submenuitem_openby)
+			submenuitem_openby.connect("activate", self.openby, prog) 
+			submenuitem_openby.show()
+
+		self.wTree.get_object('menuitemOpenBy').set_submenu(submenu_openby)
+		
 		# maps track_filename : (GPXTrace, [OsmGpsMapTrack])
 		self.tracks = {}
 		if filename != None:
@@ -151,6 +169,8 @@ class MainWindow:
 		self.setLoggingDateLabel(gpxfrom.strftime("%x"))
 		self.setLoggingTimeLabel(gpxfrom.strftime("%X"),gpxto.strftime("%X"))
 		self.setCentre(clat,clon)
+		
+		self.currentFilename = filename
 
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % trace.get_filename())
 		
@@ -222,7 +242,15 @@ class MainWindow:
 		
 	def quit(self,w):
 		gtk.main_quit()
-		
+
+	def openby(self,w,app):
+		try: self.currentFilename
+		except AttributeError:
+			return
+		else:
+			filepath = self.currentFilename
+			pid = os.spawnlp(os.P_NOWAIT,app,app,filepath)
+ 	
 	def zoomMapIn(self,w):
 		self.map.zoom_in()
 	

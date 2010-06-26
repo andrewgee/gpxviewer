@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gpxviewer\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-05-05 13:28+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-20 12:11+0900\n"
 "PO-Revision-Date: 2010-05-01 01:42+0000\n"
 "Last-Translator: Hiroshi Miura <miurahr@linux.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -17,20 +17,28 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-05-05 19:32+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: ../gpxviewer/ui.py:81 ../ui/gps.glade.h:9
+#: ../gpxviewer/ui.py:111 ../ui/gps.glade.h:9
 msgid "GPX Viewer"
 msgstr "GPXビューア"
 
-#: ../gpxviewer/ui.py:118
+#: ../gpxviewer/ui.py:115
+msgid "JOSM Editor"
+msgstr "JOSMエディタ"
+
+#: ../gpxviewer/ui.py:116
+msgid "Merkaartor"
+msgstr "メルカトル・OSMエディタ"
+
+#: ../gpxviewer/ui.py:177
 #, python-format
 msgid "GPX Viewer - %s"
 msgstr "GPXビューア - %s"
 
-#: ../gpxviewer/ui.py:136
+#: ../gpxviewer/ui.py:196
 msgid "Choose a GPX file to Load"
 msgstr "読み込むGPXファイルを選択してください。"
 
-#: ../gpxviewer/ui.py:148
+#: ../gpxviewer/ui.py:219
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
@@ -38,32 +46,32 @@ msgstr ""
 "不正なGPXファイルを選択しました。\n"
 "　再度、試みてください。"
 
-#: ../gpxviewer/ui.py:201
+#: ../gpxviewer/ui.py:259
 #, python-format
 msgid "<b>Distance:</b> %s km"
 msgstr "<b>距離:</b> %s km"
 
-#: ../gpxviewer/ui.py:204
+#: ../gpxviewer/ui.py:262
 #, python-format
 msgid "<b>Average Speed:</b> %s m/s"
 msgstr "<b>平均速度:</b> 毎秒 %s m"
 
-#: ../gpxviewer/ui.py:207
+#: ../gpxviewer/ui.py:265
 #, python-format
 msgid "<b>Maximum Speed:</b> %s m/s"
 msgstr "<b>最大速度:</b> 毎秒 %s m"
 
-#: ../gpxviewer/ui.py:210
+#: ../gpxviewer/ui.py:268
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
 msgstr "<b>所要時間:</b> %(minutes)s 分, %(seconds)s 秒"
 
-#: ../gpxviewer/ui.py:213
+#: ../gpxviewer/ui.py:271
 #, python-format
 msgid "<b>Logging Date:</b> %s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:216
+#: ../gpxviewer/ui.py:274
 #, python-format
 msgid "<b>Logging Time:</b> %(from)s - %(to)s"
 msgstr ""
