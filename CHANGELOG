@@ -1,3 +1,14 @@
+0.2.0:
+ * Change to osm-gps-map 0.7.1, requiring changes to trace loading
+ * Migration to GtkBuilder from Glade
+ * Open trace with external applications
+ * Zoom slider in status bar, replaces buttons
+ * Scale key displayed on map
+ * Convert trace time to correct timezone
+ * Caching for map tiles enabled
+ * Fixes to command line arguments to handle invalid files, and show filename 
+   in window title.
+
 0.1.5:
  * Patches contributed by Hiroshi Miura
 	* Accept gpx file as cli argument
