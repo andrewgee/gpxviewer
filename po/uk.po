@@ -1,0 +1,165 @@
+# Ukrainian translation for gpxviewer
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# This file is distributed under the same license as the gpxviewer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+# FULL NAME <EMAIL@ADDRESS>, 2010.
+# Sergiy Gavrylov <sergiovana@bigmir.net>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gpxviewer\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2010-06-26 23:19+0100\n"
+"PO-Revision-Date: 2010-06-16 13:57+0000\n"
+"Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-06-27 16:12+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+
+#: ../gpxviewer/ui.py:113 ../ui/gpxviewer.ui.h:9
+msgid "GPX Viewer"
+msgstr "GPX Viewer"
+
+#: ../gpxviewer/ui.py:117
+msgid "JOSM Editor"
+msgstr ""
+
+#: ../gpxviewer/ui.py:118
+msgid "Merkaartor"
+msgstr ""
+
+#: ../gpxviewer/ui.py:175
+#, python-format
+msgid "GPX Viewer - %s"
+msgstr "GPX Viewer - %s"
+
+#: ../gpxviewer/ui.py:214
+msgid "Choose a GPX file to Load"
+msgstr "Виберіть GPX-файл для завантаження"
+
+#: ../gpxviewer/ui.py:237
+msgid ""
+"You selected an invalid GPX file. \n"
+" Please try again"
+msgstr ""
+"Ви вибрали помилковий GPX-файл. \n"
+" Спробуйте інший"
+
+#: ../gpxviewer/ui.py:264
+#, python-format
+msgid "<b>Distance:</b> %s km"
+msgstr "<b>Відстань:</b> %s км"
+
+#: ../gpxviewer/ui.py:267
+#, python-format
+msgid "<b>Average Speed:</b> %s m/s"
+msgstr "<b>Середня швидкість:</b> %s м/с"
+
+#: ../gpxviewer/ui.py:270
+#, python-format
+msgid "<b>Maximum Speed:</b> %s m/s"
+msgstr "<b>Максимальна швидкість:</b> %s м/с"
+
+#: ../gpxviewer/ui.py:273
+#, python-format
+msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
+msgstr "<b>Тривалість:</b> %(minutes)s хвилин, %(seconds)s секунд"
+
+#: ../gpxviewer/ui.py:276
+#, python-format
+msgid "<b>Logging Date:</b> %s"
+msgstr "<b>Дата реєстрації:</b> %s"
+
+#: ../gpxviewer/ui.py:279
+#, python-format
+msgid "<b>Logging Time:</b> %(from)s - %(to)s"
+msgstr "<b>Час реєстрації:</b> %(from)s - %(to)s"
+
+#: ../ui/gpxviewer.ui.h:1
+msgid "<b>Average Speed:</b> -- m/s"
+msgstr "<b>Середня швидкість:</b> -- м/с"
+
+#: ../ui/gpxviewer.ui.h:2
+msgid "<b>Distance:</b> -- km"
+msgstr "<b>Відстань:</b> -- км"
+
+#: ../ui/gpxviewer.ui.h:3
+msgid "<b>Duration:</b> -- minutes, -- seconds"
+msgstr "<b>Тривалість:</b> -- хвилин, -- секунд"
+
+#: ../ui/gpxviewer.ui.h:4
+msgid "<b>Logging Date:</b> --"
+msgstr "<b>Дата реєстрації:</b> --"
+
+#: ../ui/gpxviewer.ui.h:5
+msgid "<b>Logging Time:</b> from -- to -- "
+msgstr "<b>Час реєстрації:</b> від -- до -- "
+
+#: ../ui/gpxviewer.ui.h:6
+msgid "<b>Maximum Speed:</b> -- m/s"
+msgstr "<b>Максимальна швидкість:</b> -- м/с"
+
+#: ../ui/gpxviewer.ui.h:7
+msgid "About GPX Viewer"
+msgstr "Про GPX Viewer"
+
+#: ../ui/gpxviewer.ui.h:8
+msgid "Copyright (C) Andrew Gee 2009"
+msgstr "Copyright (C) Andrew Gee 2009"
+
+#: ../ui/gpxviewer.ui.h:10
+msgid "GPX Viewer Website"
+msgstr "Веб-сайт GPX Viewer"
+
+#: ../ui/gpxviewer.ui.h:11
+msgid ""
+"GPX Viewer is an application that allows\n"
+"users to easily view GPS traces they \n"
+"have created in the GPX file format."
+msgstr ""
+"Програма GPX Viewer дає змогу\n"
+"легко переглядати GPS-записи, \n"
+"створені у форматі GPX-файлів."
+
+#: ../ui/gpxviewer.ui.h:14
+msgid "Get Help Online..."
+msgstr "Отримати онлайн довідку..."
+
+#: ../ui/gpxviewer.ui.h:15
+msgid "Open with External Program..."
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:16
+msgid "Report a Problem..."
+msgstr "Звітувати про проблему..."
+
+#: ../ui/gpxviewer.ui.h:17
+msgid "Translate This Application..."
+msgstr "Перекласти цю програму..."
+
+#: ../ui/gpxviewer.ui.h:18
+msgid "Zoom _In"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:19
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:20
+msgid "_File"
+msgstr "_Файл"
+
+#: ../ui/gpxviewer.ui.h:21
+msgid "_Help"
+msgstr "_Довідка"
+
+#: ../ui/gpxviewer.ui.h:22
+msgid "_Tools"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:23
+msgid "_View"
+msgstr ""
