@@ -57,7 +57,10 @@ gettext.bindtextdomain('gpxviewer')
 gettext.textdomain('gpxviewer')
 _ = gettext.lgettext
 
-def N_(message): return message
+# Function used to defer translation until later, while still being recognised 
+# by build_i18n
+def N_(message): 
+  return message
 
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
