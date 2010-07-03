@@ -10,13 +10,13 @@ msgstr ""
 "Project-Id-Version: gpxviewer\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-06-26 23:19+0100\n"
-"PO-Revision-Date: 2010-06-16 13:57+0000\n"
+"PO-Revision-Date: 2010-06-27 16:54+0000\n"
 "Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-06-27 16:12+0000\n"
+"X-Launchpad-Export-Date: 2010-07-03 08:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../gpxviewer/ui.py:113 ../ui/gpxviewer.ui.h:9
@@ -25,11 +25,11 @@ msgstr "GPX Viewer"
 
 #: ../gpxviewer/ui.py:117
 msgid "JOSM Editor"
-msgstr ""
+msgstr "Редактор JOSM"
 
 #: ../gpxviewer/ui.py:118
 msgid "Merkaartor"
-msgstr ""
+msgstr "Merkaartor"
 
 #: ../gpxviewer/ui.py:175
 #, python-format
@@ -130,7 +130,7 @@ msgstr "Отримати онлайн довідку..."
 
 #: ../ui/gpxviewer.ui.h:15
 msgid "Open with External Program..."
-msgstr ""
+msgstr "Відкрити у зовнішній програмі..."
 
 #: ../ui/gpxviewer.ui.h:16
 msgid "Report a Problem..."
@@ -142,11 +142,11 @@ msgstr "Перекласти цю програму..."
 
 #: ../ui/gpxviewer.ui.h:18
 msgid "Zoom _In"
-msgstr ""
+msgstr "З_більшити"
 
 #: ../ui/gpxviewer.ui.h:19
 msgid "Zoom _Out"
-msgstr ""
+msgstr "З_меншити"
 
 #: ../ui/gpxviewer.ui.h:20
 msgid "_File"
@@ -158,8 +158,8 @@ msgstr "_Довідка"
 
 #: ../ui/gpxviewer.ui.h:22
 msgid "_Tools"
-msgstr ""
+msgstr "_Інструменти"
 
 #: ../ui/gpxviewer.ui.h:23
 msgid "_View"
-msgstr ""
+msgstr "П_ерегляд"
