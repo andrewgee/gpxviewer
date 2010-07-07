@@ -23,7 +23,7 @@ import sys,os
 from datetime import *
 try: 
    import pygtk 
-   pygtk.require("2.16") 
+   pygtk.require("2.20") 
 except: 
    pass 
 try: 
