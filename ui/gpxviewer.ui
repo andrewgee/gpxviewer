@@ -13,7 +13,6 @@
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="spacing">4</property>
         <child>
           <object class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
@@ -164,116 +163,125 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox1">
+          <object class="GtkAlignment" id="alignment2">
             <property name="visible">True</property>
+            <property name="top_padding">4</property>
+            <property name="bottom_padding">4</property>
+            <property name="left_padding">4</property>
+            <property name="right_padding">4</property>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <object class="GtkVBox" id="vbox2">
+              <object class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkTable" id="table1">
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkVBox" id="vbox2">
                     <property name="visible">True</property>
-                    <property name="n_rows">2</property>
-                    <property name="n_columns">3</property>
                     <child>
-                      <object class="GtkLabel" id="labelDuration">
+                      <object class="GtkTable" id="table1">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Duration:&lt;/b&gt; -- minutes, -- seconds</property>
-                        <property name="use_markup">True</property>
+                        <property name="n_rows">2</property>
+                        <property name="n_columns">3</property>
+                        <child>
+                          <object class="GtkLabel" id="labelDuration">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Duration:&lt;/b&gt; -- minutes, -- seconds</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                            <property name="y_padding">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="labelMaximumSpeed">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Maximum Speed:&lt;/b&gt; -- m/s</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                            <property name="y_padding">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="labelAverageSpeed">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Average Speed:&lt;/b&gt; -- m/s</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="y_padding">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="labelDistance">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Distance:&lt;/b&gt; -- km</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="y_padding">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="labelLoggingDate">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Logging Date:&lt;/b&gt; --</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="right_attach">3</property>
+                            <property name="y_padding">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="labelLoggingTime">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Logging Time:&lt;/b&gt; from -- to -- </property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="right_attach">3</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                            <property name="y_padding">3</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="y_padding">4</property>
+                        <property name="expand">False</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="labelMaximumSpeed">
+                      <object class="GtkHBox" id="hbox_map">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Maximum Speed:&lt;/b&gt; -- m/s</property>
-                        <property name="use_markup">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                       <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="y_padding">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="labelAverageSpeed">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Average Speed:&lt;/b&gt; -- m/s</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="y_padding">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="labelDistance">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Distance:&lt;/b&gt; -- km</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="y_padding">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="labelLoggingDate">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Logging Date:&lt;/b&gt; --</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="right_attach">3</property>
-                        <property name="y_padding">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="labelLoggingTime">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Logging Time:&lt;/b&gt; from -- to -- </property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="y_padding">3</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
+                    <property name="padding">4</property>
+                    <property name="pack_type">end</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkHBox" id="hbox_map">
-                    <property name="visible">True</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="padding">3</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
               </object>
-              <packing>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
             </child>
           </object>
           <packing>

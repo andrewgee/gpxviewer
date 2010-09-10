@@ -144,7 +144,11 @@ class MainWindow:
 		#move zoom control into apple like slider
 		self.zoomSlider = MapZoomSlider(self.map)
 		self.zoomSlider.show_all()
-		sb.pack_end(self.zoomSlider, False, False)
+		a = gtk.Alignment(0.5,0.5,1.0,1.0)
+		a.set_padding(0,0,0,4)
+		a.add(self.zoomSlider)
+		a.show_all()
+		sb.pack_end(a, False, False, padding=4)
 
 		#animate a spinner when downloading tiles
 		self.spinner = gtk.Spinner()
