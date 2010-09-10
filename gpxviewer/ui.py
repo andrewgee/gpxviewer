@@ -32,6 +32,8 @@ except:
    print "GTK is not installed" 
    sys.exit(1) 
 
+import gobject
+
 import osmgpsmap
 assert osmgpsmap.__version__ >= "0.7.1"
 
@@ -62,12 +64,20 @@ _ = gettext.lgettext
 def N_(message): 
   return message
 
-class _TrackManager:
+ALPHA_UNSELECTED = 0.5
+ALPHA_SELECTED = 0.8
+
+class _TrackManager(gobject.GObject):
 
 	NAME_IDX = 0
 	FILENAME_IDX = 1
 
+	__gsignals__ = {
+		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [str]),
+    }
+
 	def __init__(self):
+		gobject.GObject.__init__(self)
 		# maps track_filename : (GPXTrace, [OsmGpsMapTrack])
 		self._tracks = {}
 		# name, filename
@@ -78,13 +88,15 @@ class _TrackManager:
 		return self._tracks[filename]
 
 	def addTrace(self, trace):
-		""" Adds trace, returns (trace, [OsmGpsMapTrack]) """
 		filename = trace.get_full_path()
 		if filename not in self._tracks:
 			gpstracks = []
 			for track in trace.get_points():
 			  for segment in track:
+
 				gpstrack = osmgpsmap.GpsMapTrack()
+				gpstrack.props.alpha = ALPHA_UNSELECTED
+
 				for rlat,rlon in segment:
 					gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
 				gpstracks.append(gpstrack)
@@ -92,7 +104,7 @@ class _TrackManager:
 			self._tracks[filename] = (trace, gpstracks)
 			self.model.append( (trace.get_display_name(), filename) )
 
-		return self._tracks[filename]
+			self.emit("track-added", filename)
 
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
@@ -162,6 +174,7 @@ class MainWindow:
 		self.wTree.get_object('menuitemOpenBy').set_submenu(submenu_openby)
 		
 		self.trackManager = _TrackManager()
+		self.trackManager.connect("track-added", self.onTrackAdded)
 
 		if filename != None:
 			self.loadGPX(filename=filename)
@@ -177,6 +190,12 @@ class MainWindow:
 		tv.show_all()
 
 		self.spinner.hide()
+
+	def onTrackAdded(self, tm, filename):
+		trace, tracks = self.trackManager.getTrace(filename)
+		for t in tracks:
+			self.map.track_add(t)
+		self.selectTrace(trace)
 
 	def updateTilesQueued(self, map_, paramspec):
 		if self.map.props.tiles_queued > 0:
@@ -215,12 +234,6 @@ class MainWindow:
 
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % trace.get_filename())
 		
-	def updateForNewFile(self, trace):
-		trace, tracks = self.trackManager.addTrace(trace)
-		for t in tracks:
-			self.map.track_add(t)
-		self.selectTrace(trace)
-			
 	def loadGPX(self, *args, **kwargs): 
 		result = None
 		filename = kwargs.get("filename")
@@ -237,7 +250,7 @@ class MainWindow:
 				result = GPXTrace(filename)
 
 		if result:
-			self.updateForNewFile(result)
+			self.trackManager.addTrace(result)
 
 	def chooseGPX(self):
 		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.wTree.get_object("windowMain"))
