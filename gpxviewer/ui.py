@@ -27,9 +27,9 @@ import gobject
 import osmgpsmap
 assert osmgpsmap.__version__ >= "0.7.1"
 
-from gpx import GPXTrace
+import stats
 
-from stats import WeekStats
+from gpx import GPXTrace
 
 from utils.timezone import LocalTimezone
 
@@ -72,8 +72,6 @@ class _TrackManager(gobject.GObject):
 		# name, filename
 		self.model = gtk.ListStore(str, str)
 
-		self.stats = WeekStats()
-
 	def getOtherTracks(self, trace):
 		tracks = []
 		for _trace,_tracks in self._tracks.values():
@@ -105,13 +103,13 @@ class _TrackManager(gobject.GObject):
 
 			self._tracks[filename] = (trace, gpstracks)
 			self.model.append( (trace.get_display_name(), filename) )
-
-			self.stats.addTrace(trace)
-
 			self.emit("track-added", filename)
 
 	def numTraces(self):
 		return len(self._tracks)
+
+	def getAllTraces(self):
+		return [t[0] for t in self._tracks.values()]
 
 class MainWindow:
 	def __init__(self, ui_dir, files):
@@ -279,7 +277,14 @@ class MainWindow:
 			self.hideSpinner()
 	
 	def openAboutDialog(self,w):
-		self.trackManager.stats.chart()
+		ws = stats.WeekStats()
+		ss = stats.AvgSpeedStats()
+		for t in self.trackManager.getAllTraces():
+			ws.addTrace(t)
+			ss.addTrace(t)
+
+		ws.chart_window()
+		ss.chart_window()
 		return
 
 		dialog = self.wTree.get_object("dialogAbout")
