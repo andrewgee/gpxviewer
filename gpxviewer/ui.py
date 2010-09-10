@@ -130,17 +130,16 @@ class MainWindow:
 		self.mainWindow.set_icon_from_file("%sgpxviewer.svg" % ui_dir)
 		
 		self.ui_dir = ui_dir
-		
-		home_dir = os.getenv('HOME','/var/tmp')
-		cache_dir= home_dir + '/.cache/gpxviewer/tiles/'
 
-		self.map = osmgpsmap.GpsMap(tile_cache=cache_dir)
+		self.map = osmgpsmap.GpsMap(
+					tile_cache=os.path.expanduser('~/.cache/gpxviewer/tiles/'))
 		self.map.layer_add(
 					osmgpsmap.GpsMapOsd(
 						show_dpad=False,
 						show_zoom=False,
 						show_scale=True,
 						show_coordinates=False))
+		self.wTree.get_object("hbox_map").pack_start(self.map, True, True)
 
 		sb = self.wTree.get_object("statusbar1")
 		#move zoom control into apple like slider
@@ -158,26 +157,24 @@ class MainWindow:
 		self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
 		sb.pack_end(self.spinner, False, False)
 
-		self.wTree.get_object("hbox_map").pack_start(self.map, True, True)
-		
 		self.wTree.connect_signals(signals)
 		
 		self.mainWindow.show_all()
 		self.mainWindow.set_title(_("GPX Viewer"))
 
-		#add openby submenu items and actions
+		#add open with external tool submenu items and actions
 		programs = {
 			'josm':N_('JOSM Editor'),
 			'merkaartor':N_('Merkaartor'),
 		}
-		submenu_openby = gtk.Menu() 
+		submenu_open_with = gtk.Menu() 
 		for prog,progname in programs.iteritems():
-			submenuitem_openby = gtk.MenuItem(_(progname))
-			submenu_openby.append(submenuitem_openby)
-			submenuitem_openby.connect("activate", self.openby, prog) 
-			submenuitem_openby.show()
+			submenuitem_open_with = gtk.MenuItem(_(progname))
+			submenu_open_with.append(submenuitem_open_with)
+			submenuitem_open_with.connect("activate", self.openWithExternalApp, prog) 
+			submenuitem_open_with.show()
 
-		self.wTree.get_object('menuitemOpenBy').set_submenu(submenu_openby)
+		self.wTree.get_object('menuitemOpenBy').set_submenu(submenu_open_with)
 		
 		self.trackManager = _TrackManager()
 		self.trackManager.connect("track-added", self.onTrackAdded)
@@ -213,7 +210,7 @@ class MainWindow:
 				self.loadingFiles = 0
 				return False
 
-		#don't autocentre if multiple files are loaded
+		self.currentFilename = ""
 		self.loadingFiles = len(files)
 
 		i = 0
@@ -334,13 +331,9 @@ class MainWindow:
 	def main(self):
 		gtk.main()
 
-	def openby(self,w,app):
-		try: self.currentFilename
-		except AttributeError:
-			return
-		else:
-			filepath = self.currentFilename
-			pid = os.spawnlp(os.P_NOWAIT,app,app,filepath)
+	def openWithExternalApp(self,w,app):
+		if self.currentFilename:
+			os.spawnlp(os.P_NOWAIT,app,app,self.currentFilename)
  	
 	def zoomMapIn(self,w):
 		self.map.zoom_in()
