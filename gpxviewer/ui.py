@@ -70,6 +70,8 @@ class _TrackManager:
 	def __init__(self):
 		# maps track_filename : (GPXTrace, [OsmGpsMapTrack])
 		self._tracks = {}
+		# name, filename
+		self.model = gtk.ListStore(str, str)
 
 	def getTrace(self, filename):
 		""" Returns (trace, [OsmGpsMapTrack]) """
@@ -88,6 +90,7 @@ class _TrackManager:
 				gpstracks.append(gpstrack)
 
 			self._tracks[filename] = (trace, gpstracks)
+			self.model.append( (trace.get_display_name(), filename) )
 
 		return self._tracks[filename]
 
@@ -166,6 +169,12 @@ class MainWindow:
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
+
+		tv = gtk.TreeView(self.trackManager.model)
+		tv.append_column(
+			gtk.TreeViewColumn("Track Name", gtk.CellRendererText(), text=0))
+		self.wTree.get_object("hbox1").pack_start(tv, False, True)
+		tv.show_all()
 
 		self.spinner.hide()
 
