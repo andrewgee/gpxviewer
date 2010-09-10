@@ -27,7 +27,7 @@ import gobject
 import osmgpsmap
 assert osmgpsmap.__version__ >= "0.7.1"
 
-from gpx import GPXTrace, check_file
+from gpx import GPXTrace
 
 from utils.timezone import LocalTimezone
 
