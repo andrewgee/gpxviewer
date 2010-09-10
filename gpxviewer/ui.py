@@ -52,6 +52,7 @@ def show_url(url):
 
 ALPHA_UNSELECTED = 0.5
 ALPHA_SELECTED = 0.8
+LAZY_LOAD_AFTER_N_FILES = 3
 
 class _TrackManager(gobject.GObject):
 
@@ -199,8 +200,31 @@ class MainWindow:
 		self.hideSpinner()
 		self.hideTrackSelector()
 
+		self.lazyLoadFiles(files)
+
+	def lazyLoadFiles(self, files):
+		def do_lazy_load(_files):
+			try:
+				self.loadGPX( _files.pop() )
+				self.loadingFiles -= 1
+				return True
+			except IndexError:
+				self.loadingFiles = 0
+				return False
+
+		#don't autocentre if multiple files are loaded
+		self.loadingFiles = len(files)
+
+		i = 0
 		for filename in files:
 			self.loadGPX(filename)
+			if i < LAZY_LOAD_AFTER_N_FILES:
+				i += 1
+			else:
+				break
+
+		if i:
+			gobject.timeout_add(100, do_lazy_load, files[i:])
 
 	def showSpinner(self):
 		self.spinner.show()
@@ -251,8 +275,10 @@ class MainWindow:
 			t.props.alpha = alpha
 
 	def selectTrace(self, trace):
-		self.zoom = 12
+		if self.loadingFiles:
+			return
 
+		self.zoom = 12
 		distance = trace.get_distance()
 		maximum_speed = trace.get_maximum_speed()
 		average_speed = trace.get_average_speed()
@@ -260,17 +286,17 @@ class MainWindow:
 		clat, clon = trace.get_centre()
 		gpxfrom = trace.get_gpxfrom().astimezone(self.localtz)
 		gpxto = trace.get_gpxto().astimezone(self.localtz)
-		
+
 		self.setDistanceLabel(round(distance/1000,2))
 		self.setMaximumSpeedLabel(maximum_speed)
 		self.setAverageSpeedLabel(average_speed)
 		self.setDurationLabel(int(duration/60),duration-(int(duration/60)*60))
 		self.setLoggingDateLabel(gpxfrom.strftime("%x"))
 		self.setLoggingTimeLabel(gpxfrom.strftime("%X"),gpxto.strftime("%X"))
-		self.setCentre(clat,clon)
-		
+
 		self.currentFilename = trace.get_filename()
 
+		self.setCentre(clat,clon)
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % trace.get_filename())
 
 	def loadGPX(self, filename):
