@@ -69,6 +69,17 @@ class _TrackManager(gobject.GObject):
 		# name, filename
 		self.model = gtk.ListStore(str, str)
 
+	def getOtherTracks(self, trace):
+		tracks = []
+		for _trace,_tracks in self._tracks.values():
+			if trace != _trace:
+				tracks += _tracks
+		return tracks
+
+	def getTraceFromModel(self, _iter):
+		filename = self.model.get_value(_iter, self.FILENAME_IDX)
+		return self.getTrace(filename)
+
 	def getTrace(self, filename):
 		""" Returns (trace, [OsmGpsMapTrack]) """
 		return self._tracks[filename]
@@ -170,6 +181,7 @@ class MainWindow:
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
 
 		tv = gtk.TreeView(self.trackManager.model)
+		tv.get_selection().connect("changed", self.onSelectionChanged)
 		tv.append_column(
 			gtk.TreeViewColumn("Track Name", gtk.CellRendererText(), text=0))
 		self.wTree.get_object("hbox1").pack_start(tv, False, True)
@@ -177,10 +189,22 @@ class MainWindow:
 
 		self.spinner.hide()
 
+	def onSelectionChanged(self, selection):
+		model, _iter = selection.get_selected()
+
+		trace, tracks = self.trackManager.getTraceFromModel(_iter)
+		self.selectTrace(trace)
+
+		#highlight current track
+		self.selectTracks(tracks, ALPHA_SELECTED)
+		#dim other tracks
+		self.selectTracks(self.trackManager.getOtherTracks(trace), ALPHA_UNSELECTED)
+
 	def onTrackAdded(self, tm, filename):
 		trace, tracks = self.trackManager.getTrace(filename)
 		for t in tracks:
 			self.map.track_add(t)
+
 		self.selectTrace(trace)
 
 	def updateTilesQueued(self, map_, paramspec):
@@ -196,6 +220,10 @@ class MainWindow:
 		self.wTree.get_object("dialogAbout").set_icon_from_file("%sgpxviewer.svg" % self.ui_dir)
 		dialog.connect("response", lambda *a: dialog.hide())
 		dialog.show_all()
+
+	def selectTracks(self, tracks, alpha):
+		for t in tracks:
+			t.props.alpha = alpha
 
 	def selectTrace(self, trace):
 		self.zoom = 12
