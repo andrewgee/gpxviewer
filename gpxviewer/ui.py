@@ -126,7 +126,8 @@ class MainWindow:
 			"on_menuitemAbout_activate": self.openAboutDialog,
 		}
 		
-		self.wTree.get_object("windowMain").set_icon_from_file("%sgpxviewer.svg" % ui_dir)
+		self.mainWindow = self.wTree.get_object("windowMain")
+		self.mainWindow.set_icon_from_file("%sgpxviewer.svg" % ui_dir)
 		
 		self.ui_dir = ui_dir
 		
@@ -161,8 +162,8 @@ class MainWindow:
 		
 		self.wTree.connect_signals(signals)
 		
-		self.wTree.get_object("windowMain").show_all()
-		self.wTree.get_object("windowMain").set_title(_("GPX Viewer"))
+		self.mainWindow.show_all()
+		self.mainWindow.set_title(_("GPX Viewer"))
 
 		#add openby submenu items and actions
 		programs = {
@@ -297,7 +298,7 @@ class MainWindow:
 		self.currentFilename = trace.get_filename()
 
 		self.setCentre(clat,clon)
-		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % trace.get_filename())
+		self.mainWindow.set_title(_("GPX Viewer - %s") % trace.get_filename())
 
 	def loadGPX(self, filename):
 		try:
@@ -309,7 +310,7 @@ class MainWindow:
 			self.showGPXError()
 
 	def openGPX(self,w):
-		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.wTree.get_object("windowMain"))
+		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.mainWindow)
 		filechooser.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_DELETE_EVENT)
 		filechooser.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_OK)
 		filechooser.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
@@ -321,8 +322,8 @@ class MainWindow:
 
 		filechooser.destroy()
 
-	def showGPXError(self, p=None):
-		message_box = gtk.MessageDialog(parent=p,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
+	def showGPXError(self):
+		message_box = gtk.MessageDialog(parent=self.mainWindow,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
 		message_box.run()
 		message_box.destroy()
 		return None
