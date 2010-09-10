@@ -19,7 +19,8 @@
 #
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
-import sys,os
+import os
+import sys
 from datetime import *
 try: 
    import pygtk 
@@ -27,7 +28,8 @@ try:
 except: 
    pass 
 try: 
-   import gtk 
+   import gtk
+   import gtk.gdk
 except: 
    print "GTK is not installed" 
    sys.exit(1) 
@@ -38,13 +40,6 @@ import osmgpsmap
 assert osmgpsmap.__version__ >= "0.7.1"
 
 from gpx import GPXTrace, check_file
-
-try:
-	import gnome
-	def show_url(url): gnome.url_show(url)
-except:
-	import os
-	def show_url(url): os.system("xdg-open %s" % url)
 
 from utils.timezone import LocalTimezone
 
@@ -61,8 +56,11 @@ _ = gettext.lgettext
 
 # Function used to defer translation until later, while still being recognised 
 # by build_i18n
-def N_(message): 
+def N_(message):
   return message
+
+def show_url(url):
+	gtk.show_uri(None, url, gtk.gdk.CURRENT_TIME)
 
 ALPHA_UNSELECTED = 0.5
 ALPHA_SELECTED = 0.8
