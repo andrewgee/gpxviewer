@@ -21,19 +21,7 @@
 #
 import os
 import sys
-from datetime import *
-try: 
-   import pygtk 
-   pygtk.require("2.20") 
-except: 
-   pass 
-try: 
-   import gtk
-   import gtk.gdk
-except: 
-   print "GTK is not installed" 
-   sys.exit(1) 
-
+import gtk
 import gobject
 
 import osmgpsmap
@@ -57,7 +45,7 @@ _ = gettext.lgettext
 # Function used to defer translation until later, while still being recognised 
 # by build_i18n
 def N_(message):
-  return message
+	return message
 
 def show_url(url):
 	gtk.show_uri(None, url, gtk.gdk.CURRENT_TIME)
