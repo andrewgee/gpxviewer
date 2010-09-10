@@ -104,7 +104,7 @@ class _TrackManager(gobject.GObject):
 			self.emit("track-added", filename)
 
 class MainWindow:
-	def __init__(self,ui_dir="ui/",filename=None):
+	def __init__(self, ui_dir, files):
 		self.localtz = LocalTimezone()
 		
 		self.wTree = gtk.Builder()
@@ -114,7 +114,7 @@ class MainWindow:
 		signals = {
 			"on_windowMain_destroy": self.quit,
 			"on_menuitemQuit_activate": self.quit,
-			"on_menuitemOpen_activate": self.loadGPX,
+			"on_menuitemOpen_activate": self.openGPX,
 			"on_menuitemZoomIn_activate": self.zoomMapIn,
 			"on_buttonZoomIn_clicked": self.zoomMapIn,
 			"on_menuitemZoomOut_activate": self.zoomMapOut,
@@ -173,8 +173,8 @@ class MainWindow:
 		self.trackManager = _TrackManager()
 		self.trackManager.connect("track-added", self.onTrackAdded)
 
-		if filename != None:
-			self.loadGPX(filename=filename)
+		for filename in files:
+			self.loadGPX(filename)
 		
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
@@ -247,26 +247,16 @@ class MainWindow:
 		self.currentFilename = trace.get_filename()
 
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % trace.get_filename())
-		
-	def loadGPX(self, *args, **kwargs): 
-		result = None
-		filename = kwargs.get("filename")
-		if filename == None:
-			while result == None:
-				result = self.chooseGPX()
-			if result == False:
-				return
-		else:
-			if check_file(filename) != True:
-				self.showGPXError(None)
-				return
-			else:
-				result = GPXTrace(filename)
 
-		if result:
-			self.trackManager.addTrace(result)
+	def loadGPX(self, filename):
+		try:
+			trace = GPXTrace(filename)
+			self.trackManager.addTrace(trace)
+		except Exception, e:
+			#FIXME: Show GPX error
+			print "ERROR:",s
 
-	def chooseGPX(self):
+	def openGPX(self,w):
 		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.wTree.get_object("windowMain"))
 		filechooser.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_DELETE_EVENT)
 		filechooser.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_OK)
@@ -274,20 +264,10 @@ class MainWindow:
 		response = filechooser.run()
 		filename = filechooser.get_filename()
 		
-		if response == gtk.RESPONSE_DELETE_EVENT:
-			filechooser.destroy()
-			return False
-		
-		if check_file(filename) != True:
-			self.showGPXError(filechooser)
-			filechooser.destroy()		
-			return None
-		
+		if response == gtk.RESPONSE_OK:
+			self.loadGPX(filename)
+
 		filechooser.destroy()
-		
-		trace = GPXTrace(filename)
-		
-		return trace
 
 	def showGPXError(self,p):
                 message_box = gtk.MessageDialog(parent=p,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
@@ -298,6 +278,9 @@ class MainWindow:
 		
 	def quit(self,w):
 		gtk.main_quit()
+
+	def main(self):
+		gtk.main()
 
 	def openby(self,w,app):
 		try: self.currentFilename

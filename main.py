@@ -27,11 +27,15 @@ from gpxviewer.ui import MainWindow
  
 gtk.gdk.threads_init()
 
-gpxfile = None
+if len(sys.argv) > 2:
+	files = sys.argv[1:]
+elif len(sys.argv) > 1:
+	files = [sys.argv[1]]
+else:
+	files = []
 
-if len(sys.argv) > 1:
-	gpxfile = sys.argv[1]
+gui = MainWindow(
+		ui_dir="ui/",
+		files=files
+).main()
 
-gui = MainWindow(ui_dir="ui/",filename=gpxfile)
- 
-gtk.main()
