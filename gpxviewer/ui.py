@@ -29,6 +29,8 @@ assert osmgpsmap.__version__ >= "0.7.1"
 
 from gpx import GPXTrace
 
+from stats import WeekStats
+
 from utils.timezone import LocalTimezone
 
 import locale
@@ -70,6 +72,8 @@ class _TrackManager(gobject.GObject):
 		# name, filename
 		self.model = gtk.ListStore(str, str)
 
+		self.stats = WeekStats()
+
 	def getOtherTracks(self, trace):
 		tracks = []
 		for _trace,_tracks in self._tracks.values():
@@ -101,6 +105,8 @@ class _TrackManager(gobject.GObject):
 
 			self._tracks[filename] = (trace, gpstracks)
 			self.model.append( (trace.get_display_name(), filename) )
+
+			self.stats.addTrace(trace)
 
 			self.emit("track-added", filename)
 
@@ -273,6 +279,9 @@ class MainWindow:
 			self.hideSpinner()
 	
 	def openAboutDialog(self,w):
+		self.trackManager.stats.chart()
+		return
+
 		dialog = self.wTree.get_object("dialogAbout")
 		self.wTree.get_object("dialogAbout").set_icon_from_file("%sgpxviewer.svg" % self.ui_dir)
 		dialog.connect("response", lambda *a: dialog.hide())
