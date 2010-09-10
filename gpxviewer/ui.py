@@ -103,6 +103,9 @@ class _TrackManager(gobject.GObject):
 
 			self.emit("track-added", filename)
 
+	def numTraces(self):
+		return len(self._tracks)
+
 class MainWindow:
 	def __init__(self, ui_dir, files):
 		self.localtz = LocalTimezone()
@@ -173,21 +176,40 @@ class MainWindow:
 		self.trackManager = _TrackManager()
 		self.trackManager.connect("track-added", self.onTrackAdded)
 
-		for filename in files:
-			self.loadGPX(filename)
-		
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
 
-		tv = gtk.TreeView(self.trackManager.model)
-		tv.get_selection().connect("changed", self.onSelectionChanged)
-		tv.append_column(
-			gtk.TreeViewColumn("Track Name", gtk.CellRendererText(), text=0))
-		self.wTree.get_object("hbox1").pack_start(tv, False, True)
-		tv.show_all()
+		self.tv = gtk.TreeView(self.trackManager.model)
+		self.tv.get_selection().connect("changed", self.onSelectionChanged)
+		self.tv.append_column(
+				gtk.TreeViewColumn(
+					"Track Name",
+					gtk.CellRendererText(),
+					text=self.trackManager.NAME_IDX
+				)
+		)
+		self.wTree.get_object("hbox1").pack_start(self.tv, False, True)
 
+		self.hideSpinner()
+		self.hideTrackSelector()
+
+		for filename in files:
+			self.loadGPX(filename)
+
+	def showSpinner(self):
+		self.spinner.show()
+		self.spinner.start()
+
+	def hideSpinner(self):
+		self.spinner.stop()
 		self.spinner.hide()
+
+	def showTrackSelector(self):
+		self.tv.show_all()
+
+	def hideTrackSelector(self):
+		self.tv.hide_all()
 
 	def onSelectionChanged(self, selection):
 		model, _iter = selection.get_selected()
@@ -209,11 +231,9 @@ class MainWindow:
 
 	def updateTilesQueued(self, map_, paramspec):
 		if self.map.props.tiles_queued > 0:
-			self.spinner.show()
-			self.spinner.start()
+			self.showSpinner()
 		else:
-			self.spinner.stop()
-			self.spinner.hide()
+			self.hideSpinner()
 	
 	def openAboutDialog(self,w):
 		dialog = self.wTree.get_object("dialogAbout")
@@ -252,9 +272,10 @@ class MainWindow:
 		try:
 			trace = GPXTrace(filename)
 			self.trackManager.addTrace(trace)
+			if self.trackManager.numTraces() > 1:
+				self.showTrackSelector()
 		except Exception, e:
-			#FIXME: Show GPX error
-			print "ERROR:",s
+			self.showGPXError()
 
 	def openGPX(self,w):
 		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.wTree.get_object("windowMain"))
@@ -269,13 +290,12 @@ class MainWindow:
 
 		filechooser.destroy()
 
-	def showGPXError(self,p):
-                message_box = gtk.MessageDialog(parent=p,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
-                message_box.run()
-                message_box.destroy()
-                return None
+	def showGPXError(self, p=None):
+		message_box = gtk.MessageDialog(parent=p,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
+		message_box.run()
+		message_box.destroy()
+		return None
 
-		
 	def quit(self,w):
 		gtk.main_quit()
 
