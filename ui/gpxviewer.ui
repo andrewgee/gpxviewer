@@ -63,10 +63,9 @@
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitemZoomIn">
-                        <property name="label" translatable="yes">Zoom _In</property>
+                        <property name="label">gtk-zoom-in</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">False</property>
+                        <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_menuitemZoomIn_activate"/>
@@ -74,10 +73,9 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="menuitemZoomOut">
-                        <property name="label" translatable="yes">Zoom _Out</property>
+                        <property name="label">gtk-zoom-out</property>
                         <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">False</property>
+                        <property name="use_stock">True</property>
                         <property name="accel_group">accelgroup1</property>
                         <accelerator key="minus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="on_menuitemZoomOut_activate"/>
