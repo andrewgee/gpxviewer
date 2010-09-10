@@ -56,6 +56,12 @@ class GPXTrace:
       tracks.append(segments)
     
     return tracks
+
+  def get_display_name(self):
+    try:
+      return self.trace["metadata"]["name"]
+    except KeyError:
+      return self.get_filename()
   
   def get_filename(self):
     return basename(self.trace['filename'])

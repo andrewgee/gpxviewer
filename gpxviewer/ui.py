@@ -62,6 +62,35 @@ _ = gettext.lgettext
 def N_(message): 
   return message
 
+class _TrackManager:
+
+	NAME_IDX = 0
+	FILENAME_IDX = 1
+
+	def __init__(self):
+		# maps track_filename : (GPXTrace, [OsmGpsMapTrack])
+		self._tracks = {}
+
+	def getTrace(self, filename):
+		""" Returns (trace, [OsmGpsMapTrack]) """
+		return self._tracks[filename]
+
+	def addTrace(self, trace):
+		""" Adds trace, returns (trace, [OsmGpsMapTrack]) """
+		filename = trace.get_full_path()
+		if filename not in self._tracks:
+			gpstracks = []
+			for track in trace.get_points():
+			  for segment in track:
+				gpstrack = osmgpsmap.GpsMapTrack()
+				for rlat,rlon in segment:
+					gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
+				gpstracks.append(gpstrack)
+
+			self._tracks[filename] = (trace, gpstracks)
+
+		return self._tracks[filename]
+
 class MainWindow:
 	def __init__(self,ui_dir="ui/",filename=None):
 		self.localtz = LocalTimezone()
@@ -108,7 +137,7 @@ class MainWindow:
 		self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
 		sb.pack_end(self.spinner, False, False)
 
-		self.wTree.get_object("hbox1").pack_start(self.map, True, True)
+		self.wTree.get_object("hbox_map").pack_start(self.map, True, True)
 		
 		self.wTree.connect_signals(signals)
 		
@@ -129,8 +158,8 @@ class MainWindow:
 
 		self.wTree.get_object('menuitemOpenBy').set_submenu(submenu_openby)
 		
-		# maps track_filename : (GPXTrace, [OsmGpsMapTrack])
-		self.tracks = {}
+		self.trackManager = _TrackManager()
+
 		if filename != None:
 			self.loadGPX(filename=filename)
 		
@@ -154,8 +183,8 @@ class MainWindow:
 		dialog.connect("response", lambda *a: dialog.hide())
 		dialog.show_all()
 
-	def selectTrace(self, filename):
-		trace, maptracks = self.tracks[filename]
+	def selectTrace(self, trace):
+		self.zoom = 12
 
 		distance = trace.get_distance()
 		maximum_speed = trace.get_maximum_speed()
@@ -173,27 +202,15 @@ class MainWindow:
 		self.setLoggingTimeLabel(gpxfrom.strftime("%X"),gpxto.strftime("%X"))
 		self.setCentre(clat,clon)
 		
-		self.currentFilename = filename
+		self.currentFilename = trace.get_filename()
 
 		self.wTree.get_object("windowMain").set_title(_("GPX Viewer - %s") % trace.get_filename())
 		
 	def updateForNewFile(self, trace):
-		filename = trace.get_full_path()
-		if filename not in self.tracks:
-			self.zoom = 12
-			#self.map.track_remove_all()
-
-			gpstracks = []
-			for track in trace.get_points():
-			  for segment in track:
-				gpstrack = osmgpsmap.GpsMapTrack()
-				for rlat,rlon in segment:
-					gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
-				self.map.track_add(gpstrack)
-				gpstracks.append(gpstrack)
-
-			self.tracks[filename] = (trace, gpstracks)
-			self.selectTrace(filename)
+		trace, tracks = self.trackManager.addTrace(trace)
+		for t in tracks:
+			self.map.track_add(t)
+		self.selectTrace(trace)
 			
 	def loadGPX(self, *args, **kwargs): 
 		result = None
