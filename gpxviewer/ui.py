@@ -184,16 +184,17 @@ class MainWindow:
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
 
-		self.tv = gtk.TreeView(self.trackManager.model)
-		self.tv.get_selection().connect("changed", self.onSelectionChanged)
-		self.tv.append_column(
+		tv = gtk.TreeView(self.trackManager.model)
+		tv.get_selection().connect("changed", self.onSelectionChanged)
+		tv.append_column(
 				gtk.TreeViewColumn(
 					"Track Name",
 					gtk.CellRendererText(),
 					text=self.trackManager.NAME_IDX
 				)
 		)
-		self.wTree.get_object("hbox1").pack_start(self.tv, False, True)
+		self.wTree.get_object("scrolledwindow1").add(tv)
+		self.sb = self.wTree.get_object("vbox_sidebar")
 
 		self.hideSpinner()
 		self.hideTrackSelector()
@@ -210,10 +211,10 @@ class MainWindow:
 		self.spinner.hide()
 
 	def showTrackSelector(self):
-		self.tv.show_all()
+		self.sb.show_all()
 
 	def hideTrackSelector(self):
-		self.tv.hide_all()
+		self.sb.hide_all()
 
 	def onSelectionChanged(self, selection):
 		model, _iter = selection.get_selected()
