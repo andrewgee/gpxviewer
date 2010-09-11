@@ -83,6 +83,39 @@
                         <signal name="activate" handler="on_menuitemZoomOut_activate"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem3">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitemMultipleTracks">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Multiple Tracks</property>
+                        <property name="use_underline">True</property>
+                        <child type="submenu">
+                          <object class="GtkMenu" id="menu5">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="checkmenuitemShowSidebar">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Show Sidebar</property>
+                                <property name="use_underline">True</property>
+                                <signal name="toggled" handler="on_checkmenuitemShowSidebar_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkMenuItem" id="menuitemShowStatistics">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Show Aggregate Statistics</property>
+                                <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_menuitemShowStatistics_activate"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

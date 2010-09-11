@@ -129,6 +129,9 @@ class MainWindow:
 			"on_menuitemZoomOut_activate": self.zoomMapOut,
 			"on_buttonZoomOut_clicked": self.zoomMapOut,
 			"on_menuitemAbout_activate": self.openAboutDialog,
+			"on_checkmenuitemShowSidebar_toggled": self.showSidebarToggled,
+			"on_menuitemShowStatistics_activate": self.showStatistics,
+
 		}
 		
 		self.mainWindow = self.wTree.get_object("windowMain")
@@ -275,8 +278,14 @@ class MainWindow:
 			self.showSpinner()
 		else:
 			self.hideSpinner()
-	
-	def openAboutDialog(self,w):
+
+	def showSidebarToggled(self, item):
+		if item.get_active():
+			self.showTrackSelector()
+		else:
+			self.hideTrackSelector()
+
+	def showStatistics(self, item):
 		ws = stats.WeekStats()
 		ss = stats.AvgSpeedStats()
 		for t in self.trackManager.getAllTraces():
@@ -285,8 +294,8 @@ class MainWindow:
 
 		ws.chart_window()
 		ss.chart_window()
-		return
-
+	
+	def openAboutDialog(self,w):
 		dialog = self.wTree.get_object("dialogAbout")
 		self.wTree.get_object("dialogAbout").set_icon_from_file("%sgpxviewer.svg" % self.ui_dir)
 		dialog.connect("response", lambda *a: dialog.hide())
