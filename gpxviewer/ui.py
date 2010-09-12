@@ -110,6 +110,7 @@ class _TrackManager(gobject.GObject):
 class MainWindow:
 	def __init__(self, ui_dir, files):
 		self.localtz = LocalTimezone()
+		self.recent = gtk.recent_manager_get_default()
 		
 		self.wTree = gtk.Builder()
 		self.wTree.set_translation_domain('gpxviewer')
@@ -303,8 +304,10 @@ class MainWindow:
 			self.trackManager.addTrace(trace)
 			if self.trackManager.numTraces() > 1:
 				self.showTrackSelector()
+			return True
 		except Exception, e:
 			self.showGPXError()
+			return False
 
 	def openGPX(self,w):
 		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.mainWindow)
@@ -315,7 +318,8 @@ class MainWindow:
 		filename = filechooser.get_filename()
 		
 		if response == gtk.RESPONSE_OK:
-			self.loadGPX(filename)
+			if self.loadGPX(filename):
+				self.recent.add_item("file://"+filename)
 
 		filechooser.destroy()
 
