@@ -4,7 +4,7 @@ from distutils.core import setup
 from DistUtilsExtra.command import *
 
 setup(name="gpxviewer",
-	version="0.3.0",
+	version="0.3.1",
 	author="Andrew Gee",
 	author_email="andrew@andrewgee.org",
 	maintainer="Andrew Gee",

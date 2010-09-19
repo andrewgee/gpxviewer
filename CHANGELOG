@@ -1,3 +1,6 @@
+0.3.1:
+ * Quick fix for bin/gpxviewer. Hadn't updated for new multi-track
+
 0.3.0:
  * Implementation of multitrack menu by John Stowers
  * Updated translations
