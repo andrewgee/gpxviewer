@@ -1,16 +1,16 @@
-# Dutch translation for gpxviewer
-# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# French translation for gpxviewer
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the gpxviewer package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gpxviewer\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-06-26 23:19+0100\n"
-"PO-Revision-Date: 2010-08-09 17:49+0000\n"
-"Last-Translator: Dennis Groenveld <d.groenveld@gmail.com>\n"
-"Language-Team: Dutch <nl@li.org>\n"
+"PO-Revision-Date: 2010-07-14 13:20+0000\n"
+"Last-Translator: quesh <quesh.mail@gmail.com>\n"
+"Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,11 +19,11 @@ msgstr ""
 
 #: ../gpxviewer/ui.py:113 ../ui/gpxviewer.ui.h:9
 msgid "GPX Viewer"
-msgstr "GPX Viewer"
+msgstr ""
 
 #: ../gpxviewer/ui.py:117
 msgid "JOSM Editor"
-msgstr "JOSM Editor"
+msgstr ""
 
 #: ../gpxviewer/ui.py:118
 msgid "Merkaartor"
@@ -32,39 +32,37 @@ msgstr ""
 #: ../gpxviewer/ui.py:175
 #, python-format
 msgid "GPX Viewer - %s"
-msgstr "GPX Viewer - %s"
+msgstr ""
 
 #: ../gpxviewer/ui.py:214
 msgid "Choose a GPX file to Load"
-msgstr "Kies een GPX-bestand om te laden"
+msgstr ""
 
 #: ../gpxviewer/ui.py:237
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
 msgstr ""
-"Je hebt een ongeldig GPX-bestand gekozen. \n"
-" Probeer het opnieuw"
 
 #: ../gpxviewer/ui.py:264
 #, python-format
 msgid "<b>Distance:</b> %s km"
-msgstr "<b>Afstand:</b> %s km"
+msgstr "<b>Distance:</b> %s km"
 
 #: ../gpxviewer/ui.py:267
 #, python-format
 msgid "<b>Average Speed:</b> %s m/s"
-msgstr "<b>Gemiddelde snelheid:</b> %s m/s"
+msgstr ""
 
 #: ../gpxviewer/ui.py:270
 #, python-format
 msgid "<b>Maximum Speed:</b> %s m/s"
-msgstr "<b>Hoogste snelheid:</b> %s m/s"
+msgstr ""
 
 #: ../gpxviewer/ui.py:273
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
-msgstr "<b>Duur:</b>  %(minutes)s minuten, %(seconds)s seconden"
+msgstr "<b>Durée:</b> %(minutes)s minutes, %(seconds)s secondes"
 
 #: ../gpxviewer/ui.py:276
 #, python-format
@@ -78,19 +76,19 @@ msgstr ""
 
 #: ../ui/gpxviewer.ui.h:1
 msgid "<b>Average Speed:</b> -- m/s"
-msgstr "<b>Gemiddelde snelheid:</b> -- m/s"
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:2
 msgid "<b>Distance:</b> -- km"
-msgstr "<b>Afstand:</b> -- km"
+msgstr "<b>Distance:</b> -- km"
 
 #: ../ui/gpxviewer.ui.h:3
 msgid "<b>Duration:</b> -- minutes, -- seconds"
-msgstr "<b>Duur:</b> -- minuten, -- seconden"
+msgstr "<b>Durée:</b> -- minutes, -- secondes"
 
 #: ../ui/gpxviewer.ui.h:4
 msgid "<b>Logging Date:</b> --"
-msgstr ""
+msgstr "<b>Date de Connexion:</b> --"
 
 #: ../ui/gpxviewer.ui.h:5
 msgid "<b>Logging Time:</b> from -- to -- "
@@ -98,19 +96,19 @@ msgstr ""
 
 #: ../ui/gpxviewer.ui.h:6
 msgid "<b>Maximum Speed:</b> -- m/s"
-msgstr "<b>Hoogste snelheid:</b> -- m/s"
+msgstr "<b>Vitesse Maximale:</b> -- m/s"
 
 #: ../ui/gpxviewer.ui.h:7
 msgid "About GPX Viewer"
-msgstr "Over GPX Viewer"
+msgstr "À propos GPX Viewer"
 
 #: ../ui/gpxviewer.ui.h:8
 msgid "Copyright (C) Andrew Gee 2009"
-msgstr "Copyright (C) Andrew Gee 2009"
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:10
 msgid "GPX Viewer Website"
-msgstr "Website van GPX Viewer"
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:11
 msgid ""
@@ -118,13 +116,10 @@ msgid ""
 "users to easily view GPS traces they \n"
 "have created in the GPX file format."
 msgstr ""
-"GPX Viewer is een applicatie die het voor gebruikers\n"
-"mogelijk maakt GPS traces te bekijken die ze\n"
-"gemaakt hebben in het GPX bestandsformaat."
 
 #: ../ui/gpxviewer.ui.h:14
 msgid "Get Help Online..."
-msgstr "Online hulp vragen..."
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:15
 msgid "Open with External Program..."
@@ -132,11 +127,11 @@ msgstr ""
 
 #: ../ui/gpxviewer.ui.h:16
 msgid "Report a Problem..."
-msgstr "Een probleem melden..."
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:17
 msgid "Translate This Application..."
-msgstr "Dit programma vertalen ..."
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:18
 msgid "Zoom _In"
@@ -148,22 +143,16 @@ msgstr ""
 
 #: ../ui/gpxviewer.ui.h:20
 msgid "_File"
-msgstr "_Bestand"
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:21
 msgid "_Help"
-msgstr "_Help"
+msgstr ""
 
 #: ../ui/gpxviewer.ui.h:22
 msgid "_Tools"
-msgstr ""
+msgstr "_Outils"
 
 #: ../ui/gpxviewer.ui.h:23
 msgid "_View"
 msgstr ""
-
-#~ msgid "Zoom In"
-#~ msgstr "Inzoomen"
-
-#~ msgid "Zoom Out"
-#~ msgstr "Uitzoomen"
