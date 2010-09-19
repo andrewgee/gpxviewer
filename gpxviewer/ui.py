@@ -136,6 +136,10 @@ class MainWindow:
 		
 		self.mainWindow = self.wTree.get_object("windowMain")
 		self.mainWindow.set_icon_from_file("%sgpxviewer.svg" % ui_dir)
+
+		i = self.wTree.get_object("checkmenuitemCenter")
+		i.connect("toggled", self.autoCenterToggled)
+		self.autoCenter = i.get_active()
 		
 		self.ui_dir = ui_dir
 
@@ -326,9 +330,10 @@ class MainWindow:
 		self.setLoggingTimeLabel(gpxfrom.strftime("%X"),gpxto.strftime("%X"))
 
 		self.currentFilename = trace.get_filename()
-
-		self.setCentre(clat,clon)
 		self.mainWindow.set_title(_("GPX Viewer - %s") % trace.get_filename())
+
+		if self.autoCenter:
+			self.setCentre(clat,clon)
 
 	def loadGPX(self, filename):
 		try:
@@ -397,6 +402,9 @@ class MainWindow:
 
 	def setLoggingTimeLabel(self,gpxfrom="--",gpxto="--"):
 		self.wTree.get_object("labelLoggingTime").set_markup(_("<b>Logging Time:</b> %(from)s - %(to)s") % {"from": gpxfrom, "to": gpxto})
+
+	def autoCenterToggled(self, item):
+		self.autoCenter = item.get_active()
 
 class MapZoomSlider(gtk.HBox):
     def __init__(self, _map):

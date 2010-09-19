@@ -89,6 +89,19 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkCheckMenuItem" id="checkmenuitemCenter">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Center on Selected Track</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem30">
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="menuitemMultipleTracks">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Multiple Tracks</property>
