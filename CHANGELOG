@@ -1,3 +1,10 @@
+0.3.0:
+ * Implementation of multitrack menu by John Stowers
+ * Updated translations
+
+0.2.1:
+ * Translation update
+
 0.2.0:
  * Change to osm-gps-map 0.7.1, requiring changes to trace loading
  * Migration to GtkBuilder from Glade

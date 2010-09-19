@@ -336,7 +336,7 @@
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <property name="program_name">GPX Viewer</property>
-    <property name="version">0.2.0</property>
+    <property name="version">0.3.0</property>
     <property name="copyright" translatable="yes">Copyright (C) Andrew Gee 2009</property>
     <property name="comments" translatable="yes">GPX Viewer is an application that allows
 users to easily view GPS traces they 
