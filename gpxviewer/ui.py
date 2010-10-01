@@ -154,6 +154,8 @@ class MainWindow:
 
 		#animate a spinner when downloading tiles
 		self.spinner = gtk.Spinner()
+		self.spinner.props.has_tooltip = True
+		self.spinner.connect("query-tooltip", self.onSpinnerTooltip)
 		self.map.connect("notify::tiles-queued", self.updateTilesQueued)
 		self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
 		sb.pack_end(self.spinner, False, False)
@@ -232,6 +234,13 @@ class MainWindow:
 	def hideSpinner(self):
 		self.spinner.stop()
 		self.spinner.hide()
+
+	def onSpinnerTooltip(self, spinner, x, y, keyboard_mode, tooltip):
+		tiles = self.map.props.tiles_queued
+		if tiles:
+			tooltip.set_text("Downloading Map")
+			return True
+		return False
 
 	def showTrackSelector(self):
 		self.sb.show_all()
