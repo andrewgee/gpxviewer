@@ -136,6 +136,7 @@ class MainWindow:
 		
 		self.mainWindow = self.wTree.get_object("windowMain")
 		self.mainWindow.set_icon_from_file("%sgpxviewer.svg" % ui_dir)
+		self.mainWindow.set_title(_("GPX Viewer"))
 
 		i = self.wTree.get_object("checkmenuitemCenter")
 		i.connect("toggled", self.autoCenterToggled)
@@ -173,9 +174,6 @@ class MainWindow:
 
 		self.wTree.connect_signals(signals)
 		
-		self.mainWindow.show_all()
-		self.mainWindow.set_title(_("GPX Viewer"))
-
 		#add open with external tool submenu items and actions
 		programs = {
 			'josm':N_('JOSM Editor'),
@@ -213,6 +211,9 @@ class MainWindow:
 		self.hideTrackSelector()
 
 		self.lazyLoadFiles(files)
+
+		self.map.show()
+		self.mainWindow.show()
 
 	def lazyLoadFiles(self, files):
 		def do_lazy_load(_files):

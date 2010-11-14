@@ -220,7 +220,6 @@
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkVBox" id="vbox_sidebar">
-                    <property name="visible">True</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow1">
                         <property name="visible">True</property>
