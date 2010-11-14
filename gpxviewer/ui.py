@@ -62,7 +62,8 @@ class _TrackManager(gobject.GObject):
 	FILENAME_IDX = 1
 
 	__gsignals__ = {
-		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [str]),
+		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
+		'track-removed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
     }
 
 	def __init__(self):
@@ -82,6 +83,10 @@ class _TrackManager(gobject.GObject):
 	def getTraceFromModel(self, _iter):
 		filename = self.model.get_value(_iter, self.FILENAME_IDX)
 		return self.getTrace(filename)
+
+	def deleteTraceFromModel(self, _iter):
+		self.emit("track-removed", *self._tracks[self.model.get_value(_iter, self.FILENAME_IDX)])
+		self.model.remove(_iter)
 
 	def getTrace(self, filename):
 		""" Returns (trace, [OsmGpsMapTrack]) """
@@ -103,7 +108,7 @@ class _TrackManager(gobject.GObject):
 
 			self._tracks[filename] = (trace, gpstracks)
 			self.model.append( (trace.get_display_name(), filename) )
-			self.emit("track-added", filename)
+			self.emit("track-added", trace, gpstracks)
 
 	def numTraces(self):
 		return len(self._tracks)
@@ -131,7 +136,9 @@ class MainWindow:
 			"on_menuitemAbout_activate": self.openAboutDialog,
 			"on_checkmenuitemShowSidebar_toggled": self.showSidebarToggled,
 			"on_menuitemShowStatistics_activate": self.showStatistics,
-
+			"on_buttonTrackAdd_clicked": self.buttonTrackAddClicked,
+			"on_buttonTrackDelete_clicked": self.buttonTrackDeleteClicked,
+			"on_buttonTrackInspect_clicked": self.buttonTrackInspectClicked,
 		}
 		
 		self.mainWindow = self.wTree.get_object("windowMain")
@@ -190,21 +197,22 @@ class MainWindow:
 		
 		self.trackManager = _TrackManager()
 		self.trackManager.connect("track-added", self.onTrackAdded)
+		self.trackManager.connect("track-removed", self.onTrackRemoved)
 
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
 
-		tv = gtk.TreeView(self.trackManager.model)
-		tv.get_selection().connect("changed", self.onSelectionChanged)
-		tv.append_column(
+		self.tv = gtk.TreeView(self.trackManager.model)
+		self.tv.get_selection().connect("changed", self.onSelectionChanged)
+		self.tv.append_column(
 				gtk.TreeViewColumn(
 					"Track Name",
 					gtk.CellRendererText(),
 					text=self.trackManager.NAME_IDX
 				)
 		)
-		self.wTree.get_object("scrolledwindow1").add(tv)
+		self.wTree.get_object("scrolledwindow1").add(self.tv)
 		self.sb = self.wTree.get_object("vbox_sidebar")
 
 		self.hideSpinner()
@@ -270,6 +278,9 @@ class MainWindow:
 
 	def onSelectionChanged(self, selection):
 		model, _iter = selection.get_selected()
+		if not _iter:
+			return
+
 		trace, tracks = self.trackManager.getTraceFromModel(_iter)
 		self.selectTrace(trace)
 
@@ -278,11 +289,14 @@ class MainWindow:
 		#dim other tracks
 		self.selectTracks(self.trackManager.getOtherTracks(trace), ALPHA_UNSELECTED)
 
-	def onTrackAdded(self, tm, filename):
-		trace, tracks = self.trackManager.getTrace(filename)
+	def onTrackAdded(self, tm, trace, tracks):
 		for t in tracks:
 			self.map.track_add(t)
 		self.selectTrace(trace)
+
+	def onTrackRemoved(self, tm, trace, tracks):
+		for t in tracks:
+			self.map.track_remove(t)
 
 	def updateTilesQueued(self, map_, paramspec):
 		if self.map.props.tiles_queued > 0:
@@ -353,7 +367,7 @@ class MainWindow:
 			self.showGPXError()
 			return None
 
-	def openGPX(self,w):
+	def openGPX(self, *args):
 		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.mainWindow)
 		filechooser.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_DELETE_EVENT)
 		filechooser.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_OK)
@@ -412,6 +426,17 @@ class MainWindow:
 
 	def autoCenterToggled(self, item):
 		self.autoCenter = item.get_active()
+
+	def buttonTrackAddClicked(self, *args):
+		self.openGPX()
+
+	def buttonTrackDeleteClicked(self, *args):
+		model, _iter = self.tv.get_selection().get_selected()
+		if _iter:
+			self.trackManager.deleteTraceFromModel(_iter)
+
+	def buttonTrackInspectClicked(self, *args):
+		pass
 
 class MapZoomSlider(gtk.HBox):
     def __init__(self, _map):
