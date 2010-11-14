@@ -386,13 +386,13 @@ class MainWindow:
 		self.map.set_center_and_zoom(lat,lon,self.zoom)
 		
 	def setDistanceLabel(self,distance="--"):
-		self.wTree.get_object("labelDistance").set_markup(_("<b>Distance:</b> %s km") % distance)
+		self.wTree.get_object("labelDistance").set_markup(_("<b>Distance:</b> %.2f km") % distance)
 		
 	def setAverageSpeedLabel(self,average_speed="--"):
-		self.wTree.get_object("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %s m/s") % average_speed)
+		self.wTree.get_object("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %.2f m/s") % average_speed)
 		
 	def setMaximumSpeedLabel(self,maximum_speed="--"):
-		self.wTree.get_object("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s") % maximum_speed)
+		self.wTree.get_object("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %.2f m/s") % maximum_speed)
 		
 	def setDurationLabel(self,minutes="--",seconds="--"):
 		self.wTree.get_object("labelDuration").set_markup(_("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds") % {"minutes": minutes, "seconds": seconds})

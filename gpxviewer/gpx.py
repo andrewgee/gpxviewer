@@ -39,13 +39,13 @@ def calculate_distance(lat1, lat2, lon1, lon2):
 class GPXTrace:
   def __init__(self,filename):
     self.trace = import_gpx_trace(filename)
+    self._cache = {}
         
   def get_points(self):
     tracks = []
     
     for track in self.trace['tracks']:
       segments = []
-    
       for segment in track['segments']:
         points = []
         for point in segment['points']:
@@ -68,126 +68,96 @@ class GPXTrace:
 
   def get_full_path(self):
     return abspath(self.trace['filename'])
-  
-  def get_max_lat(self):
-    maxlat = self.trace['tracks'][0]['segments'][0]['points'][0]['lat']
-    for track in self.trace['tracks']:
-      for segment in track['segments']:
-        for point in segment['points']:
-          if maxlat < point['lat']:
-            maxlat = point['lat']
-    return maxlat
-  
-  def get_min_lat(self):
-    minlat = self.trace['tracks'][0]['segments'][0]['points'][0]['lat']
-    for track in self.trace['tracks']:
-      for segment in track['segments']:
-        for point in segment['points']:
-          if minlat > point['lat']:
-            minlat = point['lat']
-    return minlat
-  
-  def get_max_lon(self):
-    maxlon = self.trace['tracks'][0]['segments'][0]['points'][0]['lon']
-    for track in self.trace['tracks']:
-      for segment in track['segments']:
-        for point in segment['points']:
-          if maxlon < point['lon']:
-            maxlon = point['lon']
-    return maxlon
-  
-  def get_min_lon(self):
-    minlon = self.trace['tracks'][0]['segments'][0]['points'][0]['lon']
-    for track in self.trace['tracks']:
-      for segment in track['segments']:
-        for point in segment['points']:
-          if minlon > point['lon']:
-            minlon = point['lon']
-    return minlon
-    
-  def get_centre(self):
-    maxlat = self.get_max_lat()
-    minlat = self.get_min_lat()
-    maxlon = self.get_max_lon()
-    minlon = self.get_min_lon()
-    
-    return (maxlat+minlat)/2,(maxlon+minlon)/2
-    
-  def get_average_speed(self):
-    dt = 0
+
+  def _walk_points(self):
+    """
+    Computes all measurements that require walking over all points
+    """
+    maxlat = minlat = self.trace['tracks'][0]['segments'][0]['points'][0]['lat']
+    maxlon = minlon = self.trace['tracks'][0]['segments'][0]['points'][0]['lon']
+    distance = 0
     seconds = 0
-
-    for track in self.trace['tracks']:
-      for segment in track['segments']:
-        pointp = None
-        for point in segment['points']:
-          if pointp != None:
-            d = calculate_distance(point['lat'], pointp['lat'], point['lon'], pointp['lon'])
-    
-            #Add distance to total
-            dt = dt + d
-    
-          pointp = point
-        seconds = seconds + (pointp['time'] - segment['points'][0]['time']).seconds
-      
-  
-    return round(dt/seconds,2)
-  
-  def get_distance(self):
-    dt = 0
-
-    for track in self.trace['tracks']:
-      for segment in track['segments']:
-        pointp = None
-        for point in segment['points']:
-          if pointp != None:
-            d = calculate_distance(point['lat'], pointp['lat'], point['lon'], pointp['lon'])
-            #Add distance to total
-            dt = dt + d
-        
-          pointp = point
-  
-    return dt
-    
-  def get_duration(self):
-    seconds = 0
-
-    for track in self.trace['tracks']:
-      for segment in track['segments']:
-        seconds = seconds + (segment['points'][len(segment['points'])-1]['time'] - segment['points'][0]['time']).seconds
-    
-    return seconds
-    
-  def get_gpxfrom(self):
-    fromtime = datetime.now()
-    
-    fromtime = self.trace['tracks'][0]['segments'][0]['points'][0]['time']
-
-    return fromtime
-
-  def get_gpxto(self):
-    totime = datetime.now()
-      
-    totime = self.trace['tracks'][-1]['segments'][-1]['points'][-1]['time']
-
-    return totime
-  
-  def get_maximum_speed(self):
     mspeed = 0
 
     for track in self.trace['tracks']:
       for segment in track['segments']:
         pointp = None
         for point in segment['points']:
+
+          #{max,min}{lat,lon}
+          if maxlat < point['lat']:
+            maxlat = point['lat']
+          elif minlat > point['lat']:
+            minlat = point['lat']
+          if maxlon < point['lon']:
+            maxlon = point['lon']
+          elif minlon > point['lon']:
+            minlon = point['lon']
+
+          #distance
           if pointp != None:
+            #maximum speed
             d = calculate_distance(point['lat'], pointp['lat'], point['lon'], pointp['lon'])
             t = (point['time'] - pointp['time']).microseconds + ((point['time'] - pointp['time']).seconds * 1000000)
             if t > 0:
-              s = (d/t)*1000000  
+              s = (d/t)*1000000
               if s > mspeed:
                 mspeed = s
-    
+
+            distance += d
+
           pointp = point
 
-    return round(mspeed,2)
+        #segment duration (pointp contains the last point in the segment)
+        seconds += (pointp['time'] - segment['points'][0]['time']).seconds
+
+    self._cache["max_lat"] = maxlat
+    self._cache["min_lat"] = minlat
+    self._cache["max_lon"] = maxlon
+    self._cache["min_lon"] = minlon
+    self._cache["distance"] = distance
+    self._cache["duration"] = seconds
+    self._cache["max_speed"] = mspeed
+
+  def _get_cached_value(self, name):
+    if name not in self._cache:
+      self._walk_points()
+    return self._cache[name]
+  
+  def get_max_lat(self):
+    return self._get_cached_value("max_lat")
+
+  def get_min_lat(self):
+    return self._get_cached_value("min_lat")
+
+  def get_max_lon(self):
+    return self._get_cached_value("max_lon")
+
+  def get_min_lon(self):
+    return self._get_cached_value("min_lon")
+
+  def get_centre(self):
+    maxlat = self.get_max_lat()
+    minlat = self.get_min_lat()
+    maxlon = self.get_max_lon()
+    minlon = self.get_min_lon()
+    return (maxlat+minlat)/2,(maxlon+minlon)/2
+    
+  def get_average_speed(self):
+    return self._get_cached_value("distance")/self._get_cached_value("duration")
+  
+  def get_distance(self):
+    return self._get_cached_value("distance")
+    
+  def get_duration(self):
+    return self._get_cached_value("duration")
+    
+  def get_gpxfrom(self):
+    return self.trace['tracks'][0]['segments'][0]['points'][0]['time']
+
+  def get_gpxto(self):
+    return self.trace['tracks'][-1]['segments'][-1]['points'][-1]['time']
+  
+  def get_maximum_speed(self):
+    return self._get_cached_value("max_speed")
 
