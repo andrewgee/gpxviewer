@@ -224,19 +224,27 @@ class MainWindow:
 				self.loadingFiles = 0
 				return False
 
-		self.currentFilename = ""
-		self.loadingFiles = len(files)
+		self.loadingFiles = 0
+		if not files:
+			return
 
-		i = 0
-		for filename in files:
-			self.loadGPX(filename)
-			if i < LAZY_LOAD_AFTER_N_FILES:
-				i += 1
-			else:
-				break
-
-		if i:
-			gobject.timeout_add(100, do_lazy_load, files[i:])
+		#if less than LAZY_LOAD_AFTER_N_FILES load directly, else
+		#load on idle
+		if len(files) < LAZY_LOAD_AFTER_N_FILES:
+			i = 0
+			for filename in files:
+				self.loadingFiles = i
+				trace = self.loadGPX(filename)
+				if i < LAZY_LOAD_AFTER_N_FILES:
+					i += 1
+				else:
+					#select the last loaded trace
+					self.loadingFiles = 0
+					self.selectTrace(trace)
+					break
+		else:
+			self.loadingFiles = len(files)
+			gobject.timeout_add(100, do_lazy_load, files)
 
 	def showSpinner(self):
 		self.spinner.show()
@@ -261,7 +269,6 @@ class MainWindow:
 
 	def onSelectionChanged(self, selection):
 		model, _iter = selection.get_selected()
-
 		trace, tracks = self.trackManager.getTraceFromModel(_iter)
 		self.selectTrace(trace)
 
@@ -274,7 +281,6 @@ class MainWindow:
 		trace, tracks = self.trackManager.getTrace(filename)
 		for t in tracks:
 			self.map.track_add(t)
-
 		self.selectTrace(trace)
 
 	def updateTilesQueued(self, map_, paramspec):
@@ -341,10 +347,10 @@ class MainWindow:
 			self.trackManager.addTrace(trace)
 			if self.trackManager.numTraces() > 1:
 				self.showTrackSelector()
-			return True
+			return trace
 		except Exception, e:
 			self.showGPXError()
-			return False
+			return None
 
 	def openGPX(self,w):
 		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.mainWindow)
