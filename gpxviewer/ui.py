@@ -317,8 +317,12 @@ class MainWindow:
 			ws.addTrace(t)
 			ss.addTrace(t)
 
-		ws.chart_window()
-		ss.chart_window()
+		w = gtk.Window()
+		w.add(stats.ChartNotebook(ws,ss))
+		w.resize(500,300)
+		w.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+		w.set_transient_for(self.mainWindow)
+		w.show_all()
 	
 	def openAboutDialog(self,w):
 		dialog = self.wTree.get_object("dialogAbout")

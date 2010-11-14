@@ -15,6 +15,15 @@ class _Chart:
 		window.resize(800,400)
 		window.show_all()
 
+	def chart_notebook_page(self):
+		return self.chart(),gtk.Label(self.title)
+
+class ChartNotebook(gtk.Notebook):
+	def __init__(self, *charts):
+		gtk.Notebook.__init__(self)
+		for c in charts:
+			self.append_page(*c.chart_notebook_page())
+
 class StatBarChart(_Chart):
 
 	show_data_labels = True
