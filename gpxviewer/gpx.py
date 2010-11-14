@@ -37,37 +37,10 @@ def calculate_distance(lat1, lat2, lon1, lon2):
   return d
 
 class GPXTrace:
+
   def __init__(self,filename):
     self.trace = import_gpx_trace(filename)
     self._cache = {}
-        
-  def get_points(self):
-    tracks = []
-    
-    for track in self.trace['tracks']:
-      segments = []
-      for segment in track['segments']:
-        points = []
-        for point in segment['points']:
-          points.append((radians(point['lat']),radians(point['lon'])))
-        
-        segments.append(points)
-        
-      tracks.append(segments)
-    
-    return tracks
-
-  def get_display_name(self):
-    try:
-      return self.trace["metadata"]["name"]
-    except KeyError:
-      return self.get_filename()
-  
-  def get_filename(self):
-    return basename(self.trace['filename'])
-
-  def get_full_path(self):
-    return abspath(self.trace['filename'])
 
   def _walk_points(self):
     """
@@ -123,7 +96,35 @@ class GPXTrace:
     if name not in self._cache:
       self._walk_points()
     return self._cache[name]
+        
+  def get_points(self):
+    tracks = []
+    
+    for track in self.trace['tracks']:
+      segments = []
+      for segment in track['segments']:
+        points = []
+        for point in segment['points']:
+          points.append((radians(point['lat']),radians(point['lon'])))
+        
+        segments.append(points)
+        
+      tracks.append(segments)
+    
+    return tracks
+
+  def get_display_name(self):
+    try:
+      return self.trace["metadata"]["name"]
+    except KeyError:
+      return self.get_filename()
   
+  def get_filename(self):
+    return basename(self.trace['filename'])
+
+  def get_full_path(self):
+    return abspath(self.trace['filename'])
+
   def get_max_lat(self):
     return self._get_cached_value("max_lat")
 
