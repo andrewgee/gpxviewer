@@ -20,7 +20,9 @@
 #
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
-import sys
+import sys, os.path
+
+sys.path.append(os.path.abspath("gpxviewer"))
 
 import gtk.gdk
 from gpxviewer.ui import MainWindow

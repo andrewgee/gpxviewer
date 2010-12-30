@@ -21,10 +21,12 @@
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
 
+import os.path, sys
+import gpxviewer
+sys.path.append(gpxviewer.__path__[0])
+
 import gtk.gdk
 from gpxviewer.ui import MainWindow
-import os.path
-import sys
 
 POSSIBLE_SHARE_DIRS = ["/usr/local/share/gpxviewer/","/usr/share/gpxviewer/"]
  
