@@ -16,7 +16,7 @@ setup(name="gpxviewer",
 	platforms="linux",
 	packages=["gpxviewer","gpxviewer.utils","gpxviewer.utils.iso8601","gpxviewer.utils.timezone","gpxviewer.pygtk_chart"],
 	data_files=[
-		('share/gpxviewer/ui/', ['ui/gpxviewer.ui','ui/gpxviewer.png','ui/gpxviewer.svg']),
+		('share/gpxviewer/ui/', ['ui/gpxviewer.ui','ui/gpxviewer.png','ui/gpxviewer.svg','gpxviewer/pygtk_chart/data/tango.color']),
 		('share/pixmaps', ['ui/gpxviewer.svg']) 
 	],
 	scripts = ['bin/gpxviewer'],

@@ -35,7 +35,19 @@ __url__ = "http://notmyname.github.com/pygtkChart/"
 import os
 from pygtk_chart.basics import gdk_color_list_from_file
 COLOR_AUTO = 0
-COLORS = gdk_color_list_from_file(os.sep.join([os.path.dirname(__file__), "data", "tango.color"]))
+
+#Search share directories
+POSSIBLE_SHARE_DIRS = ["/usr/local/share/gpxviewer","/usr/share/gpxviewer"]
+for share_dir in POSSIBLE_SHARE_DIRS:
+	if os.path.exists(share_dir):
+		prefix = share_dir
+		break
+
+COLORS = gdk_color_list_from_file(os.sep.join([prefix, "ui", "tango.color"]))
+
+#If share directories not available, run from source folder
+if len(COLORS) < 1:
+  COLORS = gdk_color_list_from_file(os.sep.join([os.path.dirname(__file__), "data", "tango.color"]))
 
 #line style
 LINE_STYLE_SOLID = 0
