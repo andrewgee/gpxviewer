@@ -1,3 +1,10 @@
+0.4.0:
+ * Aggregate stats across multiple tracks
+ * Improved multi-track sidebar with add/removal buttons
+ * Ability to toggle sidebar
+ * Auto centering
+ * Update translations (New: Hungarian)
+
 0.3.1:
  * Quick fix for bin/gpxviewer. Hadn't updated for new multi-track
 
