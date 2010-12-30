@@ -7,38 +7,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpxviewer\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-06-26 23:19+0100\n"
-"PO-Revision-Date: 2010-05-05 20:01+0000\n"
-"Last-Translator: Andrew Gee <andrew@andrewgee.org>\n"
+"POT-Creation-Date: 2010-09-19 14:50+0100\n"
+"PO-Revision-Date: 2010-10-03 14:30+0000\n"
+"Last-Translator: Naven <naven@ipv4.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-06-27 16:12+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-12-30 12:16+0000\n"
+"X-Generator: Launchpad (build 12138)\n"
 
-#: ../gpxviewer/ui.py:113 ../ui/gpxviewer.ui.h:9
+#: ../gpxviewer/ui.py:164 ../ui/gpxviewer.ui.h:9
 msgid "GPX Viewer"
 msgstr "GPX Viewer"
 
-#: ../gpxviewer/ui.py:117
+#: ../gpxviewer/ui.py:168
 msgid "JOSM Editor"
-msgstr ""
+msgstr "Edytor JOSM"
 
-#: ../gpxviewer/ui.py:118
+#: ../gpxviewer/ui.py:169
 msgid "Merkaartor"
-msgstr ""
+msgstr "Merkaartor"
 
-#: ../gpxviewer/ui.py:175
+#: ../gpxviewer/ui.py:299
 #, python-format
 msgid "GPX Viewer - %s"
 msgstr "GPX Viewer - %s"
 
-#: ../gpxviewer/ui.py:214
+#: ../gpxviewer/ui.py:313
 msgid "Choose a GPX file to Load"
 msgstr "Wskaż plik GPX do załadowania"
 
-#: ../gpxviewer/ui.py:237
+#: ../gpxviewer/ui.py:327
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
@@ -46,35 +46,35 @@ msgstr ""
 "Wskazałeś nieprawidłowy plik GPX. \n"
 " Spróbuj ponownie"
 
-#: ../gpxviewer/ui.py:264
+#: ../gpxviewer/ui.py:352
 #, python-format
 msgid "<b>Distance:</b> %s km"
 msgstr "<b>Odległość:</b> %s km"
 
-#: ../gpxviewer/ui.py:267
+#: ../gpxviewer/ui.py:355
 #, python-format
 msgid "<b>Average Speed:</b> %s m/s"
 msgstr "<b>Prędkość średnia:</b> %s m/s"
 
-#: ../gpxviewer/ui.py:270
+#: ../gpxviewer/ui.py:358
 #, python-format
 msgid "<b>Maximum Speed:</b> %s m/s"
 msgstr "<b>Prędkość maksymalna:</b> %s m/s"
 
-#: ../gpxviewer/ui.py:273
+#: ../gpxviewer/ui.py:361
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
 msgstr "<b>Czas trwania:</b> %(minutes)s minut, %(seconds)s sekund"
 
-#: ../gpxviewer/ui.py:276
+#: ../gpxviewer/ui.py:364
 #, python-format
 msgid "<b>Logging Date:</b> %s"
-msgstr ""
+msgstr "<b>Data Zalogowania:</b> %s"
 
-#: ../gpxviewer/ui.py:279
+#: ../gpxviewer/ui.py:367
 #, python-format
 msgid "<b>Logging Time:</b> %(from)s - %(to)s"
-msgstr ""
+msgstr "<b>Czas Zalogowania:</b> %(from)s - %(to)s"
 
 #: ../ui/gpxviewer.ui.h:1
 msgid "<b>Average Speed:</b> -- m/s"
@@ -90,11 +90,11 @@ msgstr "<b>Czas trwania:</b> -- minut, -- sekund"
 
 #: ../ui/gpxviewer.ui.h:4
 msgid "<b>Logging Date:</b> --"
-msgstr ""
+msgstr "<b>Data Zalogowania:</b> --"
 
 #: ../ui/gpxviewer.ui.h:5
 msgid "<b>Logging Time:</b> from -- to -- "
-msgstr ""
+msgstr "<b>Czas Zalogowania:</b> od -- do -- "
 
 #: ../ui/gpxviewer.ui.h:6
 msgid "<b>Maximum Speed:</b> -- m/s"
@@ -128,7 +128,7 @@ msgstr "Uzyskaj pomoc online..."
 
 #: ../ui/gpxviewer.ui.h:15
 msgid "Open with External Program..."
-msgstr ""
+msgstr "Otwórz za Pomoca Zewnętrznego Programu..."
 
 #: ../ui/gpxviewer.ui.h:16
 msgid "Report a Problem..."
@@ -139,28 +139,20 @@ msgid "Translate This Application..."
 msgstr "Przetłumacz tę aplikację..."
 
 #: ../ui/gpxviewer.ui.h:18
-msgid "Zoom _In"
-msgstr ""
-
-#: ../ui/gpxviewer.ui.h:19
-msgid "Zoom _Out"
-msgstr ""
-
-#: ../ui/gpxviewer.ui.h:20
 msgid "_File"
 msgstr "_Plik"
 
-#: ../ui/gpxviewer.ui.h:21
+#: ../ui/gpxviewer.ui.h:19
 msgid "_Help"
 msgstr "_Pomoc"
 
-#: ../ui/gpxviewer.ui.h:22
+#: ../ui/gpxviewer.ui.h:20
 msgid "_Tools"
-msgstr ""
+msgstr "_Narzędzia"
 
-#: ../ui/gpxviewer.ui.h:23
+#: ../ui/gpxviewer.ui.h:21
 msgid "_View"
-msgstr ""
+msgstr "_Widok"
 
 #~ msgid "Zoom In"
 #~ msgstr "Zbliż"

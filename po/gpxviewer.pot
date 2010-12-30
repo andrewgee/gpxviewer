@@ -8,67 +8,68 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-19 14:50+0100\n"
+"POT-Creation-Date: 2010-12-30 12:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../gpxviewer/ui.py:164 ../ui/gpxviewer.ui.h:9
+#: ../gpxviewer/ui.py:146 ../ui/gpxviewer.ui.h:10
 msgid "GPX Viewer"
 msgstr ""
 
-#: ../gpxviewer/ui.py:168
+#: ../gpxviewer/ui.py:186
 msgid "JOSM Editor"
 msgstr ""
 
-#: ../gpxviewer/ui.py:169
+#: ../gpxviewer/ui.py:187
 msgid "Merkaartor"
 msgstr ""
 
-#: ../gpxviewer/ui.py:299
+#: ../gpxviewer/ui.py:358
 #, python-format
 msgid "GPX Viewer - %s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:313
+#: ../gpxviewer/ui.py:375
 msgid "Choose a GPX file to Load"
 msgstr ""
 
-#: ../gpxviewer/ui.py:327
+#: ../gpxviewer/ui.py:389
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
 msgstr ""
 
-#: ../gpxviewer/ui.py:352
+#: ../gpxviewer/ui.py:414
 #, python-format
-msgid "<b>Distance:</b> %s km"
+msgid "<b>Distance:</b> %.2f km"
 msgstr ""
 
-#: ../gpxviewer/ui.py:355
+#: ../gpxviewer/ui.py:417
 #, python-format
-msgid "<b>Average Speed:</b> %s m/s"
+msgid "<b>Average Speed:</b> %.2f m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:358
+#: ../gpxviewer/ui.py:420
 #, python-format
-msgid "<b>Maximum Speed:</b> %s m/s"
+msgid "<b>Maximum Speed:</b> %.2f m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:361
+#: ../gpxviewer/ui.py:423
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
 msgstr ""
 
-#: ../gpxviewer/ui.py:364
+#: ../gpxviewer/ui.py:426
 #, python-format
 msgid "<b>Logging Date:</b> %s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:367
+#: ../gpxviewer/ui.py:429
 #, python-format
 msgid "<b>Logging Time:</b> %(from)s - %(to)s"
 msgstr ""
@@ -102,48 +103,68 @@ msgid "About GPX Viewer"
 msgstr ""
 
 #: ../ui/gpxviewer.ui.h:8
+msgid "Center on Selected Track"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:9
 msgid "Copyright (C) Andrew Gee 2009"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:10
+#: ../ui/gpxviewer.ui.h:11
 msgid "GPX Viewer Website"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:11
+#: ../ui/gpxviewer.ui.h:12
 msgid ""
 "GPX Viewer is an application that allows\n"
 "users to easily view GPS traces they \n"
 "have created in the GPX file format."
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:14
+#: ../ui/gpxviewer.ui.h:15
 msgid "Get Help Online..."
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:15
-msgid "Open with External Program..."
-msgstr ""
-
 #: ../ui/gpxviewer.ui.h:16
-msgid "Report a Problem..."
+msgid "Inspect"
 msgstr ""
 
 #: ../ui/gpxviewer.ui.h:17
-msgid "Translate This Application..."
+msgid "Multiple Tracks"
 msgstr ""
 
 #: ../ui/gpxviewer.ui.h:18
-msgid "_File"
+msgid "Open with External Program..."
 msgstr ""
 
 #: ../ui/gpxviewer.ui.h:19
-msgid "_Help"
+msgid "Report a Problem..."
 msgstr ""
 
 #: ../ui/gpxviewer.ui.h:20
-msgid "_Tools"
+msgid "Show Aggregate Statistics"
 msgstr ""
 
 #: ../ui/gpxviewer.ui.h:21
+msgid "Show Sidebar"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:22
+msgid "Translate This Application..."
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:23
+msgid "_File"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:24
+msgid "_Help"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:25
+msgid "_Tools"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:26
 msgid "_View"
 msgstr ""
