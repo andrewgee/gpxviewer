@@ -38,6 +38,7 @@ COLOR_AUTO = 0
 
 #Search share directories
 POSSIBLE_SHARE_DIRS = ["/usr/local/share/gpxviewer","/usr/share/gpxviewer"]
+prefix = ""
 for share_dir in POSSIBLE_SHARE_DIRS:
 	if os.path.exists(share_dir):
 		prefix = share_dir
