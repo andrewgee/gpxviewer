@@ -172,12 +172,15 @@ class MainWindow:
 		sb.pack_end(a, False, False, padding=4)
 
 		#animate a spinner when downloading tiles
-		self.spinner = gtk.Spinner()
-		self.spinner.props.has_tooltip = True
-		self.spinner.connect("query-tooltip", self.onSpinnerTooltip)
-		self.map.connect("notify::tiles-queued", self.updateTilesQueued)
-		self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
-		sb.pack_end(self.spinner, False, False)
+		try:
+			self.spinner = gtk.Spinner()
+			self.spinner.props.has_tooltip = True
+			self.spinner.connect("query-tooltip", self.onSpinnerTooltip)
+			self.map.connect("notify::tiles-queued", self.updateTilesQueued)
+			self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
+			sb.pack_end(self.spinner, False, False)
+		except AttributeError:
+			self.spinner = None
 
 		self.wTree.connect_signals(signals)
 		
@@ -256,12 +259,14 @@ class MainWindow:
 			gobject.timeout_add(100, do_lazy_load, files)
 
 	def showSpinner(self):
-		self.spinner.show()
-		self.spinner.start()
+		if self.spinner:
+			self.spinner.show()
+			self.spinner.start()
 
 	def hideSpinner(self):
-		self.spinner.stop()
-		self.spinner.hide()
+		if self.spinner:
+			self.spinner.stop()
+			self.spinner.hide()
 
 	def onSpinnerTooltip(self, spinner, x, y, keyboard_mode, tooltip):
 		tiles = self.map.props.tiles_queued
