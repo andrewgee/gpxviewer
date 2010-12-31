@@ -22,7 +22,9 @@
 #
 import sys, os.path
 
-sys.path.append(os.path.abspath("gpxviewer"))
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+source_dir = os.path.join(parent_dir, "gpxviewer")
+sys.path.append(source_dir)
 
 import gtk.gdk
 from gpxviewer.ui import MainWindow
@@ -36,8 +38,10 @@ elif len(sys.argv) > 1:
 else:
 	files = []
 
+ui_dir = os.path.join(parent_dir, "ui/")
+
 gui = MainWindow(
-		ui_dir="ui/",
+		ui_dir=ui_dir,
 		files=files
 ).main()
 
