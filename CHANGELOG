@@ -4,6 +4,7 @@
  * Ability to toggle sidebar
  * Auto centering
  * Update translations (New: Hungarian)
+ * Make Spinner optional in application
 
 0.3.1:
  * Quick fix for bin/gpxviewer. Hadn't updated for new multi-track
