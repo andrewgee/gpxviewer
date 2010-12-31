@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-30 12:18+0000\n"
+"POT-Creation-Date: 2010-12-31 00:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,55 +21,55 @@ msgstr ""
 msgid "GPX Viewer"
 msgstr ""
 
-#: ../gpxviewer/ui.py:186
+#: ../gpxviewer/ui.py:189
 msgid "JOSM Editor"
 msgstr ""
 
-#: ../gpxviewer/ui.py:187
+#: ../gpxviewer/ui.py:190
 msgid "Merkaartor"
 msgstr ""
 
-#: ../gpxviewer/ui.py:358
+#: ../gpxviewer/ui.py:363
 #, python-format
 msgid "GPX Viewer - %s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:375
+#: ../gpxviewer/ui.py:380
 msgid "Choose a GPX file to Load"
 msgstr ""
 
-#: ../gpxviewer/ui.py:389
+#: ../gpxviewer/ui.py:394
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
 msgstr ""
 
-#: ../gpxviewer/ui.py:414
+#: ../gpxviewer/ui.py:419
 #, python-format
 msgid "<b>Distance:</b> %.2f km"
 msgstr ""
 
-#: ../gpxviewer/ui.py:417
+#: ../gpxviewer/ui.py:422
 #, python-format
 msgid "<b>Average Speed:</b> %.2f m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:420
+#: ../gpxviewer/ui.py:425
 #, python-format
 msgid "<b>Maximum Speed:</b> %.2f m/s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:423
+#: ../gpxviewer/ui.py:428
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
 msgstr ""
 
-#: ../gpxviewer/ui.py:426
+#: ../gpxviewer/ui.py:431
 #, python-format
 msgid "<b>Logging Date:</b> %s"
 msgstr ""
 
-#: ../gpxviewer/ui.py:429
+#: ../gpxviewer/ui.py:434
 #, python-format
 msgid "<b>Logging Time:</b> %(from)s - %(to)s"
 msgstr ""
@@ -126,45 +126,41 @@ msgid "Get Help Online..."
 msgstr ""
 
 #: ../ui/gpxviewer.ui.h:16
-msgid "Inspect"
-msgstr ""
-
-#: ../ui/gpxviewer.ui.h:17
 msgid "Multiple Tracks"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:18
+#: ../ui/gpxviewer.ui.h:17
 msgid "Open with External Program..."
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:19
+#: ../ui/gpxviewer.ui.h:18
 msgid "Report a Problem..."
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:20
+#: ../ui/gpxviewer.ui.h:19
 msgid "Show Aggregate Statistics"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:21
+#: ../ui/gpxviewer.ui.h:20
 msgid "Show Sidebar"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:22
+#: ../ui/gpxviewer.ui.h:21
 msgid "Translate This Application..."
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:23
+#: ../ui/gpxviewer.ui.h:22
 msgid "_File"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:24
+#: ../ui/gpxviewer.ui.h:23
 msgid "_Help"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:25
+#: ../ui/gpxviewer.ui.h:24
 msgid "_Tools"
 msgstr ""
 
-#: ../ui/gpxviewer.ui.h:26
+#: ../ui/gpxviewer.ui.h:25
 msgid "_View"
 msgstr ""
