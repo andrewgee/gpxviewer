@@ -22,18 +22,20 @@
 
 from datetime import *
 from gpximport import *
-from math import sqrt, radians, sin, cos, atan2, fabs
+from math import sqrt, radians, sin, cos, atan2, fabs, pi, acos
 from os.path import basename, abspath
 
 def calculate_distance(lat1, lat2, lon1, lon2):
   R = 6371000 #Earth's radius =~ 6371km
-  #Haversine formula to work out distance between two lats and lons, using the radius of the world 
-  dlat = radians(lat1 - lat2)
-  dlon = radians(lon1 - lon2)
-  a = fabs((sin(dlat/2) * sin(dlat/2)) + cos(radians(lat1)) * cos(radians(lon2)) * sin(dlon/2) * sin(dlon/2))
-  c = 2 * atan2(sqrt(a), sqrt(1-a))
-  d = R * c
+  lat1 = radians(lat1)
+  lat2 = radians(lat2)
+  lon1 = radians(lon1)
+  lon2 = radians(lon2)
   
+  # Great Circle Distance Formula
+  arc = acos((sin(lat1) * sin(lat2)) + (cos(lat1) * cos(lat2) * cos(lon2 - lon1)))
+  
+  d = R * arc
   return d
 
 class GPXTrace:
