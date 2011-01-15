@@ -1,3 +1,7 @@
+0.4.1:
+ * Ignore blank track segments
+ * More accurate distance calculation
+
 0.4.0:
  * Aggregate stats across multiple tracks
  * Improved multi-track sidebar with add/removal buttons
