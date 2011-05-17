@@ -9,38 +9,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gpxviewer\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2010-09-19 14:50+0100\n"
+"POT-Creation-Date: 2010-12-31 00:11+0000\n"
 "PO-Revision-Date: 2010-07-03 09:25+0000\n"
 "Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-12-30 12:16+0000\n"
-"X-Generator: Launchpad (build 12138)\n"
+"X-Launchpad-Export-Date: 2011-05-17 18:28+0000\n"
+"X-Generator: Launchpad (build 13053)\n"
 
-#: ../gpxviewer/ui.py:164 ../ui/gpxviewer.ui.h:9
+#: ../gpxviewer/ui.py:146 ../ui/gpxviewer.ui.h:10
 msgid "GPX Viewer"
 msgstr "GPX Viewer"
 
-#: ../gpxviewer/ui.py:168
+#: ../gpxviewer/ui.py:189
 msgid "JOSM Editor"
 msgstr "Редактор JOSM"
 
-#: ../gpxviewer/ui.py:169
+#: ../gpxviewer/ui.py:190
 msgid "Merkaartor"
 msgstr "Merkaartor"
 
-#: ../gpxviewer/ui.py:299
+#: ../gpxviewer/ui.py:363
 #, python-format
 msgid "GPX Viewer - %s"
 msgstr "GPX Viewer - %s"
 
-#: ../gpxviewer/ui.py:313
+#: ../gpxviewer/ui.py:380
 msgid "Choose a GPX file to Load"
 msgstr "Виберіть GPX-файл для завантаження"
 
-#: ../gpxviewer/ui.py:327
+#: ../gpxviewer/ui.py:394
 msgid ""
 "You selected an invalid GPX file. \n"
 " Please try again"
@@ -48,32 +48,32 @@ msgstr ""
 "Ви вибрали помилковий GPX-файл. \n"
 " Спробуйте інший"
 
-#: ../gpxviewer/ui.py:352
+#: ../gpxviewer/ui.py:419
 #, python-format
-msgid "<b>Distance:</b> %s km"
-msgstr "<b>Відстань:</b> %s км"
+msgid "<b>Distance:</b> %.2f km"
+msgstr ""
 
-#: ../gpxviewer/ui.py:355
+#: ../gpxviewer/ui.py:422
 #, python-format
-msgid "<b>Average Speed:</b> %s m/s"
-msgstr "<b>Середня швидкість:</b> %s м/с"
+msgid "<b>Average Speed:</b> %.2f m/s"
+msgstr ""
 
-#: ../gpxviewer/ui.py:358
+#: ../gpxviewer/ui.py:425
 #, python-format
-msgid "<b>Maximum Speed:</b> %s m/s"
-msgstr "<b>Максимальна швидкість:</b> %s м/с"
+msgid "<b>Maximum Speed:</b> %.2f m/s"
+msgstr ""
 
-#: ../gpxviewer/ui.py:361
+#: ../gpxviewer/ui.py:428
 #, python-format
 msgid "<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds"
 msgstr "<b>Тривалість:</b> %(minutes)s хвилин, %(seconds)s секунд"
 
-#: ../gpxviewer/ui.py:364
+#: ../gpxviewer/ui.py:431
 #, python-format
 msgid "<b>Logging Date:</b> %s"
 msgstr "<b>Дата реєстрації:</b> %s"
 
-#: ../gpxviewer/ui.py:367
+#: ../gpxviewer/ui.py:434
 #, python-format
 msgid "<b>Logging Time:</b> %(from)s - %(to)s"
 msgstr "<b>Час реєстрації:</b> %(from)s - %(to)s"
@@ -107,14 +107,18 @@ msgid "About GPX Viewer"
 msgstr "Про GPX Viewer"
 
 #: ../ui/gpxviewer.ui.h:8
+msgid "Center on Selected Track"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:9
 msgid "Copyright (C) Andrew Gee 2009"
 msgstr "Copyright (C) Andrew Gee 2009"
 
-#: ../ui/gpxviewer.ui.h:10
+#: ../ui/gpxviewer.ui.h:11
 msgid "GPX Viewer Website"
 msgstr "Веб-сайт GPX Viewer"
 
-#: ../ui/gpxviewer.ui.h:11
+#: ../ui/gpxviewer.ui.h:12
 msgid ""
 "GPX Viewer is an application that allows\n"
 "users to easily view GPS traces they \n"
@@ -124,37 +128,61 @@ msgstr ""
 "легко переглядати GPS-записи, \n"
 "створені у форматі GPX-файлів."
 
-#: ../ui/gpxviewer.ui.h:14
+#: ../ui/gpxviewer.ui.h:15
 msgid "Get Help Online..."
 msgstr "Отримати онлайн довідку..."
 
-#: ../ui/gpxviewer.ui.h:15
+#: ../ui/gpxviewer.ui.h:16
+msgid "Multiple Tracks"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:17
 msgid "Open with External Program..."
 msgstr "Відкрити у зовнішній програмі..."
 
-#: ../ui/gpxviewer.ui.h:16
+#: ../ui/gpxviewer.ui.h:18
 msgid "Report a Problem..."
 msgstr "Звітувати про проблему..."
 
-#: ../ui/gpxviewer.ui.h:17
+#: ../ui/gpxviewer.ui.h:19
+msgid "Show Aggregate Statistics"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:20
+msgid "Show Sidebar"
+msgstr ""
+
+#: ../ui/gpxviewer.ui.h:21
 msgid "Translate This Application..."
 msgstr "Перекласти цю програму..."
 
-#: ../ui/gpxviewer.ui.h:18
+#: ../ui/gpxviewer.ui.h:22
 msgid "_File"
 msgstr "_Файл"
 
-#: ../ui/gpxviewer.ui.h:19
+#: ../ui/gpxviewer.ui.h:23
 msgid "_Help"
 msgstr "_Довідка"
 
-#: ../ui/gpxviewer.ui.h:20
+#: ../ui/gpxviewer.ui.h:24
 msgid "_Tools"
 msgstr "_Інструменти"
 
-#: ../ui/gpxviewer.ui.h:21
+#: ../ui/gpxviewer.ui.h:25
 msgid "_View"
 msgstr "П_ерегляд"
+
+#, python-format
+#~ msgid "<b>Distance:</b> %s km"
+#~ msgstr "<b>Відстань:</b> %s км"
+
+#, python-format
+#~ msgid "<b>Average Speed:</b> %s m/s"
+#~ msgstr "<b>Середня швидкість:</b> %s м/с"
+
+#, python-format
+#~ msgid "<b>Maximum Speed:</b> %s m/s"
+#~ msgstr "<b>Максимальна швидкість:</b> %s м/с"
 
 #~ msgid "Zoom In"
 #~ msgstr "Збільшити"
