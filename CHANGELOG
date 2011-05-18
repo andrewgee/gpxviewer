@@ -1,3 +1,7 @@
+0.4.2:
+ * Added MimeType to desktop file
+ * Updated translations
+
 0.4.1:
  * Ignore blank track segments
  * More accurate distance calculation
