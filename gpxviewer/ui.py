@@ -21,6 +21,7 @@
 #
 import os
 import sys
+import glib
 import gtk
 import gobject
 
@@ -152,7 +153,9 @@ class MainWindow:
 		self.ui_dir = ui_dir
 
 		self.map = osmgpsmap.GpsMap(
-					tile_cache=os.path.expanduser('~/.cache/gpxviewer/tiles/'))
+					tile_cache=os.path.join(
+						glib.get_user_cache_dir(),
+						'gpxviewer', 'tiles'))
 		self.map.layer_add(
 					osmgpsmap.GpsMapOsd(
 						show_dpad=False,
