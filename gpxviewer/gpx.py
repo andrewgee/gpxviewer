@@ -33,7 +33,18 @@ def calculate_distance(lat1, lat2, lon1, lon2):
   lon2 = radians(lon2)
   
   # Great Circle Distance Formula
-  arc = acos((sin(lat1) * sin(lat2)) + (cos(lat1) * cos(lat2) * cos(lon2 - lon1)))
+  # arc = acos((sin(lat1) * sin(lat2)) + (cos(lat1) * cos(lat2) * cos(lon2 - lon1)))
+  # 9.8.2011 Hadmut Danisch hadmut@danisch.de:
+  # This formula can fail and abort with a domain exception since the inner part
+  # of the expression can become >1.0 in rare cases due to the limited 
+  # precision of the floating point arithmetics
+  a=(sin(lat1) * sin(lat2)) + (cos(lat1) * cos(lat2) * cos(lon2 - lon1))    
+  if a >= 1.0:
+    arc=0.0
+  elif a <= -1.0:
+    arc=math.pi
+  else:
+    arc=acos(a)
   
   d = R * arc
   return d
@@ -147,7 +158,14 @@ class GPXTrace:
     return (maxlat+minlat)/2,(maxlon+minlon)/2
     
   def get_average_speed(self):
-    return self._get_cached_value("distance")/self._get_cached_value("duration")
+    #return self._get_cached_value("distance")/self._get_cached_value("duration")
+    # 9.8.2011 Hadmut Danisch hadmut@danisch.de:
+    # duration can become 0 in special cases and thus cause division by zero
+    dis = self._get_cached_value("distance")
+    dur = self._get_cached_value("duration")
+    if dur == 0:
+      return 0
+    return dis/dur
   
   def get_distance(self):
     return self._get_cached_value("distance")
