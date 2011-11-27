@@ -93,7 +93,11 @@ class _TrackManager(gobject.GObject):
 		return self.getOsmTracks(model)
 
 	def deleteTraceFromModel(self, _iter):
-		self.emit("track-removed", *self._tracks[self.model.get_value(_iter, self.FILENAME_IDX)])
+		model = self.model.get_value(_iter, self.OBJECT_IDX)
+		if not isinstance(model, GPXFile):
+			# Can't delete sub-elements
+			return
+		self.emit("track-removed", *self.getOsmTracks(model))
 		self.model.remove(_iter)
 
 	def getOsmTracks(self, model):
