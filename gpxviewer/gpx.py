@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 #  kate: space-indent on; indent-width 2; mixedindent off; indent-mode python;
-#
+
 #  gpx.py - Used to hold gpx files for access by other scripts
 #
 #  Copyright (C) 2009 Andrew Gee
@@ -56,8 +57,9 @@ def calculate_distance(lat1, lat2, lon1, lon2):
 class GPXPoint:
   ''' A GPX point. It might be part of the track or standalone (waypoint) '''
   
-  def __init__(self, tsnode):
+  def __init__(self, tsnode, parent):
     ''' Init from a GPX XML node element '''
+    self.parent = parent
     
     # Init props
     self.lat = None
@@ -92,13 +94,14 @@ class GPXPoint:
 class GPXTrackSegment:
   ''' A track segment (collection of points) '''
 
-  def __init__(self, tnode):
+  def __init__(self, tnode, parent):
     ''' Init from GPX XML node '''
+    self.parent = parent
     self._iterindex = -1
     self._points = []
     for tsnode in tnode.childNodes:
         if tsnode.nodeName == "trkpt":
-            self._points.append(GPXPoint(tsnode))
+            self._points.append(GPXPoint(tsnode, self))
 
   def getPoints(self):
     return self._points
@@ -119,14 +122,15 @@ class GPXTrackSegment:
 class GPXTrack:
   ''' A track (collection of segments) '''
   
-  def __init__(self, node):
+  def __init__(self, node, parent):
     ''' Creates a new GPXTrack from a GPX XML node '''
+    self.parent = parent
     self._iterindex = -1
     self._segments = []
     
     for tnode in node.childNodes:
       if tnode.nodeName == "trkseg":
-        seg = GPXTrackSegment(tnode)
+        seg = GPXTrackSegment(tnode, self)
         if len(seg) > 0:
           self._segments.append(seg)
 
@@ -178,9 +182,9 @@ class GPXFile:
       if node.nodeName == "metadata":
         self._parseMetadata(node)
       elif node.nodeName == "trk":
-        self._tracks.append(GPXTrack(node))
+        self._tracks.append(GPXTrack(node, self))
       elif node.nodeName == "wpt":
-        self._waypoints.append(GPXPoint(node))
+        self._waypoints.append(GPXPoint(node, self))
 
   def _walkPoints(self):
     """

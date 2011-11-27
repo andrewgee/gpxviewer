@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 #  kate: space-indent off; indent-width 4; mixedindent off; indent-mode python;
-#
+
 #  ui.py - GUI for GPX Viewer
 #
 #  Copyright (C) 2009 Andrew Gee
@@ -32,7 +33,7 @@ assert osmgpsmap.__version__ >= "0.7.1"
 
 import stats
 
-from gpx import GPXFile
+from gpx import GPXFile, GPXTrack, GPXPoint
 
 from utils.timezone import LocalTimezone
 
@@ -64,7 +65,7 @@ TRACK_COLORS = ('#f00', '#00f', '#0f0', '#f0f', '#0ff', '#ff0')
 class _TrackManager(gobject.GObject):
 
 	NAME_IDX = 0
-	FILENAME_IDX = 1
+	OBJECT_IDX = 1
 
 	__gsignals__ = {
 		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
@@ -73,36 +74,50 @@ class _TrackManager(gobject.GObject):
 
 	def __init__(self):
 		gobject.GObject.__init__(self)
-		# maps track_filename : (GPXFile, [OsmGpsMapTrack])
-		self._tracks = {}
+		# maps track_filename : GPXFile
+		self._files = {}
 		# name, filename
-		self.model = gtk.ListStore(str, str)
+		self.model = gtk.TreeStore(str, object)
 		# Index of last used color
 		self._lastColor = -1
 
-	def getOtherTracks(self, trace):
-		tracks = []
-		for _trace,_tracks in self._tracks.values():
-			if trace != _trace:
-				tracks += _tracks
-		return tracks
+	def getOtherTracks(self, tracks):
+		ret = []
+		for gpstrack in self.getAllTraces():
+			if gpstrack not in tracks:
+				ret.append(gpstrack)
+		return ret
 
 	def getTraceFromModel(self, _iter):
-		filename = self.model.get_value(_iter, self.FILENAME_IDX)
-		return self.getTrace(filename)
+		model = self.model.get_value(_iter, self.OBJECT_IDX)
+		return self.getOsmTracks(model)
 
 	def deleteTraceFromModel(self, _iter):
 		self.emit("track-removed", *self._tracks[self.model.get_value(_iter, self.FILENAME_IDX)])
 		self.model.remove(_iter)
 
-	def getTrace(self, filename):
-		""" Returns (trace, [OsmGpsMapTrack]) """
-		return self._tracks[filename]
+	def getOsmTracks(self, model):
+		""" Returns GPXFile, [OsmGpsMapTrack] for the given model """
+		gpxfile = None
+		gpstracks = []
+		if isinstance(model, GPXFile):
+			gpxfile = model
+			for track in model.getTracks():
+				gpstracks.extend(track.osmTracks)
+		elif isinstance(model, GPXTrack):
+			gpxfile = model.parent
+			gpstracks.extend(model.osmTracks)
+		elif isinstance(model, GPXPoint):
+			gpxfile = model.parent
+		else:
+			raise Exception('Unknown model type!')
+		
+		return (gpxfile, gpstracks)
 
 	def addTrace(self, trace):
 		filename = trace.getFullPath()
-		if filename not in self._tracks:
-			gpstracks = []
+		if filename not in self._files.keys():
+			newtracks = []
 			for track in trace.getTracks():
 				# Rotate colors
 				color = self._lastColor + 1
@@ -110,6 +125,7 @@ class _TrackManager(gobject.GObject):
 					color = 0
 				self._lastColor = color
 				
+				gpstracks = []
 				for segment in track:
 					gpstrack = osmgpsmap.GpsMapTrack()
 					gpstrack.props.color = gtk.gdk.Color(TRACK_COLORS[color])
@@ -118,16 +134,35 @@ class _TrackManager(gobject.GObject):
 					for point in segment:
 						gpstrack.add_point(osmgpsmap.point_new_radians(point.getRadLat(), point.getRadLon()))
 					gpstracks.append(gpstrack)
+				
+				# Append list of OsmGpsMapTracks to the GPX track object
+				track.osmTracks = gpstracks
+				newtracks.extend(gpstracks)
 
-			self._tracks[filename] = (trace, gpstracks)
-			self.model.append( (trace.getDisplayName(), filename) )
-			self.emit("track-added", trace, gpstracks)
+			self._files[filename] = trace
+			# Build menù tree
+			filenode = self.model.append( None, (trace.getDisplayName(), trace) )
+			i = 0
+			for track in trace.getTracks():
+				self.model.append( filenode, ('track ' + str(i), track) )
+				i += 1
+			i = 0
+			for wpt in trace.getWaypoints():
+				self.model.append( filenode, (wpt.name if wpt.name else 'wpt ' + str(i), wpt) )
+				i += 1
+			
+			# Signal event
+			self.emit("track-added", trace, newtracks)
 
 	def numTraces(self):
-		return len(self._tracks)
+		return len(self._files)
 
 	def getAllTraces(self):
-		return [t[0] for t in self._tracks.values()]
+		gpstracks = []
+		for f in self._files.values():
+			for track in f.getTracks():
+				gpstracks.extend(track.osmTracks)
+		return gpstracks
 
 class MainWindow:
 	def __init__(self, ui_dir, files):
@@ -310,7 +345,7 @@ class MainWindow:
 		#highlight current track
 		self.selectTracks(tracks, ALPHA_SELECTED)
 		#dim other tracks
-		self.selectTracks(self.trackManager.getOtherTracks(trace), ALPHA_UNSELECTED)
+		self.selectTracks(self.trackManager.getOtherTracks(tracks), ALPHA_UNSELECTED)
 
 	def onTrackAdded(self, tm, trace, tracks):
 		''' Called when a new GPX file has been loaded '''
