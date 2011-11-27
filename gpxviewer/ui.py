@@ -58,6 +58,8 @@ def show_url(url):
 ALPHA_UNSELECTED = 0.5
 ALPHA_SELECTED = 0.8
 LAZY_LOAD_AFTER_N_FILES = 3
+# List of track colors to rotate
+TRACK_COLORS = ('#f00', '#00f', '#0f0', '#f0f', '#0ff', '#ff0')
 
 class _TrackManager(gobject.GObject):
 
@@ -75,6 +77,8 @@ class _TrackManager(gobject.GObject):
 		self._tracks = {}
 		# name, filename
 		self.model = gtk.ListStore(str, str)
+		# Index of last used color
+		self._lastColor = -1
 
 	def getOtherTracks(self, trace):
 		tracks = []
@@ -100,14 +104,20 @@ class _TrackManager(gobject.GObject):
 		if filename not in self._tracks:
 			gpstracks = []
 			for track in trace.get_points():
-			  for segment in track:
+				# Rotate colors
+				color = self._lastColor + 1
+				if color >= len(TRACK_COLORS):
+					color = 0
+				self._lastColor = color
+				
+				for segment in track:
+					gpstrack = osmgpsmap.GpsMapTrack()
+					gpstrack.props.color = gtk.gdk.Color(TRACK_COLORS[color])
+					gpstrack.props.alpha = ALPHA_UNSELECTED
 
-				gpstrack = osmgpsmap.GpsMapTrack()
-				gpstrack.props.alpha = ALPHA_UNSELECTED
-
-				for rlat,rlon in segment:
-					gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
-				gpstracks.append(gpstrack)
+					for rlat,rlon in segment:
+						gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
+					gpstracks.append(gpstrack)
 
 			self._tracks[filename] = (trace, gpstracks, trace.get_waypoints())
 			self.model.append( (trace.get_display_name(), filename) )
