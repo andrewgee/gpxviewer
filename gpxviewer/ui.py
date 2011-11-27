@@ -82,7 +82,7 @@ class _TrackManager(gobject.GObject):
 
 	def getOtherTracks(self, trace):
 		tracks = []
-		for _trace,_tracks in self._tracks.values():
+		for _trace,_tracks,_wpts in self._tracks.values():
 			if trace != _trace:
 				tracks += _tracks
 		return tracks
@@ -304,7 +304,7 @@ class MainWindow:
 		if not _iter:
 			return
 
-		trace, tracks = self.trackManager.getTraceFromModel(_iter)
+		trace, tracks, wpts = self.trackManager.getTraceFromModel(_iter)
 		self.selectTrace(trace)
 
 		#highlight current track
