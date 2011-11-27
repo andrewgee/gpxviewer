@@ -32,7 +32,7 @@ assert osmgpsmap.__version__ >= "0.7.1"
 
 import stats
 
-from gpx import GPXTrace
+from gpx import GPXFile
 
 from utils.timezone import LocalTimezone
 
@@ -67,13 +67,13 @@ class _TrackManager(gobject.GObject):
 	FILENAME_IDX = 1
 
 	__gsignals__ = {
-		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object, object]),
-		'track-removed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object, object]),
+		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
+		'track-removed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
     }
 
 	def __init__(self):
 		gobject.GObject.__init__(self)
-		# maps track_filename : (GPXTrace, [OsmGpsMapTrack])
+		# maps track_filename : (GPXFile, [OsmGpsMapTrack])
 		self._tracks = {}
 		# name, filename
 		self.model = gtk.ListStore(str, str)
@@ -82,7 +82,7 @@ class _TrackManager(gobject.GObject):
 
 	def getOtherTracks(self, trace):
 		tracks = []
-		for _trace,_tracks,_wpts in self._tracks.values():
+		for _trace,_tracks in self._tracks.values():
 			if trace != _trace:
 				tracks += _tracks
 		return tracks
@@ -100,10 +100,10 @@ class _TrackManager(gobject.GObject):
 		return self._tracks[filename]
 
 	def addTrace(self, trace):
-		filename = trace.get_full_path()
+		filename = trace.getFullPath()
 		if filename not in self._tracks:
 			gpstracks = []
-			for track in trace.get_points():
+			for track in trace.getTracks():
 				# Rotate colors
 				color = self._lastColor + 1
 				if color >= len(TRACK_COLORS):
@@ -115,13 +115,13 @@ class _TrackManager(gobject.GObject):
 					gpstrack.props.color = gtk.gdk.Color(TRACK_COLORS[color])
 					gpstrack.props.alpha = ALPHA_UNSELECTED
 
-					for rlat,rlon in segment:
-						gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
+					for point in segment:
+						gpstrack.add_point(osmgpsmap.point_new_radians(point.getRadLat(), point.getRadLon()))
 					gpstracks.append(gpstrack)
 
-			self._tracks[filename] = (trace, gpstracks, trace.get_waypoints())
-			self.model.append( (trace.get_display_name(), filename) )
-			self.emit("track-added", trace, gpstracks, trace.get_waypoints())
+			self._tracks[filename] = (trace, gpstracks)
+			self.model.append( (trace.getDisplayName(), filename) )
+			self.emit("track-added", trace, gpstracks)
 
 	def numTraces(self):
 		return len(self._tracks)
@@ -304,7 +304,7 @@ class MainWindow:
 		if not _iter:
 			return
 
-		trace, tracks, wpts = self.trackManager.getTraceFromModel(_iter)
+		trace, tracks = self.trackManager.getTraceFromModel(_iter)
 		self.selectTrace(trace)
 
 		#highlight current track
@@ -312,30 +312,30 @@ class MainWindow:
 		#dim other tracks
 		self.selectTracks(self.trackManager.getOtherTracks(trace), ALPHA_UNSELECTED)
 
-	def onTrackAdded(self, tm, trace, tracks, waypoints):
+	def onTrackAdded(self, tm, trace, tracks):
 		''' Called when a new GPX file has been loaded '''
 		for t in tracks:
 			self.map.track_add(t)
 		self.selectTrace(trace)
 		
 		# Display waypoints from file
-		for wpt in waypoints:
+		for wpt in trace.getWaypoints():
 			if wpt.lat != None and wpt.lon != None:
 				pb = gtk.gdk.pixbuf_new_from_file_at_size("ui/wpt.png", 16,16)
 				img = self.map.image_add(wpt.lat, wpt.lon, pb)
-				if not trace.get_full_path() in self._wptmap.keys():
-					self._wptmap[trace.get_full_path()] = []
-				self._wptmap[trace.get_full_path()].append(img)
+				if not trace.getFullPath() in self._wptmap.keys():
+					self._wptmap[trace.getFullPath()] = []
+				self._wptmap[trace.getFullPath()].append(img)
 
-	def onTrackRemoved(self, tm, trace, tracks, waypoints):
+	def onTrackRemoved(self, tm, trace, tracks):
 		for t in tracks:
 			self.map.track_remove(t)
 		# Remove waypoints
-		if trace.get_full_path() in self._wptmap.keys():
-			while len(self._wptmap[trace.get_full_path()]):
-				img = self._wptmap[trace.get_full_path()].pop()
+		if trace.getFullPath() in self._wptmap.keys():
+			while len(self._wptmap[trace.getFullPath()]):
+				img = self._wptmap[trace.getFullPath()].pop()
 				self.map.image_remove(img)
-			del self._wptmap[trace.get_full_path()]
+			del self._wptmap[trace.getFullPath()]
 
 	def updateTilesQueued(self, map_, paramspec):
 		if self.map.props.tiles_queued > 0:
@@ -378,13 +378,13 @@ class MainWindow:
 			return
 
 		self.zoom = 12
-		distance = trace.get_distance()
-		maximum_speed = trace.get_maximum_speed()
-		average_speed = trace.get_average_speed()
-		duration = trace.get_duration()
-		clat, clon = trace.get_centre()
-		gpxfrom = trace.get_gpxfrom().astimezone(self.localtz)
-		gpxto = trace.get_gpxto().astimezone(self.localtz)
+		distance = trace.getDistance()
+		maximum_speed = trace.getMaximumSpeed()
+		average_speed = trace.getAverageSpeed()
+		duration = trace.getDuration()
+		clat, clon = trace.getCentre()
+		gpxfrom = trace.getGpxFrom().astimezone(self.localtz)
+		gpxto = trace.getGpxTo().astimezone(self.localtz)
 
 		self.setDistanceLabel(round(distance/1000,2))
 		self.setMaximumSpeedLabel(maximum_speed)
@@ -393,15 +393,15 @@ class MainWindow:
 		self.setLoggingDateLabel(gpxfrom.strftime("%x"))
 		self.setLoggingTimeLabel(gpxfrom.strftime("%X"),gpxto.strftime("%X"))
 
-		self.currentFilename = trace.get_filename()
-		self.mainWindow.set_title(_("GPX Viewer - %s") % trace.get_filename())
+		self.currentFilename = trace.getFilename()
+		self.mainWindow.set_title(_("GPX Viewer - %s") % trace.getFilename())
 
 		if self.autoCenter:
 			self.setCentre(clat,clon)
 
 	def loadGPX(self, filename):
 		try:
-			trace = GPXTrace(filename)
+			trace = GPXFile(filename)
 			self.trackManager.addTrace(trace)
 			if self.trackManager.numTraces() > 1:
 				self.showTrackSelector()
