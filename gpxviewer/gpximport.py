@@ -1,3 +1,4 @@
+#  kate: space-indent off; indent-width 4; mixedindent off; indent-mode python;
 #
 #  gpximport.py - Used to import GPX XML files into applications
 #
@@ -48,9 +49,23 @@ def fetch_metadata(node):
 			metadata['author'] = {}
 			for anode in mnode.childNodes:
 				if anode.nodeName == "name":
-					metadata['author']['name'] = anode.childNodes[0].nodeValue
+					if len(anode.childNodes):
+						metadata['author']['name'] = anode.childNodes[0].nodeValue
+					else:
+						metadata['author']['name'] = anode.nodeValue
 				elif anode.nodeName == "email":
-					metadata['author']['email'] = anode.childNodes[0].nodeValue
+					if len(anode.childNodes):
+						metadata['author']['email'] = anode.childNodes[0].nodeValue
+					elif anode.hasAttributes():
+						try:
+							anode.attributes['id']
+							anode.attributes['domain']
+						except KeyError:
+							metadata['author']['email'] = anode.nodeValue
+						else:
+							metadata['author']['email'] = anode.attributes['id'].value + '@' + anode.attributes['domain'].value
+					else:
+						metadata['author']['email'] = anode.nodeValue
 				elif anode.nodeName == "link":
 					metadata['author']['link'] = anode.childNodes[0].nodeValue
 					
@@ -135,17 +150,14 @@ def import_gpx_file(filename):
 	trace['tracks'] = []
 	trace['waypoints'] = []
 	
-	try:
-		e = doce.childNodes
-		for node in e:
-			if node.nodeName == "metadata":
-				trace['metadata'] = fetch_metadata(node)
-			elif node.nodeName == "trk":
-				trace['tracks'].append(fetch_track(node))
-			elif node.nodeName == "wpt":
-				trace['waypoints'].append(fetch_track_point(node))
-	except:
-		raise Exception
+	e = doce.childNodes
+	for node in e:
+		if node.nodeName == "metadata":
+			trace['metadata'] = fetch_metadata(node)
+		elif node.nodeName == "trk":
+			trace['tracks'].append(fetch_track(node))
+		elif node.nodeName == "wpt":
+			trace['waypoints'].append(fetch_track_point(node))
 
 	return trace
 
