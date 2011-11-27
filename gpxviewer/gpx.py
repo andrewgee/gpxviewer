@@ -1,3 +1,4 @@
+#  kate: space-indent on; indent-width 2; mixedindent off; indent-mode python;
 #
 #  gpx.py - Used to hold gpx files for access by other scripts
 #
@@ -49,10 +50,28 @@ def calculate_distance(lat1, lat2, lon1, lon2):
   d = R * arc
   return d
 
+class GPXPoint:
+  ''' A GPX point. It might be part of the track or standalone (waypoint) '''
+  
+  def __init__(self, struct):
+    ''' Copy properties from a source dictionary '''
+    for k in struct.keys():
+      setattr(self, k, struct[k])
+    # Init missing properties to none
+    props = ('lat', 'lon', 'ele', 'description', 'time', 'name')
+    for p in props:
+      try:
+        getattr(self, p)
+      except AttributeError:
+        setattr(self, p, None)
+
+
 class GPXTrace:
 
   def __init__(self,filename):
-    self.trace = import_gpx_trace(filename)
+    self.trace = import_gpx_file(filename)
+    # Parses waypoints
+    self._waypoints = map(GPXPoint, self.trace['waypoints'])
     self._cache = {}
 
   def _walk_points(self):
@@ -125,6 +144,9 @@ class GPXTrace:
       tracks.append(segments)
     
     return tracks
+
+  def get_waypoints(self):
+    return self._waypoints
 
   def get_display_name(self):
     try:

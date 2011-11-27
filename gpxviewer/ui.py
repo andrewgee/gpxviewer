@@ -1,3 +1,4 @@
+#  kate: space-indent off; indent-width 4; mixedindent off; indent-mode python;
 #
 #  ui.py - GUI for GPX Viewer
 #
@@ -21,6 +22,7 @@
 #
 import os
 import sys
+import traceback
 import glib
 import gtk
 import gobject
@@ -65,6 +67,7 @@ class _TrackManager(gobject.GObject):
 	__gsignals__ = {
 		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
 		'track-removed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
+		'wpt-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
     }
 
 	def __init__(self):
@@ -110,6 +113,11 @@ class _TrackManager(gobject.GObject):
 			self._tracks[filename] = (trace, gpstracks)
 			self.model.append( (trace.get_display_name(), filename) )
 			self.emit("track-added", trace, gpstracks)
+
+		for wpt in trace.get_waypoints():
+			if wpt.lat != None and wpt.lon != None:
+				pb = gtk.gdk.pixbuf_new_from_file_at_size("ui/wpt.png", 16,16)
+				self.emit("wpt-added", wpt, pb)
 
 	def numTraces(self):
 		return len(self._tracks)
@@ -204,6 +212,7 @@ class MainWindow:
 		self.trackManager = _TrackManager()
 		self.trackManager.connect("track-added", self.onTrackAdded)
 		self.trackManager.connect("track-removed", self.onTrackRemoved)
+		self.trackManager.connect("wpt-added", self.onWptAdded)
 
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
@@ -306,6 +315,10 @@ class MainWindow:
 		for t in tracks:
 			self.map.track_remove(t)
 
+	def onWptAdded(self, tm, wpt, image):
+		''' Called by event when a new wapypoint has been added to the map '''
+		self.map.image_add(wpt.lat, wpt.lon, image)
+
 	def updateTilesQueued(self, map_, paramspec):
 		if self.map.props.tiles_queued > 0:
 			self.showSpinner()
@@ -376,6 +389,8 @@ class MainWindow:
 				self.showTrackSelector()
 			return trace
 		except Exception, e:
+			print 'Error loading file:', e
+			traceback.print_exc()
 			self.showGPXError()
 			return None
 

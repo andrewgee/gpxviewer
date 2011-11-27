@@ -22,7 +22,7 @@
 import xml.dom.minidom as minidom
 from utils.iso8601 import parse_date as parse_xml_date
 
-__all__ = ["import_gpx_trace"]
+__all__ = ["import_gpx_file"]
 
 
 class ParseError(Exception):
@@ -83,6 +83,7 @@ def fetch_metadata(node):
 	return metadata
 	
 def fetch_track_point(tsnode):
+	''' Parses a track point or a waypoint '''
 	point = {}
 	if tsnode.attributes["lat"] != "" and tsnode.attributes["lon"] != "":
 		point['lat'] = float(tsnode.attributes["lat"].value)
@@ -119,8 +120,9 @@ def fetch_track(node):
 		    track['segments'].append(fetch_track_segment(tnode))
 		
 	return track
-	
-def import_gpx_trace(filename):
+
+def import_gpx_file(filename):
+	''' Parses GPX XML and returns a dict with correspoding GPX elements '''
 	doc = minidom.parse(filename)
 
 	doce = doc.documentElement
@@ -131,6 +133,7 @@ def import_gpx_trace(filename):
 	trace = {}
 	trace['filename'] = filename
 	trace['tracks'] = []
+	trace['waypoints'] = []
 	
 	try:
 		e = doce.childNodes
@@ -139,6 +142,8 @@ def import_gpx_trace(filename):
 				trace['metadata'] = fetch_metadata(node)
 			elif node.nodeName == "trk":
 				trace['tracks'].append(fetch_track(node))
+			elif node.nodeName == "wpt":
+				trace['waypoints'].append(fetch_track_point(node))
 	except:
 		raise Exception
 
