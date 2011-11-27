@@ -65,9 +65,8 @@ class _TrackManager(gobject.GObject):
 	FILENAME_IDX = 1
 
 	__gsignals__ = {
-		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
-		'track-removed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
-		'wpt-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
+		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object, object]),
+		'track-removed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object, object]),
     }
 
 	def __init__(self):
@@ -110,14 +109,9 @@ class _TrackManager(gobject.GObject):
 					gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
 				gpstracks.append(gpstrack)
 
-			self._tracks[filename] = (trace, gpstracks)
+			self._tracks[filename] = (trace, gpstracks, trace.get_waypoints())
 			self.model.append( (trace.get_display_name(), filename) )
-			self.emit("track-added", trace, gpstracks)
-
-		for wpt in trace.get_waypoints():
-			if wpt.lat != None and wpt.lon != None:
-				pb = gtk.gdk.pixbuf_new_from_file_at_size("ui/wpt.png", 16,16)
-				self.emit("wpt-added", wpt, pb)
+			self.emit("track-added", trace, gpstracks, trace.get_waypoints())
 
 	def numTraces(self):
 		return len(self._tracks)
@@ -127,6 +121,9 @@ class _TrackManager(gobject.GObject):
 
 class MainWindow:
 	def __init__(self, ui_dir, files):
+		# Will store here associations between file names and list of wpt images
+		self._wptmap = {}
+		
 		self.localtz = LocalTimezone()
 		self.recent = gtk.recent_manager_get_default()
 		
@@ -212,7 +209,6 @@ class MainWindow:
 		self.trackManager = _TrackManager()
 		self.trackManager.connect("track-added", self.onTrackAdded)
 		self.trackManager.connect("track-removed", self.onTrackRemoved)
-		self.trackManager.connect("wpt-added", self.onWptAdded)
 
 		self.wTree.get_object("menuitemHelp").connect("activate", lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
@@ -306,18 +302,30 @@ class MainWindow:
 		#dim other tracks
 		self.selectTracks(self.trackManager.getOtherTracks(trace), ALPHA_UNSELECTED)
 
-	def onTrackAdded(self, tm, trace, tracks):
+	def onTrackAdded(self, tm, trace, tracks, waypoints):
+		''' Called when a new GPX file has been loaded '''
 		for t in tracks:
 			self.map.track_add(t)
 		self.selectTrace(trace)
+		
+		# Display waypoints from file
+		for wpt in waypoints:
+			if wpt.lat != None and wpt.lon != None:
+				pb = gtk.gdk.pixbuf_new_from_file_at_size("ui/wpt.png", 16,16)
+				img = self.map.image_add(wpt.lat, wpt.lon, pb)
+				if not trace.get_full_path() in self._wptmap.keys():
+					self._wptmap[trace.get_full_path()] = []
+				self._wptmap[trace.get_full_path()].append(img)
 
-	def onTrackRemoved(self, tm, trace, tracks):
+	def onTrackRemoved(self, tm, trace, tracks, waypoints):
 		for t in tracks:
 			self.map.track_remove(t)
-
-	def onWptAdded(self, tm, wpt, image):
-		''' Called by event when a new wapypoint has been added to the map '''
-		self.map.image_add(wpt.lat, wpt.lon, image)
+		# Remove waypoints
+		if trace.get_full_path() in self._wptmap.keys():
+			while len(self._wptmap[trace.get_full_path()]):
+				img = self._wptmap[trace.get_full_path()].pop()
+				self.map.image_remove(img)
+			del self._wptmap[trace.get_full_path()]
 
 	def updateTilesQueued(self, map_, paramspec):
 		if self.map.props.tiles_queued > 0:
