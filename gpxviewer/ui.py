@@ -384,12 +384,13 @@ class MainWindow:
 		filechooser.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_DELETE_EVENT)
 		filechooser.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_OK)
 		filechooser.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+		filechooser.set_select_multiple(True)
 		response = filechooser.run()
-		filename = filechooser.get_filename()
 		
 		if response == gtk.RESPONSE_OK:
-			if self.loadGPX(filename):
-				self.recent.add_item("file://"+filename)
+			for filename in filechooser.get_filenames():
+				if self.loadGPX(filename):
+					self.recent.add_item("file://"+filename)
 
 		filechooser.destroy()
 
