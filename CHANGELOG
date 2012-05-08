@@ -1,3 +1,8 @@
+0.4.3:
+ * More accurate calculations
+ * Multiple file selection in open dialog
+ * Fixing of cache
+
 0.4.2:
  * Added MimeType to desktop file
  * Updated translations
