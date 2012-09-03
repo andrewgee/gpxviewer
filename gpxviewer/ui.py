@@ -340,7 +340,9 @@ class MainWindow:
         self.set_distance_label(round(distance / 1000, 2))
         self.set_maximum_speed_label(maximum_speed)
         self.set_average_speed_label(average_speed)
-        self.set_duration_label(int(duration / 60), duration - (int(duration / 60) * 60))
+        hours, remain = divmod(duration, 3600)
+        minutes, seconds = divmod(remain, 60)
+        self.set_duration_label(hours, minutes, seconds)
         self.set_logging_date_label(gpxfrom.strftime("%x"))
         self.set_logging_time_label(gpxfrom.strftime("%X"), gpxto.strftime("%X"))
 
@@ -422,9 +424,9 @@ class MainWindow:
         maximum_speed = '%.2f' % maximum_speed if maximum_speed else '--'
         self.wTree.get_object("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s") % maximum_speed)
 
-    def set_duration_label(self, minutes="--", seconds="--"):
+    def set_duration_label(self, hours="--", minutes="--", seconds="--"):
         self.wTree.get_object("labelDuration").set_markup(
-            _("<b>Duration:</b> %(minutes)s minutes, %(seconds)s seconds") % {"minutes": minutes, "seconds": seconds})
+            _("<b>Duration:</b> %(hours)s hours, %(minutes)s minutes, %(seconds)s seconds") % {"hours": hours, "minutes": minutes, "seconds": seconds})
 
     def set_logging_date_label(self, gpxdate="--"):
         self.wTree.get_object("labelLoggingDate").set_markup(_("<b>Logging Date:</b> %s") % gpxdate)
