@@ -100,7 +100,7 @@ class _TrackManager(gobject.GObject):
 			for track in trace.get_points():
 			  for segment in track:
 
-				gpstrack = osmgpsmap.GpsMapTrack()
+				gpstrack = osmgpsmap.GpsMapTrack()				
 				gpstrack.props.alpha = ALPHA_UNSELECTED
 
 				for rlat,rlon in segment:
@@ -139,6 +139,7 @@ class MainWindow:
 			"on_menuitemShowStatistics_activate": self.showStatistics,
 			"on_buttonTrackAdd_clicked": self.buttonTrackAddClicked,
 			"on_buttonTrackDelete_clicked": self.buttonTrackDeleteClicked,
+			"on_buttonTrackProperties_clicked": self.buttonTrackPropertiesClicked,
 			"on_buttonTrackInspect_clicked": self.buttonTrackInspectClicked,
 		}
 		
@@ -447,6 +448,19 @@ class MainWindow:
 		model, _iter = self.tv.get_selection().get_selected()
 		if _iter:
 			self.trackManager.deleteTraceFromModel(_iter)
+
+	def buttonTrackPropertiesClicked(self, *args):
+		model, _iter = self.tv.get_selection().get_selected()
+		if _iter:
+			trace, OsmGpsMapTracks = self.trackManager.getTraceFromModel(_iter)
+			colorseldlg = gtk.ColorSelectionDialog("Select track color")
+			colorseldlg.colorsel.set_current_color(OsmGpsMapTracks[0].props.color)
+			result = colorseldlg.run()
+			if result == gtk.RESPONSE_OK:
+				color = colorseldlg.colorsel.get_current_color()
+				for OsmGpsMapTrack in OsmGpsMapTracks:
+					OsmGpsMapTrack.props.color = color			
+			colorseldlg.destroy()
 
 	def buttonTrackInspectClicked(self, *args):
 		pass
