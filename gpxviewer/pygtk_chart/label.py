@@ -23,11 +23,11 @@ Contains the Label class.
 
 Author: Sven Festersen (sven@sven-festersen.de)
 """
-import cairo
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gdk
+from gi.repository import Gtk
 import math
-import pango
+from gi.repository import Pango
 import pygtk
 
 from pygtk_chart import basics
@@ -44,21 +44,21 @@ ANCHOR_BOTTOM_CENTER = 7
 ANCHOR_LEFT_CENTER = 8
 ANCHOR_RIGHT_CENTER = 9
 
-UNDERLINE_NONE = pango.UNDERLINE_NONE
-UNDERLINE_SINGLE = pango.UNDERLINE_SINGLE
-UNDERLINE_DOUBLE = pango.UNDERLINE_DOUBLE
-UNDERLINE_LOW = pango.UNDERLINE_LOW
+UNDERLINE_NONE = Pango.Underline.NONE
+UNDERLINE_SINGLE = Pango.Underline.SINGLE
+UNDERLINE_DOUBLE = Pango.Underline.DOUBLE
+UNDERLINE_LOW = Pango.Underline.LOW
 
-STYLE_NORMAL = pango.STYLE_NORMAL
-STYLE_OBLIQUE = pango.STYLE_OBLIQUE
-STYLE_ITALIC = pango.STYLE_ITALIC
+STYLE_NORMAL = Pango.Style.NORMAL
+STYLE_OBLIQUE = Pango.Style.OBLIQUE
+STYLE_ITALIC = Pango.Style.ITALIC
 
-WEIGHT_ULTRALIGHT = pango.WEIGHT_ULTRALIGHT
-WEIGHT_LIGHT = pango.WEIGHT_LIGHT
-WEIGHT_NORMAL = pango.WEIGHT_NORMAL
-WEIGHT_BOLD = pango.WEIGHT_BOLD
-WEIGHT_ULTRABOLD = pango.WEIGHT_ULTRABOLD
-WEIGHT_HEAVY = pango.WEIGHT_HEAVY
+WEIGHT_ULTRALIGHT = Pango.Weight.ULTRALIGHT
+WEIGHT_LIGHT = Pango.Weight.LIGHT
+WEIGHT_NORMAL = Pango.Weight.NORMAL
+WEIGHT_BOLD = Pango.Weight.BOLD
+WEIGHT_ULTRABOLD = Pango.Weight.ULTRABOLD
+WEIGHT_HEAVY = Pango.Weight.HEAVY
 
 
 DRAWING_INITIALIZED = False
@@ -94,7 +94,7 @@ class Label(ChartObject):
     ==========
     The Label class inherits properties from chart_object.ChartObject.
     Additional properties:
-     - color (the label's color, type: gtk.gdk.Color)
+     - color (the label's color, type: Gdk.Color)
      - text (text to display, type: string)
      - position (the label's position, type: pair of float)
      - anchor (the anchor that should be used to position the label,
@@ -116,51 +116,51 @@ class Label(ChartObject):
     The Label class inherits signals from chart_object.ChartObject.
     """
     
-    __gproperties__ = {"color": (gobject.TYPE_PYOBJECT,
+    __gproperties__ = {"color": (GObject.TYPE_PYOBJECT,
                                 "label color",
-                                "The color of the label (a gtk.gdkColor)",
-                                gobject.PARAM_READWRITE),
-                        "text": (gobject.TYPE_STRING,
+                                "The color of the label (a GdkColor)",
+                                GObject.PARAM_READWRITE),
+                        "text": (GObject.TYPE_STRING,
                                 "label text",
                                 "The text to show on the label.",
-                                "", gobject.PARAM_READWRITE),
-                        "position": (gobject.TYPE_PYOBJECT,
+                                "", GObject.PARAM_READWRITE),
+                        "position": (GObject.TYPE_PYOBJECT,
                                     "label position",
                                     "A pair of x,y coordinates.",
-                                    gobject.PARAM_READWRITE),
-                        "anchor": (gobject.TYPE_INT, "label anchor",
+                                    GObject.PARAM_READWRITE),
+                        "anchor": (GObject.TYPE_INT, "label anchor",
                                     "The anchor of the label.", 0, 9, 0,
-                                    gobject.PARAM_READWRITE),
-                        "underline": (gobject.TYPE_PYOBJECT,
+                                    GObject.PARAM_READWRITE),
+                        "underline": (GObject.TYPE_PYOBJECT,
                                     "underline text",
                                     "Set whether to underline the text.",
-                                    gobject.PARAM_READWRITE),
-                        "max-width": (gobject.TYPE_INT, "maximum width",
+                                    GObject.PARAM_READWRITE),
+                        "max-width": (GObject.TYPE_INT, "maximum width",
                                         "The maximum width of the label.",
                                         1, 99999, 99999,
-                                        gobject.PARAM_READWRITE),
-                        "rotation": (gobject.TYPE_INT, "rotation of the label",
+                                        GObject.PARAM_READWRITE),
+                        "rotation": (GObject.TYPE_INT, "rotation of the label",
                                     "The angle that the label should be rotated by in degrees.",
-                                    0, 360, 0, gobject.PARAM_READWRITE),
-                        "size": (gobject.TYPE_INT, "text size",
+                                    0, 360, 0, GObject.PARAM_READWRITE),
+                        "size": (GObject.TYPE_INT, "text size",
                                 "The size of the text.", 0, 1000, 8,
-                                gobject.PARAM_READWRITE),
-                        "slant": (gobject.TYPE_PYOBJECT, "font slant",
+                                GObject.PARAM_READWRITE),
+                        "slant": (GObject.TYPE_PYOBJECT, "font slant",
                                 "The font slant style.", 
-                                gobject.PARAM_READWRITE),
-                        "weight": (gobject.TYPE_PYOBJECT, "font weight",
-                                "The font weight.", gobject.PARAM_READWRITE),
-                        "fixed": (gobject.TYPE_BOOLEAN, "fixed",
+                                GObject.PARAM_READWRITE),
+                        "weight": (GObject.TYPE_PYOBJECT, "font weight",
+                                "The font weight.", GObject.PARAM_READWRITE),
+                        "fixed": (GObject.TYPE_BOOLEAN, "fixed",
                                     "Set whether the position of the label should be forced.",
-                                    False, gobject.PARAM_READWRITE),
-                        "wrap": (gobject.TYPE_BOOLEAN, "wrap text",
+                                    False, GObject.PARAM_READWRITE),
+                        "wrap": (GObject.TYPE_BOOLEAN, "wrap text",
                                     "Set whether text should be wrapped.",
-                                    False, gobject.PARAM_READWRITE)}
+                                    False, GObject.PARAM_READWRITE)}
     
     def __init__(self, position, text, size=None,
-                    slant=pango.STYLE_NORMAL,
-                    weight=pango.WEIGHT_NORMAL,
-                    underline=pango.UNDERLINE_NONE,
+                    slant=Pango.Style.NORMAL,
+                    weight=Pango.Weight.NORMAL,
+                    underline=UNDERLINE_NONE,
                     anchor=ANCHOR_BOTTOM_LEFT, max_width=99999,
                     fixed=False):
         ChartObject.__init__(self)
@@ -172,7 +172,7 @@ class Label(ChartObject):
         self._underline = underline
         self._anchor = anchor
         self._rotation = 0
-        self._color = gtk.gdk.Color()
+        self._color = Gdk.Color(0,0,0)
         self._max_width = max_width
         self._fixed = fixed
         self._wrap = True
@@ -183,7 +183,7 @@ class Label(ChartObject):
         
         self._context = None
         self._layout = None
-        
+        Pango
     def do_get_property(self, property):
         if property.name == "visible":
             return self._show
@@ -255,21 +255,21 @@ class Label(ChartObject):
         angle = 2 * math.pi * self._rotation / 360.0
         
         if self._context == None:
-            label = gtk.Label()
+            label = Gtk.Label()
             self._context = label.create_pango_context()          
         pango_context = self._context
         
-        attrs = pango.AttrList()
-        attrs.insert(pango.AttrWeight(self._weight, 0, len(self._text)))
-        attrs.insert(pango.AttrStyle(self._slant, 0, len(self._text)))
-        attrs.insert(pango.AttrUnderline(self._underline, 0,
+        attrs = Pango.AttrList()
+        attrs.insert(Pango.AttrWeight(self._weight, 0, len(self._text)))
+        attrs.insert(Pango.AttrStyle(self._slant, 0, len(self._text)))
+        attrs.insert(Pango.AttrUnderline(self._underline, 0,
                         len(self._text)))
         if self._size != None:
-            attrs.insert(pango.AttrSize(1000 * self._size, 0,
+            attrs.insert(Pango.AttrSize(1000 * self._size, 0,
                             len(self._text)))
         
         if self._layout == None:
-            self._layout = pango.Layout(pango_context)
+            self._layout = Pango.Layout(pango_context)
         layout = self._layout
         layout.set_text(self._text)
         layout.set_attributes(attrs)
@@ -288,7 +288,7 @@ class Label(ChartObject):
         width = min(width, self._max_width)
         
         if self._wrap:
-            layout.set_wrap(pango.WRAP_WORD_CHAR)
+            layout.set_wrap(Pango.WRAP_WORD_CHAR)
         layout.set_width(int(1000 * width))
         
         x, y = get_text_pos(layout, self._position, self._anchor, angle)
@@ -301,7 +301,7 @@ class Label(ChartObject):
             real_height = abs(text_height * math.cos(angle)) + abs(text_width * math.sin(angle))
             
             other_labels = get_registered_labels()
-            this_rect = gtk.gdk.Rectangle(int(x), int(y), int(real_width), int(real_height))
+            this_rect = Gdk.Rectangle(int(x), int(y), int(real_width), int(real_height))
             for label in other_labels:
                 label_rect = label.get_allocation()
                 intersection = this_rect.intersect(label_rect)
@@ -337,21 +337,21 @@ class Label(ChartObject):
         angle = 2 * math.pi * self._rotation / 360.0
         
         if self._context == None:
-            label = gtk.Label()
+            label = Gtk.Label()
             self._context = label.create_pango_context()          
         pango_context = self._context
         
-        attrs = pango.AttrList()
-        attrs.insert(pango.AttrWeight(self._weight, 0, len(self._text)))
-        attrs.insert(pango.AttrStyle(self._slant, 0, len(self._text)))
-        attrs.insert(pango.AttrUnderline(self._underline, 0,
+        attrs = Pango.AttrList()
+        attrs.insert(Pango.AttrWeight(self._weight, 0, len(self._text)))
+        attrs.insert(Pango.AttrStyle(self._slant, 0, len(self._text)))
+        attrs.insert(Pango.AttrUnderline(self._underline, 0,
                         len(self._text)))
         if self._size != None:
-            attrs.insert(pango.AttrSize(1000 * self._size, 0,
+            attrs.insert(Pango.AttrSize(1000 * self._size, 0,
                             len(self._text)))
         
         if self._layout == None:
-            self._layout = pango.Layout(pango_context)
+            self._layout = Pango.Layout(pango_context)
         layout = self._layout
             
         layout.set_text(self._text)
@@ -371,7 +371,7 @@ class Label(ChartObject):
         width = min(width, self._max_width)
         
         if self._wrap:
-            layout.set_wrap(pango.WRAP_WORD_CHAR)
+            layout.set_wrap(Pango.WRAP_WORD_CHAR)
         layout.set_width(int(1000 * width))
         
         x, y = get_text_pos(layout, self._position, self._anchor, angle)
@@ -384,7 +384,7 @@ class Label(ChartObject):
             real_height = abs(text_height * math.cos(angle)) + abs(text_width * math.sin(angle))
             
             other_labels = get_registered_labels()
-            this_rect = gtk.gdk.Rectangle(int(x), int(y), int(real_width), int(real_height))
+            this_rect = Gdk.Rectangle(int(x), int(y), int(real_width), int(real_height))
             for label in other_labels:
                 label_rect = label.get_allocation()
                 intersection = this_rect.intersect(label_rect)
@@ -425,10 +425,10 @@ class Label(ChartObject):
         
     def set_color(self, color):
         """
-        Set the color of the label. color has to be a gtk.gdk.Color.
+        Set the color of the label. color has to be a Gdk.Color.
         
         @param color: the color of the label
-        @type color: gtk.gdk.Color.
+        @type color: Gdk.Color.
         """
         self.set_property("color", color)
         self.emit("appearance_changed")
@@ -437,7 +437,7 @@ class Label(ChartObject):
         """
         Returns the current color of the label.
         
-        @return: gtk.gdk.Color.
+        @return: Gdk.Color.
         """
         return self.get_property("color")
         
@@ -695,11 +695,11 @@ class Label(ChartObject):
         """
         Returns an allocation rectangle.
         
-        @return: gtk.gdk.Rectangle.
+        @return: Gdk.Rectangle.
         """
         x, y = self._real_position
         w, h = self._real_dimensions
-        return gtk.gdk.Rectangle(int(x), int(y), int(w), int(h))
+        return Gdk.Rectangle(int(x), int(y), int(w), int(h))
         
     def get_line_count(self):
         """

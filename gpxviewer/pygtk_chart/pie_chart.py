@@ -24,9 +24,10 @@ Contains the PieChart widget.
 Author: Sven Festersen (sven@sven-festersen.de)
 """
 __docformat__ = "epytext"
-import cairo
-import gobject
-import gtk
+from gi.repository import cairo
+from gi.repository import GObject
+from gi.repository import Gdk
+from gi.repository import Gtk
 import math
 import os
 
@@ -134,36 +135,36 @@ class PieChart(chart.Chart):
     def callback(piechart, area).
     """
     
-    __gproperties__ = {"rotate": (gobject.TYPE_INT,
+    __gproperties__ = {"rotate": (GObject.TYPE_INT,
                                     "rotation",
                                     "The angle to rotate the chart in degrees.",
-                                    0, 360, 0, gobject.PARAM_READWRITE),
-                        "draw-shadow": (gobject.TYPE_BOOLEAN,
+                                    0, 360, 0, GObject.PARAM_READWRITE),
+                        "draw-shadow": (GObject.TYPE_BOOLEAN,
                                         "draw pie shadow",
                                         "Set whether to draw pie shadow.",
-                                        True, gobject.PARAM_READWRITE),
-                        "draw-labels": (gobject.TYPE_BOOLEAN,
+                                        True, GObject.PARAM_READWRITE),
+                        "draw-labels": (GObject.TYPE_BOOLEAN,
                                         "draw area labels",
                                         "Set whether to draw area labels.",
-                                        True, gobject.PARAM_READWRITE),
-                        "show-percentage": (gobject.TYPE_BOOLEAN,
+                                        True, GObject.PARAM_READWRITE),
+                        "show-percentage": (GObject.TYPE_BOOLEAN,
                                         "show percentage",
                                         "Set whether to show percentage in the areas' labels.",
-                                        False, gobject.PARAM_READWRITE),
-                        "show-values": (gobject.TYPE_BOOLEAN,
+                                        False, GObject.PARAM_READWRITE),
+                        "show-values": (GObject.TYPE_BOOLEAN,
                                         "show values",
                                         "Set whether to show values in the areas' labels.",
-                                        True, gobject.PARAM_READWRITE),
-                        "enable-scroll": (gobject.TYPE_BOOLEAN,
+                                        True, GObject.PARAM_READWRITE),
+                        "enable-scroll": (GObject.TYPE_BOOLEAN,
                                         "enable scroll",
                                         "If True, the pie can be rotated by scrolling with the mouse wheel.",
-                                        True, gobject.PARAM_READWRITE),
-                        "enable-mouseover": (gobject.TYPE_BOOLEAN,
+                                        True, GObject.PARAM_READWRITE),
+                        "enable-mouseover": (GObject.TYPE_BOOLEAN,
                                         "enable mouseover",
                                         "Set whether a mouseover effect should be visible if moving the mouse over a pie area.",
-                                        True, gobject.PARAM_READWRITE)}
+                                        True, GObject.PARAM_READWRITE)}
                                         
-    __gsignals__ = {"area-clicked": (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))}
+    __gsignals__ = {"area-clicked": (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (GObject.TYPE_PYOBJECT,))}
     
     def __init__(self):
         chart.Chart.__init__(self)
@@ -176,7 +177,7 @@ class PieChart(chart.Chart):
         self._enable_scroll = True
         self._enable_mouseover = True
         
-        self.add_events(gtk.gdk.BUTTON_PRESS_MASK|gtk.gdk.SCROLL_MASK|gtk.gdk.POINTER_MOTION_MASK)
+        self.add_events(Gdk.BUTTON_PRESS_MASK|Gdk.SCROLL_MASK|Gdk.POINTER_MOTION_MASK)
         self.connect("button_press_event", self._cb_button_pressed)
         self.connect("scroll-event", self._cb_scroll_event)
         self.connect("motion-notify-event", self._cb_motion_notify)
@@ -268,9 +269,9 @@ class PieChart(chart.Chart):
                 
     def _cb_scroll_event(self, widget, event):
         if not self._enable_scroll: return
-        if event.direction in [gtk.gdk.SCROLL_UP, gtk.gdk.SCROLL_RIGHT]:
+        if event.direction in [Gdk.SCROLL_UP, Gdk.SCROLL_RIGHT]:
             delta = 360.0 / 32
-        elif event.direction in [gtk.gdk.SCROLL_DOWN, gtk.gdk.SCROLL_LEFT]:
+        elif event.direction in [Gdk.SCROLL_DOWN, Gdk.SCROLL_LEFT]:
             delta = - 360.0 / 32
         else:
             delta = 0
@@ -293,7 +294,7 @@ class PieChart(chart.Chart):
         rect = self.get_allocation()
         #initial context settings: line width & font
         context.set_line_width(1)
-        font = gtk.Label().style.font_desc.get_family()
+        font = Gtk.Label().style.font_desc.get_family()
         context.select_font_face(font, cairo.FONT_SLANT_NORMAL, \
                                     cairo.FONT_WEIGHT_NORMAL)
 

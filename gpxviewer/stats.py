@@ -1,4 +1,4 @@
-import gtk
+from gi.repository import Gtk
 import pygtk_chart.bar_chart
 import pygtk_chart.line_chart as line_chart
 
@@ -10,17 +10,17 @@ class _Chart:
 		raise NotImplementedError
 
 	def chart_window(self):
-		window = gtk.Window()
+		window = Gtk.Window()
 		window.add(self.chart())
 		window.resize(800,400)
 		window.show_all()
 
 	def chart_notebook_page(self):
-		return self.chart(),gtk.Label(self.title)
+		return self.chart(),Gtk.Label(self.title)
 
-class ChartNotebook(gtk.Notebook):
+class ChartNotebook(Gtk.Notebook):
 	def __init__(self, *charts):
-		gtk.Notebook.__init__(self)
+		Gtk.Notebook.__init__(self)
 		for c in charts:
 			self.append_page(*c.chart_notebook_page())
 

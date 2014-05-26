@@ -22,9 +22,9 @@ Author: John Dickinson (john@johnandkaren.com),
 Sven Festersen (sven@sven-festersen.de)
 """
 __docformat__ = "epytext"
-import cairo
-import gtk
-import gobject
+from gi.repository import cairo
+from gi.repository import Gdk
+from gi.repository import GObject
 import os
 import math
 
@@ -45,7 +45,7 @@ def draw_rounded_rectangle(context, x, y, width, height, radius=0):
     the corner radius in px.
     
     @param context: the context to draw on
-    @type context: CairoContext
+    @type context: cairoContext
     @param x: x coordinate of the upper left corner
     @type x: float
     @param y: y coordinate of the upper left corner
@@ -86,9 +86,9 @@ class Bar(chart.Area):
     The Bar class inherits signals from chart.Area.
     """
     
-    __gproperties__ = {"corner-radius": (gobject.TYPE_INT, "bar corner radius",
+    __gproperties__ = {"corner-radius": (GObject.TYPE_INT, "bar corner radius",
                                 "The radius of the bar's rounded corner.",
-                                0, 100, 0, gobject.PARAM_READWRITE)}
+                                0, 100, 0, GObject.PARAM_READWRITE)}
     
     def __init__(self, name, value, title=""):
         chart.Area.__init__(self, name, value, title)
@@ -273,24 +273,24 @@ class Grid(ChartObject):
     The Grid class inherits signal from chart_object.ChartObject.
     """
     
-    __gproperties__ = {"show-values": (gobject.TYPE_BOOLEAN, "show values",
+    __gproperties__ = {"show-values": (GObject.TYPE_BOOLEAN, "show values",
                                         "Set whether to show grid values.",
-                                        True, gobject.PARAM_READWRITE),
-                        "color": (gobject.TYPE_PYOBJECT, "color",
+                                        True, GObject.PARAM_READWRITE),
+                        "color": (GObject.TYPE_PYOBJECT, "color",
                                     "The color of the grid lines.",
-                                    gobject.PARAM_READWRITE),
-                        "line-style": (gobject.TYPE_INT, "line style",
+                                    GObject.PARAM_READWRITE),
+                        "line-style": (GObject.TYPE_INT, "line style",
                                         "The grid's line style", 0, 3, 0,
-                                        gobject.PARAM_READWRITE),
-                        "padding": (gobject.TYPE_INT, "padding",
+                                        GObject.PARAM_READWRITE),
+                        "padding": (GObject.TYPE_INT, "padding",
                                     "The grid's padding", 0, 100, 6,
-                                    gobject.PARAM_READWRITE)}
+                                    GObject.PARAM_READWRITE)}
     
     def __init__(self):
         ChartObject.__init__(self)
         #private properties:
         self._show_values = True
-        self._color = gtk.gdk.color_parse("#dedede")
+        self._color = Gdk.color_parse("#dedede")
         self._line_style = pygtk_chart.LINE_STYLE_SOLID
         self._padding = 6
         
@@ -342,7 +342,7 @@ class Grid(ChartObject):
                     max_label_size = max(max_label_size, value_label.get_calculated_dimensions(context, rect)[0])
                     labels.append(value_label)
                 max_label_size += 3
-                rect = gtk.gdk.Rectangle(int(rect.x + max_label_size), rect.y, int(rect.width - max_label_size), rect.height)
+                rect = Gdk.Rectangle(int(rect.x + max_label_size), rect.y, int(rect.width - max_label_size), rect.height)
                 for i in range(0, len(labels)):
                     y = rect.y + rect.height - i * delta - label_size
                     value_label = labels[i]
@@ -357,7 +357,7 @@ class Grid(ChartObject):
                 context.move_to(rect.x, y)
                 context.rel_line_to(rect.width, 0)
                 context.stroke()
-            rect = gtk.gdk.Rectangle(rect.x + self._padding, rect.y, rect.width - 2 * self._padding, rect.height)
+            rect = Gdk.Rectangle(rect.x + self._padding, rect.y, rect.width - 2 * self._padding, rect.height)
         elif mode == MODE_HORIZONTAL:
             delta = (rect.width - value_label_size - label_size) / n
             
@@ -370,7 +370,7 @@ class Grid(ChartObject):
                     max_label_size = max(max_label_size, value_label.get_calculated_dimensions(context, rect)[1])
                     labels.append(value_label)
                 max_label_size += 3
-                rect = gtk.gdk.Rectangle(rect.x, rect.y, rect.width, int(rect.height - max_label_size))
+                rect = Gdk.Rectangle(rect.x, rect.y, rect.width, int(rect.height - max_label_size))
                 for i in range(0, len(labels)):
                     x = rect.x + i * delta + label_size
                     value_label = labels[i]
@@ -385,7 +385,7 @@ class Grid(ChartObject):
                 context.move_to(x, rect.y)
                 context.rel_line_to(0, rect.height)
                 context.stroke()
-            rect = gtk.gdk.Rectangle(rect.x, rect.y + self._padding, rect.width, rect.height - 2 * self._padding)
+            rect = Gdk.Rectangle(rect.x, rect.y + self._padding, rect.width, rect.height - 2 * self._padding)
         return rect
         
     #set and get methods
@@ -490,23 +490,23 @@ class BarChart(chart.Chart):
     
     """
     
-    __gsignals__ = {"bar-clicked": (gobject.SIGNAL_RUN_LAST, 
-                                    gobject.TYPE_NONE, 
-                                    (gobject.TYPE_PYOBJECT,))}
+    __gsignals__ = {"bar-clicked": (GObject.SIGNAL_RUN_LAST, 
+                                    GObject.TYPE_NONE, 
+                                    (GObject.TYPE_PYOBJECT,))}
                                     
-    __gproperties__ = {"bar-padding": (gobject.TYPE_INT, "bar padding",
+    __gproperties__ = {"bar-padding": (GObject.TYPE_INT, "bar padding",
                                         "The distance between two bars.",
                                         0, 100, 16,
-                                        gobject.PARAM_READWRITE),
-                        "mode": (gobject.TYPE_INT, "mode",
+                                        GObject.PARAM_READWRITE),
+                        "mode": (GObject.TYPE_INT, "mode",
                                 "The chart's mode.", 0, 1, 0,
-                                gobject.PARAM_READWRITE),
-                        "draw-labels": (gobject.TYPE_BOOLEAN,
+                                GObject.PARAM_READWRITE),
+                        "draw-labels": (GObject.TYPE_BOOLEAN,
                                         "draw labels", "Set whether to draw labels on bars.",
-                                        True, gobject.PARAM_READWRITE),
-                        "enable-mouseover": (gobject.TYPE_BOOLEAN, "enable mouseover",
+                                        True, GObject.PARAM_READWRITE),
+                        "enable-mouseover": (GObject.TYPE_BOOLEAN, "enable mouseover",
                                         "Set whether to enable mouseover effect.",
-                                        True, gobject.PARAM_READWRITE)}
+                                        True, GObject.PARAM_READWRITE)}
     
     def __init__(self):
         super(BarChart, self).__init__()
@@ -563,7 +563,7 @@ class BarChart(chart.Chart):
         label.begin_drawing()
         
         rect = self.get_allocation()
-        rect = gtk.gdk.Rectangle(0, 0, rect.width, rect.height) #transform rect to context coordinates
+        rect = Gdk.Rectangle(0, 0, rect.width, rect.height) #transform rect to context coordinates
         context.set_line_width(1)
                                     
         rect = self.draw_basics(context, rect)
@@ -615,7 +615,7 @@ class BarChart(chart.Chart):
         rect_width = int(rect.width - 2 * self._padding)
         rect_x = int(rect.x + self._padding)
         rect_y = int(rect.y + title_height + 2 * self._padding)
-        return gtk.gdk.Rectangle(rect_x, rect_y, rect_width, rect_height)
+        return Gdk.Rectangle(rect_x, rect_y, rect_width, rect_height)
         
     def _do_draw_grid(self, context, rect, maximum_value, value_label_size, label_size):
         if self.grid.get_visible():

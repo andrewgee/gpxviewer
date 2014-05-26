@@ -22,11 +22,12 @@
 import os
 import sys
 import glib
-import gtk
-import gobject
 
-import osmgpsmap
-assert osmgpsmap.__version__ >= "0.7.1"
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
+
+from gi.repository import OsmGpsMap
 
 import stats
 
@@ -51,28 +52,28 @@ def N_(message):
 	return message
 
 def show_url(url):
-	gtk.show_uri(None, url, gtk.gdk.CURRENT_TIME)
+	Gtk.show_uri(None, url, Gdk.CURRENT_TIME)
 
 ALPHA_UNSELECTED = 0.5
 ALPHA_SELECTED = 0.8
 LAZY_LOAD_AFTER_N_FILES = 3
 
-class _TrackManager(gobject.GObject):
+class _TrackManager(GObject.GObject):
 
 	NAME_IDX = 0
 	FILENAME_IDX = 1
 
 	__gsignals__ = {
-		'track-added': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
-		'track-removed': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [object, object]),
+		'track-added': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, [object, object]),
+		'track-removed': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, [object, object]),
     }
 
 	def __init__(self):
-		gobject.GObject.__init__(self)
+		GObject.GObject.__init__(self)
 		# maps track_filename : (GPXTrace, [OsmGpsMapTrack])
 		self._tracks = {}
 		# name, filename
-		self.model = gtk.ListStore(str, str)
+		self.model = Gtk.ListStore(str, str)
 
 	def getOtherTracks(self, trace):
 		tracks = []
@@ -100,11 +101,13 @@ class _TrackManager(gobject.GObject):
 			for track in trace.get_points():
 			  for segment in track:
 
-				gpstrack = osmgpsmap.GpsMapTrack()				
+				gpstrack = OsmGpsMap.MapTrack()				
 				gpstrack.props.alpha = ALPHA_UNSELECTED
+				
+				print gpstrack.props.color
 
 				for rlat,rlon in segment:
-					gpstrack.add_point(osmgpsmap.point_new_radians(rlat, rlon))
+					gpstrack.add_point(OsmGpsMap.MapPoint.new_radians(rlat, rlon))
 				gpstracks.append(gpstrack)
 
 			self._tracks[filename] = (trace, gpstracks)
@@ -120,9 +123,9 @@ class _TrackManager(gobject.GObject):
 class MainWindow:
 	def __init__(self, ui_dir, files):
 		self.localtz = LocalTimezone()
-		self.recent = gtk.recent_manager_get_default()
+		self.recent = Gtk.RecentManager.get_default()
 		
-		self.wTree = gtk.Builder()
+		self.wTree = Gtk.Builder()
 		self.wTree.set_translation_domain('gpxviewer')
 		self.wTree.add_from_file("%sgpxviewer.ui" % ui_dir)
 		
@@ -153,23 +156,23 @@ class MainWindow:
 		
 		self.ui_dir = ui_dir
 
-		self.map = osmgpsmap.GpsMap(
+		self.map = OsmGpsMap.Map(
 					tile_cache=os.path.join(
 						glib.get_user_cache_dir(),
 						'gpxviewer', 'tiles'))
 		self.map.layer_add(
-					osmgpsmap.GpsMapOsd(
+					OsmGpsMap.MapOsd(
 						show_dpad=False,
 						show_zoom=False,
 						show_scale=True,
 						show_coordinates=False))
-		self.wTree.get_object("hbox_map").pack_start(self.map, True, True)
+		self.wTree.get_object("hbox_map").pack_start(self.map, True, True, 0)
 
 		sb = self.wTree.get_object("statusbar1")
 		#move zoom control into apple like slider
 		self.zoomSlider = MapZoomSlider(self.map)
 		self.zoomSlider.show_all()
-		a = gtk.Alignment(0.5,0.5,1.0,1.0)
+		a = Gtk.Alignment.new(0.5,0.5,1.0,1.0)
 		a.set_padding(0,0,0,4)
 		a.add(self.zoomSlider)
 		a.show_all()
@@ -177,11 +180,11 @@ class MainWindow:
 
 		#animate a spinner when downloading tiles
 		try:
-			self.spinner = gtk.Spinner()
+			self.spinner = Gtk.Spinner()
 			self.spinner.props.has_tooltip = True
 			self.spinner.connect("query-tooltip", self.onSpinnerTooltip)
 			self.map.connect("notify::tiles-queued", self.updateTilesQueued)
-			self.spinner.set_size_request(*gtk.icon_size_lookup(gtk.ICON_SIZE_MENU))
+			self.spinner.set_size_request(*Gtk.icon_size_lookup(Gtk.ICON_SIZE_MENU))
 			sb.pack_end(self.spinner, False, False)
 		except AttributeError:
 			self.spinner = None
@@ -193,9 +196,9 @@ class MainWindow:
 			'josm':N_('JOSM Editor'),
 			'merkaartor':N_('Merkaartor'),
 		}
-		submenu_open_with = gtk.Menu() 
+		submenu_open_with = Gtk.Menu() 
 		for prog,progname in programs.iteritems():
-			submenuitem_open_with = gtk.MenuItem(_(progname))
+			submenuitem_open_with = Gtk.MenuItem(_(progname))
 			submenu_open_with.append(submenuitem_open_with)
 			submenuitem_open_with.connect("activate", self.openWithExternalApp, prog) 
 			submenuitem_open_with.show()
@@ -210,12 +213,12 @@ class MainWindow:
 		self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url("https://translations.launchpad.net/gpxviewer"))
 		self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url("https://bugs.launchpad.net/gpxviewer/+filebug"))
 
-		self.tv = gtk.TreeView(self.trackManager.model)
+		self.tv = Gtk.TreeView(self.trackManager.model)
 		self.tv.get_selection().connect("changed", self.onSelectionChanged)
 		self.tv.append_column(
-				gtk.TreeViewColumn(
+				Gtk.TreeViewColumn(
 					"Track Name",
-					gtk.CellRendererText(),
+					Gtk.CellRendererText(),
 					text=self.trackManager.NAME_IDX
 				)
 		)
@@ -260,7 +263,7 @@ class MainWindow:
 					break
 		else:
 			self.loadingFiles = len(files)
-			gobject.timeout_add(100, do_lazy_load, files)
+			GObject.timeout_add(100, do_lazy_load, files)
 
 	def showSpinner(self):
 		if self.spinner:
@@ -283,7 +286,7 @@ class MainWindow:
 		self.sb.show_all()
 
 	def hideTrackSelector(self):
-		self.sb.hide_all()
+		self.sb.hide()
 
 	def onSelectionChanged(self, selection):
 		model, _iter = selection.get_selected()
@@ -326,10 +329,10 @@ class MainWindow:
 			ws.addTrace(t)
 			ss.addTrace(t)
 
-		w = gtk.Window()
+		w = Gtk.Window()
 		w.add(stats.ChartNotebook(ws,ss))
 		w.resize(500,300)
-		w.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+		w.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
 		w.set_transient_for(self.mainWindow)
 		w.show_all()
 	
@@ -381,14 +384,14 @@ class MainWindow:
 			return None
 
 	def openGPX(self, *args):
-		filechooser = gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=gtk.FILE_CHOOSER_ACTION_OPEN,parent=self.mainWindow)
-		filechooser.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_DELETE_EVENT)
-		filechooser.add_button(gtk.STOCK_OPEN, gtk.RESPONSE_OK)
-		filechooser.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+		filechooser = Gtk.FileChooserDialog(title=_("Choose a GPX file to Load"),action=Gtk.FileChooserAction.OPEN,parent=self.mainWindow)
+		filechooser.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.DELETE_EVENT)
+		filechooser.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+		filechooser.set_position(Gtk.WindowPosition.CENTER_ON_PARENT)
 		filechooser.set_select_multiple(True)
 		response = filechooser.run()
 		
-		if response == gtk.RESPONSE_OK:
+		if response == Gtk.ResponseType.OK:
 			for filename in filechooser.get_filenames():
 				if self.loadGPX(filename):
 					self.recent.add_item("file://"+filename)
@@ -396,16 +399,16 @@ class MainWindow:
 		filechooser.destroy()
 
 	def showGPXError(self):
-		message_box = gtk.MessageDialog(parent=self.mainWindow,type=gtk.MESSAGE_ERROR,buttons=gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
+		message_box = Gtk.MessageDialog(parent=self.mainWindow,type=Gtk.MESSAGE_ERROR,buttons=Gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
 		message_box.run()
 		message_box.destroy()
 		return None
 
 	def quit(self,w):
-		gtk.main_quit()
+		Gtk.main_quit()
 
 	def main(self):
-		gtk.main()
+		Gtk.main()
 
 	def openWithExternalApp(self,w,app):
 		if self.currentFilename:
@@ -453,11 +456,14 @@ class MainWindow:
 		model, _iter = self.tv.get_selection().get_selected()
 		if _iter:
 			trace, OsmGpsMapTracks = self.trackManager.getTraceFromModel(_iter)
-			colorseldlg = gtk.ColorSelectionDialog("Select track color")
-			colorseldlg.colorsel.set_current_color(OsmGpsMapTracks[0].props.color)
+			colorseldlg = Gtk.ColorSelectionDialog("Select track color")
+			print OsmGpsMapTracks[0].props.color
+			colorseldlg.get_color_selection().set_current_color(OsmGpsMapTracks[0].props.color)
+			print colorseldlg.get_color_selection().get_current_color()
 			result = colorseldlg.run()
-			if result == gtk.RESPONSE_OK:
-				color = colorseldlg.colorsel.get_current_color()
+			if result == Gtk.ResponseType.OK:
+				color = colorseldlg.get_color_selection().get_current_color()
+				print color
 				for OsmGpsMapTrack in OsmGpsMapTracks:
 					OsmGpsMapTrack.props.color = color			
 			colorseldlg.destroy()
@@ -465,16 +471,16 @@ class MainWindow:
 	def buttonTrackInspectClicked(self, *args):
 		pass
 
-class MapZoomSlider(gtk.HBox):
+class MapZoomSlider(Gtk.HBox):
     def __init__(self, _map):
-        gtk.HBox.__init__(self)
+        Gtk.HBox.__init__(self)
 
-        zo = gtk.EventBox()
-        zo.add(gtk.image_new_from_stock (gtk.STOCK_ZOOM_OUT, gtk.ICON_SIZE_MENU))
+        zo = Gtk.EventBox()
+        zo.add(Gtk.Image.new_from_stock (Gtk.STOCK_ZOOM_OUT, Gtk.IconSize.MENU))
         zo.connect("button-press-event", self._on_zoom_out_pressed, _map)
-        self.pack_start(zo, False, False)
+        self.pack_start(zo, False, False, 0)
 
-        self.zoom = gtk.Adjustment(
+        self.zoom = Gtk.Adjustment(
                             value=_map.props.zoom,
                             lower=_map.props.min_zoom,
                             upper=_map.props.max_zoom,
@@ -482,17 +488,18 @@ class MapZoomSlider(gtk.HBox):
                             page_incr=1,
                             page_size=0)
         self.zoom.connect("value-changed", self._on_zoom_slider_value_changed, _map)
-        hs = gtk.HScale(self.zoom)
+        hs = Gtk.HScale()
+        hs.set_adjustment(self.zoom)
         hs.props.digits = 0
         hs.props.draw_value = False
         hs.set_size_request(100,-1)
-        hs.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
-        self.pack_start(hs, True, True)
+        #hs.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+        self.pack_start(hs, True, True, 0)
 
-        zi = gtk.EventBox()
-        zi.add(gtk.image_new_from_stock (gtk.STOCK_ZOOM_IN, gtk.ICON_SIZE_MENU))
+        zi = Gtk.EventBox()
+        zi.add(Gtk.Image.new_from_stock (Gtk.STOCK_ZOOM_IN, Gtk.IconSize.MENU))
         zi.connect("button-press-event", self._on_zoom_in_pressed, _map)
-        self.pack_start(zi, False, False)
+        self.pack_start(zi, False, False, 0)
 
         _map.connect("notify::zoom", self._on_map_zoom_changed)
 

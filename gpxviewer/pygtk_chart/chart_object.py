@@ -24,9 +24,9 @@ This module contains the ChartObject class.
 Author: Sven Festersen (sven@sven-festersen.de)
 """
 import cairo
-import gobject
+from gi.repository import GObject
 
-class ChartObject(gobject.GObject):
+class ChartObject(GObject.GObject):
     """
     This is the base class for all things that can be drawn on a chart
     widget.
@@ -35,7 +35,7 @@ class ChartObject(gobject.GObject):
     
     Properties
     ==========
-    ChartObject inherits properties from gobject.GObject.
+    ChartObject inherits properties from GObject.GObject.
     Additional properties:
      - visible (sets whether the object should be visible,
        type: boolean)
@@ -44,25 +44,25 @@ class ChartObject(gobject.GObject):
        
     Signals
     =======
-    ChartObject inherits signals from gobject.GObject,
+    ChartObject inherits signals from GObject.GObject,
     Additional signals:
      - appearance-changed (emitted if the object needs to be redrawn).
     """
     
-    __gsignals__ = {"appearance-changed": (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])}
+    __gsignals__ = {"appearance-changed": (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, [])}
 
     
-    __gproperties__ = {"visible": (gobject.TYPE_BOOLEAN,
+    __gproperties__ = {"visible": (GObject.TYPE_BOOLEAN,
                                     "visibilty of the object",
                                     "Set whether to draw the object or not.",
-                                    True, gobject.PARAM_READWRITE),
-                        "antialias": (gobject.TYPE_BOOLEAN,
+                                    True, GObject.PARAM_READWRITE),
+                        "antialias": (GObject.TYPE_BOOLEAN,
                                     "use antialiasing",
                                     "Set whether to use antialiasing when drawing the object.",
-                                    True, gobject.PARAM_READWRITE)}
+                                    True, GObject.PARAM_READWRITE)}
     
     def __init__(self):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
         self._show = True
         self._antialias = True
         
@@ -152,4 +152,4 @@ class ChartObject(gobject.GObject):
         return self.get_property("visible")
         
 
-gobject.type_register(ChartObject)
+GObject.type_register(ChartObject)

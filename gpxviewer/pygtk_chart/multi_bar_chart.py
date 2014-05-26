@@ -20,9 +20,9 @@ Contains the MultiBarChart widget.
 Author: Sven Festersen (sven@sven-festersen.de)
 """
 __docformat__ = "epytext"
-import cairo
-import gtk
-import gobject
+from gi.repository import cairo
+from gi.repository import Gdk
+from gi.repository import GObject
 import os
 import math
 
@@ -193,24 +193,24 @@ class BarGroup(ChartObject):
     The BarGroup class inherits signals from chart_object.ChartObject.
     """
     
-    __gproperties__ = {"name": (gobject.TYPE_STRING, "group name",
+    __gproperties__ = {"name": (GObject.TYPE_STRING, "group name",
                                 "A unique identifier for this group.",
-                                "", gobject.PARAM_READABLE),
-                        "title": (gobject.TYPE_STRING, "group title",
+                                "", GObject.PARAM_READABLE),
+                        "title": (GObject.TYPE_STRING, "group title",
                                     "The group's title.", "",
-                                    gobject.PARAM_READWRITE),
-                        "bar-padding": (gobject.TYPE_INT, "bar padding",
+                                    GObject.PARAM_READWRITE),
+                        "bar-padding": (GObject.TYPE_INT, "bar padding",
                                         "The space between bars in this group.",
-                                        0, 100, 2, gobject.PARAM_READWRITE),
-                        "bars": (gobject.TYPE_PYOBJECT, "bars in the group",
+                                        0, 100, 2, GObject.PARAM_READWRITE),
+                        "bars": (GObject.TYPE_PYOBJECT, "bars in the group",
                                 "A list of bars in this group.",
-                                gobject.PARAM_READABLE),
-                        "maximum-value": (gobject.TYPE_FLOAT, "max value",
+                                GObject.PARAM_READABLE),
+                        "maximum-value": (GObject.TYPE_FLOAT, "max value",
                                         "The maximum value of the bars in this group.",
-                                        0, 9999999, 0, gobject.PARAM_READABLE),
-                        "bar-count": (gobject.TYPE_INT, "bar count",
+                                        0, 9999999, 0, GObject.PARAM_READABLE),
+                        "bar-count": (GObject.TYPE_INT, "bar count",
                                         "The number of bars in this group.",
-                                        0, 100, 0, gobject.PARAM_READWRITE)}
+                                        0, 100, 0, GObject.PARAM_READWRITE)}
     
     def __init__(self, name, title=""):
         ChartObject.__init__(self)
@@ -432,29 +432,29 @@ class MultiBarChart(bar_chart.BarChart):
       def group_clicked(chart, group, bar).
     """
     
-    __gsignals__ = {"group-clicked": (gobject.SIGNAL_RUN_LAST, 
-                                    gobject.TYPE_NONE, 
-                                    (gobject.TYPE_PYOBJECT, gobject.TYPE_PYOBJECT))}
+    __gsignals__ = {"group-clicked": (GObject.SIGNAL_RUN_LAST, 
+                                    GObject.TYPE_NONE, 
+                                    (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT))}
                                     
-    __gproperties__ = {"group-padding": (gobject.TYPE_INT, "group padding",
+    __gproperties__ = {"group-padding": (GObject.TYPE_INT, "group padding",
                                         "The space between two bar groups.",
-                                        0, 100, 16, gobject.PARAM_READWRITE),
-                        "label-rotation": (gobject.TYPE_INT, "label rotation",
+                                        0, 100, 16, GObject.PARAM_READWRITE),
+                        "label-rotation": (GObject.TYPE_INT, "label rotation",
                                             "The angle that should bar labels be rotated by in vertical mode.",
-                                            0, 360, 300, gobject.PARAM_READWRITE),
-                        "rotate-group-labels": (gobject.TYPE_BOOLEAN,
+                                            0, 360, 300, GObject.PARAM_READWRITE),
+                        "rotate-group-labels": (GObject.TYPE_BOOLEAN,
                                                 "rotate group label",
                                                 "Sets whether the group label should be rotated by 90 degrees in horizontal mode.",
-                                                False, gobject.PARAM_READWRITE),
-                        "mode": (gobject.TYPE_INT, "mode",
+                                                False, GObject.PARAM_READWRITE),
+                        "mode": (GObject.TYPE_INT, "mode",
                                 "The chart's mode.", 0, 1, 0,
-                                gobject.PARAM_READWRITE),
-                        "draw-labels": (gobject.TYPE_BOOLEAN,
+                                GObject.PARAM_READWRITE),
+                        "draw-labels": (GObject.TYPE_BOOLEAN,
                                         "draw labels", "Set whether to draw labels on bars.",
-                                        True, gobject.PARAM_READWRITE),
-                        "enable-mouseover": (gobject.TYPE_BOOLEAN, "enable mouseover",
+                                        True, GObject.PARAM_READWRITE),
+                        "enable-mouseover": (GObject.TYPE_BOOLEAN, "enable mouseover",
                                         "Set whether to enable mouseover effect.",
-                                        True, gobject.PARAM_READWRITE)}
+                                        True, GObject.PARAM_READWRITE)}
     
     def __init__(self):
         bar_chart.BarChart.__init__(self)
@@ -596,7 +596,7 @@ class MultiBarChart(bar_chart.BarChart):
         chart.init_sensitive_areas()
         
         rect = self.get_allocation()
-        rect = gtk.gdk.Rectangle(0, 0, rect.width, rect.height) #transform rect to context coordinates
+        rect = Gdk.Rectangle(0, 0, rect.width, rect.height) #transform rect to context coordinates
         context.set_line_width(1)
                                     
         rect = self.draw_basics(context, rect)

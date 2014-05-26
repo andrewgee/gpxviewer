@@ -24,8 +24,7 @@ This module contains simple functions needed by all other modules.
 Author: Sven Festersen (sven@sven-festersen.de)
 """
 __docformat__ = "epytext"
-import cairo
-import gtk
+from gi.repository import Gdk
 import os
 
 import pygtk_chart
@@ -66,7 +65,7 @@ def color_gdk_to_cairo(color):
     return (color.red / 65535.0, color.green / 65535.0, color.blue / 65535.0)
     
 def color_cairo_to_gdk(r, g, b):
-    return gtk.gdk.Color(int(65535 * r), int(65535 * g), int(65535 * b))
+    return Gdk.Color(int(65535 * r), int(65535 * g), int(65535 * b))
     
 def color_rgb_to_cairo(color):
     """
@@ -116,7 +115,7 @@ def gdk_color_list_from_file(filename):
         f = open(filename, "r")
         for line in f.readlines():
             line = line.strip()
-            result.append(gtk.gdk.color_parse(line))
+            result.append(Gdk.color_parse(line))
     return result
 
 def set_context_line_style(context, style):
