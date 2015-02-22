@@ -2,7 +2,7 @@
 _Name=GPX Viewer
 Type=Application
 _Comment=GPS Trace Viewer
-Exec=gpxviewer
+Exec=gpxviewer %f
 Icon=gpxviewer
 Categories=Network
-MimeType=application/xml
+MimeType=application/gpx+xml
