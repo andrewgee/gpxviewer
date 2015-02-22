@@ -1,3 +1,6 @@
+0.5.1:
+ * Correct desktop file
+
 0.5.0:
  * Updated to use GI Introspection library
 
