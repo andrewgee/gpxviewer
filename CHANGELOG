@@ -1,3 +1,6 @@
+0.5.0:
+ * Updated to use GI Introspection library
+
 0.4.3:
  * More accurate calculations
  * Multiple file selection in open dialog
