@@ -21,8 +21,8 @@
 #
 import os
 import sys
-import glib
 
+from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GObject
@@ -102,9 +102,7 @@ class _TrackManager(GObject.GObject):
 			  for segment in track:
 
 				gpstrack = OsmGpsMap.MapTrack()				
-				gpstrack.props.alpha = ALPHA_UNSELECTED
-				
-				print gpstrack.props.color
+				gpstrack.props.alpha = 0.8
 
 				for rlat,rlon in segment:
 					gpstrack.add_point(OsmGpsMap.MapPoint.new_radians(rlat, rlon))
@@ -158,7 +156,7 @@ class MainWindow:
 
 		self.map = OsmGpsMap.Map(
 					tile_cache=os.path.join(
-						glib.get_user_cache_dir(),
+						GLib.get_user_cache_dir(),
 						'gpxviewer', 'tiles'))
 		self.map.layer_add(
 					OsmGpsMap.MapOsd(
@@ -457,15 +455,14 @@ class MainWindow:
 		if _iter:
 			trace, OsmGpsMapTracks = self.trackManager.getTraceFromModel(_iter)
 			colorseldlg = Gtk.ColorSelectionDialog("Select track color")
-			print OsmGpsMapTracks[0].props.color
 			colorseldlg.get_color_selection().set_current_color(OsmGpsMapTracks[0].props.color)
-			print colorseldlg.get_color_selection().get_current_color()
 			result = colorseldlg.run()
 			if result == Gtk.ResponseType.OK:
-				color = colorseldlg.get_color_selection().get_current_color()
+				color = colorseldlg.get_color_selection().get_current_rgba()
 				print color
 				for OsmGpsMapTrack in OsmGpsMapTracks:
-					OsmGpsMapTrack.props.color = color			
+					OsmGpsMapTrack.set_color(color)
+					self.map.map_redraw()
 			colorseldlg.destroy()
 
 	def buttonTrackInspectClicked(self, *args):
