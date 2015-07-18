@@ -25,12 +25,12 @@ import os.path, sys
 import gpxviewer
 sys.path.append(gpxviewer.__path__[0])
 
-import gtk.gdk
+from gi.repository import Gdk
 from gpxviewer.ui import MainWindow
 
 POSSIBLE_SHARE_DIRS = ["/usr/local/share/gpxviewer/","/usr/share/gpxviewer/"]
  
-gtk.gdk.threads_init()
+Gdk.threads_init()
 
 prefix = ""
 for share_dir in POSSIBLE_SHARE_DIRS:
@@ -44,6 +44,4 @@ elif len(sys.argv) > 1:
 else:
 	files = []
 
-gui = MainWindow(ui_dir="%sui/" % prefix,files=files)
- 
-gtk.main()
+gui = MainWindow(ui_dir="%sui/" % prefix,files=files).main()
