@@ -85,12 +85,12 @@ def fetch_metadata(node):
 def fetch_track_point(tsnode):
 	point = {}
 	if tsnode.attributes["lat"] != "" and tsnode.attributes["lon"] != "":
-		point['lat'] = float(tsnode.attributes["lat"].value)
-		point['lon'] = float(tsnode.attributes["lon"].value)
+		point['lat'] = float(tsnode.attributes["lat"].value.replace(",", "."))
+		point['lon'] = float(tsnode.attributes["lon"].value.replace(",", "."))
 	
 	for tpnode in tsnode.childNodes:
 		if tpnode.nodeName == "ele":
-			point['ele'] = float(tpnode.childNodes[0].nodeValue)
+			point['ele'] = float(tpnode.childNodes[0].nodeValue.replace(",", "."))
 		elif tpnode.nodeName == "desc":
 			point['description'] = tpnode.childNodes[0].nodeValue
 		elif tpnode.nodeName == "time":
