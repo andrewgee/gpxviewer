@@ -22,6 +22,11 @@
 import os
 import sys
 
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '3.0')
+gi.require_version('OsmGpsMap', '1.0')
+gi.require_version('PangoCairo', '1.0')
 from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -455,11 +460,12 @@ class MainWindow:
 		if _iter:
 			trace, OsmGpsMapTracks = self.trackManager.getTraceFromModel(_iter)
 			colorseldlg = Gtk.ColorSelectionDialog("Select track color")
-			colorseldlg.get_color_selection().set_current_color(OsmGpsMapTracks[0].props.color)
+			colorseldlg.get_color_selection().set_current_rgba(OsmGpsMapTracks[0].props.color)
+			colorseldlg.set_transient_for(self.mainWindow)
 			result = colorseldlg.run()
 			if result == Gtk.ResponseType.OK:
 				color = colorseldlg.get_color_selection().get_current_rgba()
-				print color
+				#print color
 				for OsmGpsMapTrack in OsmGpsMapTracks:
 					OsmGpsMapTrack.set_color(color)
 					self.map.map_redraw()

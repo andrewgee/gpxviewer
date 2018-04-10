@@ -26,8 +26,8 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 source_dir = os.path.join(parent_dir, "gpxviewer")
 sys.path.append(source_dir)
 
-from gi.repository import Gdk
 from gpxviewer.ui import MainWindow
+from gi.repository import Gdk
  
 Gdk.threads_init()
 
