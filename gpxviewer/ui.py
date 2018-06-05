@@ -22,6 +22,10 @@
 import os
 import sys
 
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('OsmGpsMap', '1.0')
+
 from gi.repository import GLib
 from gi.repository import Gtk
 from gi.repository import Gdk
@@ -182,8 +186,8 @@ class MainWindow:
 			self.spinner.props.has_tooltip = True
 			self.spinner.connect("query-tooltip", self.onSpinnerTooltip)
 			self.map.connect("notify::tiles-queued", self.updateTilesQueued)
-			self.spinner.set_size_request(*Gtk.icon_size_lookup(Gtk.ICON_SIZE_MENU))
-			sb.pack_end(self.spinner, False, False)
+                        self.spinner.set_size_request(*Gtk.icon_size_lookup(Gtk.IconSize.MENU)[:2])
+			sb.pack_end(self.spinner, False, False, 0)
 		except AttributeError:
 			self.spinner = None
 
@@ -397,7 +401,7 @@ class MainWindow:
 		filechooser.destroy()
 
 	def showGPXError(self):
-		message_box = Gtk.MessageDialog(parent=self.mainWindow,type=Gtk.MESSAGE_ERROR,buttons=Gtk.BUTTONS_OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
+		message_box = Gtk.MessageDialog(parent=self.mainWindow,type=Gtk.MessageType.ERROR,buttons=Gtk.ButtonsType.OK,message_format=_("You selected an invalid GPX file. \n Please try again"))
 		message_box.run()
 		message_box.destroy()
 		return None

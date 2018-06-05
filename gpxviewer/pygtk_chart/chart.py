@@ -34,6 +34,11 @@ All colors that pygtkChart uses are Gdk.Colors as used by PyGTK.
 Author: Sven Festersen (sven@sven-festersen.de)
 """
 __docformat__ = "epytext"
+
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('PangoCairo', '1.0')
+
 from gi.repository import cairo
 from gi.repository import GObject
 from gi.repository import Gdk
