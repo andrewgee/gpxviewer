@@ -1,10 +1,14 @@
 from gi.repository import Gtk
-import pygtk_chart.bar_chart
-import pygtk_chart.line_chart as line_chart
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib.backends.backend_gtk3agg import FigureCanvasGTK3Agg as FigureCanvas
+from matplotlib.figure import Figure
 
 class _Chart:
 
-	title = ""
+	title = ''
+	xlabel = ''
+	ylabel = ''
 
 	def chart(self):
 		raise NotImplementedError
@@ -32,17 +36,29 @@ class StatBarChart(_Chart):
 		raise NotImplementedError
 
 	def chart(self):
-		barchart = pygtk_chart.bar_chart.BarChart()
-		barchart.title.set_text(self.title)
-		barchart.grid.set_visible(True)
-		barchart.grid.set_line_style(pygtk_chart.LINE_STYLE_DOTTED)
-		barchart.set_draw_labels(self.show_data_labels)
+		chart = Figure()
+		barchart = chart.add_subplot(111)
+		barchart.grid(linestyle=':')
 
-		for bar_info in self.getBarChartData():
-			bar = pygtk_chart.bar_chart.Bar(*bar_info)
-			barchart.add_bar(bar)
+		labels, bar_info = self.getBarChartData()
+		x = range(len(labels))
+		bars = barchart.bar(x, bar_info)
+		barchart.set_xlabel(self.xlabel)
+		barchart.set_ylabel(self.ylabel)
+		barchart.set_xticks(x)
+		barchart.set_xticklabels(labels)
 
-		return barchart
+		if self.show_data_labels:
+			for bar in bars:
+				height = bar.get_height()
+				barchart.annotate('%0.2f' % height,
+					xy=(bar.get_x() + bar.get_width() / 2, height),
+					xytext=(0, 3),
+					textcoords='offset points',
+					ha='center', va='bottom')
+
+		chart.tight_layout()
+		return FigureCanvas(chart)
 
 class LineChart(_Chart):
 
@@ -50,19 +66,23 @@ class LineChart(_Chart):
 		raise NotImplementedError
 
 	def chart(self):
-		chart = line_chart.LineChart()
-		chart.title.set_text(self.title)
+		chart = Figure()
+		graph = chart.add_subplot(111)
 
-		data = self.getLineChartData()
-		graph = line_chart.Graph("avg", "avg", data)
-		graph.set_type(line_chart.GRAPH_LINES)
-		chart.add_graph(graph)
+		labels, data = self.getLineChartData()
+		graph.set_xlabel(self.xlabel)
+		graph.set_ylabel(self.ylabel)
+		graph.set_xticks(labels)
+		graph.plot(data)
 
-		return chart
+		chart.tight_layout()
+		return FigureCanvas(chart)
 
 class WeekStats(StatBarChart):
 
 	title = 'Total Distance Cycled Per Week'
+	xlabel = 'week'
+	ylabel = 'distance [km]'
 
 	def __init__(self):
 		self._weeks = [0]*53
@@ -75,26 +95,28 @@ class WeekStats(StatBarChart):
 
 	def getBarChartData(self):
 		wk = 1
+		labels = []
 		data = []
 		for dist in self._weeks:
 			if dist:
-				data.append( (str(wk),float(int(dist)),"W%d"%wk) )
+				data.append(dist)
+				labels.append('W%d' % wk)
 			wk += 1
-		return data
+		return (labels, data)
 
 class AvgSpeedStats(LineChart):
 
-	title = "Average Speed"
+	title = 'Average Speed'
+	xlabel = 'track'
+	ylabel = 'avg [m/s]'
 
 	def __init__(self):
-		self._i = 0
 		self._avgspeeds = []
 
 	def addTrace(self, trace):
-		self._avgspeeds.append( (self._i, trace.get_average_speed()) )
-		self._i += 1
+		self._avgspeeds.append(trace.get_average_speed())
 
 	def getLineChartData(self):
-		return self._avgspeeds
+		return (range(len(self._avgspeeds)), self._avgspeeds)
 
 
