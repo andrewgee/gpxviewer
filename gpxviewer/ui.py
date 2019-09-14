@@ -45,7 +45,7 @@ import gettext
 locale.setlocale(locale.LC_ALL, '')
 gettext.bindtextdomain('gpxviewer')
 gettext.textdomain('gpxviewer')
-_ = gettext.lgettext
+_ = gettext.gettext
 
 
 # Function used to defer translation until later, while still being recognised
@@ -200,7 +200,7 @@ class MainWindow:
             'merkaartor': N_('Merkaartor'),
         }
         submenu_open_with = Gtk.Menu()
-        for prog, progname in programs.iteritems():
+        for prog, progname in programs.items():
             submenuitem_open_with = Gtk.MenuItem(_(progname))
             submenu_open_with.append(submenuitem_open_with)
             submenuitem_open_with.connect("activate", self.open_with_external_app, prog)
@@ -385,7 +385,7 @@ class MainWindow:
             if self.trackManager.num_traces() > 1:
                 self.show_track_selector()
             return trace
-        except Exception, e:
+        except Exception as e:
             self.show_gpx_error()
             return None
 
@@ -471,7 +471,6 @@ class MainWindow:
             result = colorseldlg.run()
             if result == Gtk.ResponseType.OK:
                 color = colorseldlg.get_color_selection().get_current_rgba()
-                print color
                 for OsmGpsMapTrack in OsmGpsMapTracks:
                     OsmGpsMapTrack.set_color(color)
                     self.map.map_redraw()

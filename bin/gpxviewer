@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 #  gpxviewer - Launcher File
 #
@@ -32,8 +32,6 @@ from gi.repository import Gdk
 from gpxviewer.ui import MainWindow
 
 POSSIBLE_SHARE_DIRS = ["/usr/local/share/gpxviewer/","/usr/share/gpxviewer/"]
- 
-Gdk.threads_init()
 
 prefix = ""
 for share_dir in POSSIBLE_SHARE_DIRS:
