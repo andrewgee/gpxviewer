@@ -20,7 +20,7 @@
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
 import xml.dom.minidom as minidom
-from utils.iso8601 import parse_date as parse_xml_date
+from datetime import datetime
 
 __all__ = ["import_gpx_trace"]
 
@@ -28,6 +28,11 @@ __all__ = ["import_gpx_trace"]
 class ParseError(Exception):
 	"""Raised when there is a problem parsing any part of the GPX XML"""
 	pass
+
+
+def parse_xml_date(string):
+	return datetime.strptime(string, '%Y-%m-%dT%H:%M:%S%z')
+
 
 def fetch_metadata(node):
 	metadata = {}
