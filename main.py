@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 #  main.py - Launcher for GPX Viewer
 #
@@ -31,8 +31,6 @@ gi.require_version('Gdk', '3.0')
 
 from gi.repository import Gdk
 from gpxviewer.ui import MainWindow
- 
-Gdk.threads_init()
 
 if len(sys.argv) > 2:
 	files = sys.argv[1:]
