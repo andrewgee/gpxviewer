@@ -114,9 +114,9 @@ def fetch_track(node):
 	track['segments'] = []
 	for tnode in node.childNodes:
 		if tnode.nodeName == "trkseg":
-		  track_segment = fetch_track_segment(tnode)
-		  if len(track_segment['points']) > 0:
-			track['segments'].append(fetch_track_segment(tnode))
+			track_segment = fetch_track_segment(tnode)
+			if len(track_segment['points']) > 0:
+				track['segments'].append(fetch_track_segment(tnode))
 
 	return track
 
