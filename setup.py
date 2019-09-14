@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from setuptools import setup
-from DistUtilsExtra.command import *
+from DistUtilsExtra.command import build_extra, build_i18n
 
 setup(name="gpxviewer",
 	version="0.5.1",

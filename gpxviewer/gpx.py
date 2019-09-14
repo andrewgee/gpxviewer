@@ -20,8 +20,7 @@
 #  If you're having any problems, don't hesitate to contact: andrew@andrewgee.org
 #
 
-from datetime import *
-from gpximport import *
+from .gpximport import import_gpx_trace
 from math import sqrt, radians, sin, cos, atan2, fabs, pi, acos
 from os.path import basename, abspath
 
