@@ -33,11 +33,11 @@ from gi.repository import GObject
 
 from gi.repository import OsmGpsMap
 
-import stats
+from . import stats
 
-from gpx import GPXTrace
+from .gpx import GPXTrace
 
-from utils.timezone import LocalTimezone
+from .utils.timezone import LocalTimezone
 
 import locale
 import gettext
