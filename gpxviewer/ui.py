@@ -35,9 +35,9 @@ from gi.repository import OsmGpsMap
 
 from . import stats
 
-from .gpx import GPXTrace
-
-from .utils.timezone import LocalTimezone
+from gpxpy import parse
+from gpxpy.gpx import GPXException
+from dateutil import tz
 
 import locale
 import gettext
@@ -98,22 +98,21 @@ class _TrackManager(GObject.GObject):
         """ Returns (trace, [OsmGpsMapTrack]) """
         return self._tracks[filename]
 
-    def add_trace(self, trace):
-        filename = trace.get_full_path()
+    def add_trace(self, filename, trace):
         if filename not in self._tracks:
             gpstracks = []
-            for track in trace.get_points():
-                for segment in track:
+            for track in trace.tracks:
+                for segment in track.segments:
 
                     gpstrack = OsmGpsMap.MapTrack()
                     gpstrack.props.alpha = 0.8
 
-                    for rlat, rlon in segment:
-                        gpstrack.add_point(OsmGpsMap.MapPoint.new_radians(rlat, rlon))
+                    for point in segment.points:
+                        gpstrack.add_point(OsmGpsMap.MapPoint.new_degrees(point.latitude, point.longitude))
                     gpstracks.append(gpstrack)
 
             self._tracks[filename] = (trace, gpstracks)
-            self.model.append((trace.get_display_name(), filename))
+            self.model.append((trace.tracks[0].name, filename))
             self.emit("track-added", trace, gpstracks)
 
     def num_traces(self):
@@ -125,7 +124,6 @@ class _TrackManager(GObject.GObject):
 
 class MainWindow:
     def __init__(self, ui_dir, files):
-        self.local_tz = LocalTimezone()
         self.recent = Gtk.RecentManager.get_default()
 
         self.wTree = Gtk.Builder()
@@ -357,13 +355,14 @@ class MainWindow:
             return
 
         self.zoom = 12
-        distance = trace.get_distance()
-        maximum_speed = trace.get_maximum_speed()
-        average_speed = trace.get_average_speed()
-        duration = trace.get_duration()
-        clat, clon = trace.get_centre()
-        gpxfrom = trace.get_gpxfrom().astimezone(self.local_tz)
-        gpxto = trace.get_gpxto().astimezone(self.local_tz)
+        distance = trace.tracks[0].get_moving_data().moving_distance
+        maximum_speed = trace.tracks[0].get_moving_data().max_speed
+        average_speed = stats.get_average_speed(trace.tracks[0])
+        duration = trace.tracks[0].get_moving_data().moving_time
+        clat = trace.tracks[0].get_center().latitude
+        clon = trace.tracks[0].get_center().longitude
+        gpxfrom = trace.tracks[0].segments[0].points[0].time.astimezone(tz.tzlocal())
+        gpxto = trace.tracks[0].segments[-1].points[-1].time.astimezone(tz.tzlocal())
 
         self.set_distance_label(round(distance / 1000, 2))
         self.set_maximum_speed_label(maximum_speed)
@@ -372,23 +371,24 @@ class MainWindow:
         self.set_logging_date_label(gpxfrom.strftime("%x"))
         self.set_logging_time_label(gpxfrom.strftime("%X"), gpxto.strftime("%X"))
 
-        self.currentFilename = trace.get_filename()
-        self.mainWindow.set_title(_("GPX Viewer - %s") % trace.get_filename())
+        self.currentFilename = "filename"
+        self.mainWindow.set_title(_("GPX Viewer - %s") % "filename")
 
         if self.autoCenter:
             self.set_centre(clat, clon)
 
     def load_gpx(self, filename):
         try:
-            trace = GPXTrace(filename)
-            self.trackManager.add_trace(trace)
-            if self.trackManager.num_traces() > 1:
-                self.wTree.get_object("checkmenuitemShowSidebar").set_active(True)
-                self.show_track_selector()
-            return trace
-        except Exception as e:
+            trace = parse(open(filename))
+        except GPXException:
             self.show_gpx_error()
             return None
+
+        self.trackManager.add_trace(filename, trace)
+        if self.trackManager.num_traces() > 1:
+            self.wTree.get_object("checkmenuitemShowSidebar").set_active(True)
+            self.show_track_selector()
+        return trace
 
     def open_gpx(self, *args):
         filechooser = Gtk.FileChooserDialog(title=_("Choose a GPX file to Load"), action=Gtk.FileChooserAction.OPEN,

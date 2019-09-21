@@ -86,8 +86,8 @@ class WeekStats(StatBarChart):
 		self._weeks = [0]*53
 
 	def addTrace(self, trace):
-		week = trace.get_gpxfrom().isocalendar()[1]
-		distance = trace.get_distance()
+		week = trace.tracks[0].segments[0].points[0].time.isocalendar()[1]
+		distance = trace.tracks[0].get_moving_data().moving_distance
 		
 		self._weeks[week] += (distance/1000.0)
 
@@ -102,6 +102,18 @@ class WeekStats(StatBarChart):
 			wk += 1
 		return (labels, data)
 
+
+def get_average_speed(track):
+	# 9.8.2011 Hadmut Danisch hadmut@danisch.de:
+	# duration can become 0 in special cases and thus cause division by zero
+	data = track.get_moving_data()
+	dis = data.moving_distance
+	dur = data.moving_time
+	if dur == 0:
+		return 0
+	return dis / dur
+
+
 class AvgSpeedStats(LineChart):
 
 	title = 'Average Speed'
@@ -112,7 +124,7 @@ class AvgSpeedStats(LineChart):
 		self._avgspeeds = []
 
 	def addTrace(self, trace):
-		self._avgspeeds.append(trace.get_average_speed())
+		self._avgspeeds.append(get_average_speed(trace.tracks[0]))
 
 	def getLineChartData(self):
 		return (range(len(self._avgspeeds)), self._avgspeeds)

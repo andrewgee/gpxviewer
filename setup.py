@@ -14,8 +14,8 @@ setup(name="gpxviewer",
 	url="http://andrewgee.org/blog/gpxviewer",
 	license="GNU General Public License (GPL)",
 	platforms="linux",
-	packages=["gpxviewer", "gpxviewer.utils", "gpxviewer.utils.timezone"],
-	install_requires=['PyGObject', 'pycairo', 'matplotlib'],
+	packages=["gpxviewer"],
+	install_requires=['PyGObject', 'pycairo', 'matplotlib', 'gpxpy', 'python-dateutil'],
 	data_files=[
 		('share/gpxviewer/ui/', ['ui/gpxviewer.ui', 'ui/gpxviewer.png', 'ui/gpxviewer.svg']),
 		('share/pixmaps', ['ui/gpxviewer.svg']) 
