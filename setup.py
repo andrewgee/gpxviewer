@@ -4,7 +4,7 @@ from setuptools import setup
 from DistUtilsExtra.command import build_extra, build_i18n
 
 setup(name="gpxviewer",
-	version="0.5.1",
+	version="1.0.0",
 	author="Andrew Gee",
 	author_email="andrew@andrewgee.org",
 	maintainer="Andrew Gee",
