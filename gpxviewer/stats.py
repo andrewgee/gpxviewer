@@ -36,7 +36,7 @@ class StatBarChart(_Chart):
 		raise NotImplementedError
 
 	def chart(self):
-		chart = Figure()
+		chart = Figure(tight_layout=True)
 		barchart = chart.add_subplot(111)
 		barchart.grid(linestyle=':')
 
@@ -57,7 +57,6 @@ class StatBarChart(_Chart):
 					textcoords='offset points',
 					ha='center', va='bottom')
 
-		chart.tight_layout()
 		return FigureCanvas(chart)
 
 class LineChart(_Chart):
@@ -66,7 +65,7 @@ class LineChart(_Chart):
 		raise NotImplementedError
 
 	def chart(self):
-		chart = Figure()
+		chart = Figure(tight_layout=True)
 		graph = chart.add_subplot(111)
 
 		labels, data = self.getLineChartData()
@@ -75,7 +74,6 @@ class LineChart(_Chart):
 		graph.set_xticks(labels)
 		graph.plot(data)
 
-		chart.tight_layout()
 		return FigureCanvas(chart)
 
 class WeekStats(StatBarChart):
