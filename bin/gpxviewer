@@ -38,11 +38,6 @@ for share_dir in POSSIBLE_SHARE_DIRS:
 	if os.path.exists(share_dir):
 		prefix = share_dir
 
-if len(sys.argv) > 2:
-	files = sys.argv[1:]
-elif len(sys.argv) > 1:
-	files = [sys.argv[1]]
-else:
-	files = []
+files = sys.argv[1:]
 
 gui = MainWindow(ui_dir="%sui/" % prefix,files=files).main()
