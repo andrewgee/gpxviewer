@@ -148,11 +148,14 @@ class MainWindow:
         # move zoom control into apple like slider
         self.zoomSlider = MapZoomSlider(self.map)
         self.zoomSlider.show_all()
-        a = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
+        a = Gtk.Alignment.new(1.0, 1.0, 0.0, 0.0)
         a.set_padding(0, 0, 0, 4)
         a.add(self.zoomSlider)
         a.show_all()
-        sb.pack_end(a, False, False, padding=4)
+        overlay = self.wTree.get_object("overlay_map")
+        overlay.add_overlay(a)
+        # pass-through clicks to the map widget
+        overlay.set_overlay_pass_through(a, True)
 
         # animate a spinner when downloading tiles
         try:
