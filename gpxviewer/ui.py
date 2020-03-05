@@ -74,9 +74,9 @@ class _TrackManager(GObject.GObject):
 
     def __init__(self):
         GObject.GObject.__init__(self)
-        # maps track_filename : (GPXTrace, [OsmGpsMapTrack])
+        # maps track_name : (GPXTrace, [OsmGpsMapTrack])
         self._tracks = {}
-        # name, filename
+        # shown name, track_name
         self.model = Gtk.ListStore(str, str)
 
     def get_other_tracks(self, trace):
@@ -87,33 +87,32 @@ class _TrackManager(GObject.GObject):
         return tracks
 
     def get_trace_from_model(self, _iter):
-        filename = self.model.get_value(_iter, self.FILENAME_IDX)
-        return self.get_trace(filename)
+        name = self.model.get_value(_iter, self.FILENAME_IDX)
+        return self.get_trace(name)
 
     def delete_trace_from_model(self, _iter):
         self.emit("track-removed", *self._tracks[self.model.get_value(_iter, self.FILENAME_IDX)])
         self.model.remove(_iter)
 
-    def get_trace(self, filename):
+    def get_trace(self, name):
         """ Returns (trace, [OsmGpsMapTrack]) """
-        return self._tracks[filename]
+        return self._tracks[name]
 
-    def add_trace(self, filename, trace):
-        if filename not in self._tracks:
+    def add_track(self, filename, track):
+        if track.name not in self._tracks:
             gpstracks = []
-            for track in trace.tracks:
-                for segment in track.segments:
+            for segment in track.segments:
 
-                    gpstrack = OsmGpsMap.MapTrack()
-                    gpstrack.props.alpha = 0.8
+                gpstrack = OsmGpsMap.MapTrack()
+                gpstrack.props.alpha = 0.8
 
-                    for point in segment.points:
-                        gpstrack.add_point(OsmGpsMap.MapPoint.new_degrees(point.latitude, point.longitude))
-                    gpstracks.append(gpstrack)
+                for point in segment.points:
+                    gpstrack.add_point(OsmGpsMap.MapPoint.new_degrees(point.latitude, point.longitude))
+                gpstracks.append(gpstrack)
 
-            self._tracks[filename] = (trace, gpstracks)
-            self.model.append((trace.tracks[0].name, filename))
-            self.emit("track-added", trace, gpstracks)
+            self._tracks[track.name] = (track, gpstracks)
+            self.model.append((f'{filename} - {track.name}', track.name))
+            self.emit("track-added", track, gpstracks)
 
     def num_traces(self):
         return len(self._tracks)
@@ -371,24 +370,25 @@ class MainWindow:
         self.set_logging_date_label(gpxfrom.strftime("%x"))
         self.set_logging_time_label(gpxfrom.strftime("%X"), gpxto.strftime("%X"))
 
-        self.currentFilename = "filename"
-        self.mainWindow.set_title(_("GPX Viewer - %s") % "filename")
+        self.currentFilename = trace.name
+        self.mainWindow.set_title(_("GPX Viewer - %s") % trace.name)
 
         if self.autoCenter:
             self.set_centre(clat, clon)
 
     def load_gpx(self, filename):
         try:
-            trace = parse(open(filename))
+            tracks = parse(open(filename)).tracks
         except GPXException:
             self.show_gpx_error()
             return None
 
-        self.trackManager.add_trace(filename, trace)
+        for track in tracks:
+            self.trackManager.add_track(filename, track)
         if self.trackManager.num_traces() > 1:
             self.wTree.get_object("checkmenuitemShowSidebar").set_active(True)
             self.show_track_selector()
-        return trace
+        return track
 
     def open_gpx(self, *args):
         filechooser = Gtk.FileChooserDialog(title=_("Choose a GPX file to Load"), action=Gtk.FileChooserAction.OPEN,

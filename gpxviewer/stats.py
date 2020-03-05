@@ -86,8 +86,8 @@ class WeekStats(StatBarChart):
 		self._weeks = [0]*53
 
 	def addTrace(self, trace):
-		week = trace.tracks[0].segments[0].points[0].time.isocalendar()[1]
-		distance = trace.tracks[0].get_moving_data().moving_distance
+		week = trace.segments[0].points[0].time.isocalendar()[1]
+		distance = trace.get_moving_data().moving_distance
 		
 		self._weeks[week] += (distance/1000.0)
 
@@ -124,7 +124,7 @@ class AvgSpeedStats(LineChart):
 		self._avgspeeds = []
 
 	def addTrace(self, trace):
-		self._avgspeeds.append(get_average_speed(trace.tracks[0]))
+		self._avgspeeds.append(get_average_speed(trace))
 
 	def getLineChartData(self):
 		return (range(len(self._avgspeeds)), self._avgspeeds)
