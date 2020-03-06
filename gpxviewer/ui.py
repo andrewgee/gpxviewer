@@ -431,14 +431,17 @@ class MainWindow:
     def set_centre(self, lat, lon):
         self.map.set_center_and_zoom(lat, lon, self.zoom)
 
-    def set_distance_label(self, distance="--"):
-        self.wTree.get_object("labelDistance").set_markup(_("<b>Distance:</b> %.2f km") % distance)
+    def set_distance_label(self, distance=None):
+        distance = '%.2f' % distance if distance else '--'
+        self.wTree.get_object("labelDistance").set_markup(_("<b>Distance:</b> %s km") % distance)
 
-    def set_average_speed_label(self, average_speed="--"):
-        self.wTree.get_object("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %.2f m/s") % average_speed)
+    def set_average_speed_label(self, average_speed=None):
+        average_speed = '%.2f' % average_speed if average_speed else '--'
+        self.wTree.get_object("labelAverageSpeed").set_markup(_("<b>Average Speed:</b> %s m/s") % average_speed)
 
-    def set_maximum_speed_label(self, maximum_speed="--"):
-        self.wTree.get_object("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %.2f m/s") % maximum_speed)
+    def set_maximum_speed_label(self, maximum_speed=None):
+        maximum_speed = '%.2f' % maximum_speed if maximum_speed else '--'
+        self.wTree.get_object("labelMaximumSpeed").set_markup(_("<b>Maximum Speed:</b> %s m/s") % maximum_speed)
 
     def set_duration_label(self, minutes="--", seconds="--"):
         self.wTree.get_object("labelDuration").set_markup(
