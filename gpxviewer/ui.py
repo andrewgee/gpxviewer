@@ -38,6 +38,7 @@ from . import stats
 from gpxpy import parse
 from gpxpy.gpx import GPXException
 from dateutil import tz
+from colorsys import hsv_to_rgb
 
 import locale
 import gettext
@@ -76,11 +77,12 @@ class MainWindow:
                     tracks += track[self.OSM_IDX]
         return tracks
 
-    def add_track(self, parent, track):
+    def add_track(self, parent, track, color):
         gpstracks = []
         for segment in track.segments:
 
             gpstrack = OsmGpsMap.MapTrack()
+            gpstrack.set_color(color)
             gpstrack.props.alpha = 0.8
 
             for point in segment.points:
@@ -357,7 +359,8 @@ class MainWindow:
 
         parent = self.model.append(None, [filename, None, None])
         for i, track in enumerate(tracks):
-            self.add_track(parent, track)
+            color = Gdk.RGBA(*hsv_to_rgb((i / len(tracks) + 1 / 3) % 1.0, 1.0, 1.0))
+            self.add_track(parent, track, color)
         if len(self.model) > 1 or len(tracks) > 1:
             self.wTree.get_object("checkmenuitemShowSidebar").set_active(True)
             self.show_track_selector()
