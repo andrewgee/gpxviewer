@@ -470,7 +470,7 @@ class MainWindow:
         if _iter:
             trace, OsmGpsMapTracks = self.trackManager.get_trace_from_model(_iter)
             colorseldlg = Gtk.ColorSelectionDialog("Select track color")
-            colorseldlg.get_color_selection().set_current_color(OsmGpsMapTracks[0].props.color)
+            colorseldlg.get_color_selection().set_current_color(OsmGpsMapTracks[0].props.color.to_color())
             result = colorseldlg.run()
             if result == Gtk.ResponseType.OK:
                 color = colorseldlg.get_color_selection().get_current_rgba()
