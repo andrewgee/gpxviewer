@@ -63,71 +63,46 @@ ALPHA_SELECTED = 0.8
 LAZY_LOAD_AFTER_N_FILES = 3
 
 
-class _TrackManager(GObject.GObject):
+class MainWindow:
     NAME_IDX = 0
-    FILENAME_IDX = 1
-
-    __gsignals__ = {
-        'track-added': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, [object, object]),
-        'track-removed': (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, [object, object]),
-    }
-
-    def __init__(self):
-        GObject.GObject.__init__(self)
-        # maps track_name : (GPXTrace, [OsmGpsMapTrack])
-        self._tracks = {}
-        # shown name, track_name
-        self.model = Gtk.ListStore(str, str)
+    GPX_IDX = 1
+    OSM_IDX = 2
 
     def get_other_tracks(self, trace):
         tracks = []
-        for _trace, _tracks in self._tracks.values():
-            if trace != _trace:
-                tracks += _tracks
+        for row in self.model:
+            for track in row.iterchildren():
+                if trace != track[self.GPX_IDX]:
+                    tracks += track[self.OSM_IDX]
         return tracks
 
-    def get_trace_from_model(self, _iter):
-        name = self.model.get_value(_iter, self.FILENAME_IDX)
-        return self.get_trace(name)
+    def add_track(self, parent, track):
+        gpstracks = []
+        for segment in track.segments:
 
-    def delete_trace_from_model(self, _iter):
-        self.emit("track-removed", *self._tracks[self.model.get_value(_iter, self.FILENAME_IDX)])
-        self.model.remove(_iter)
+            gpstrack = OsmGpsMap.MapTrack()
+            gpstrack.props.alpha = 0.8
 
-    def get_trace(self, name):
-        """ Returns (trace, [OsmGpsMapTrack]) """
-        return self._tracks[name]
+            for point in segment.points:
+                gpstrack.add_point(OsmGpsMap.MapPoint.new_degrees(point.latitude, point.longitude))
 
-    def add_track(self, filename, track):
-        if track.name not in self._tracks:
-            gpstracks = []
-            for segment in track.segments:
+            gpstracks.append(gpstrack)
+            self.map.track_add(gpstrack)
 
-                gpstrack = OsmGpsMap.MapTrack()
-                gpstrack.props.alpha = 0.8
-
-                for point in segment.points:
-                    gpstrack.add_point(OsmGpsMap.MapPoint.new_degrees(point.latitude, point.longitude))
-                gpstracks.append(gpstrack)
-
-            self._tracks[track.name] = (track, gpstracks)
-            self.model.append((f'{filename} - {track.name}', track.name))
-            self.emit("track-added", track, gpstracks)
-
-    def num_traces(self):
-        return len(self._tracks)
+        self.model.append(parent, [track.name, track, gpstracks])
 
     def get_all_traces(self):
-        return [t[0] for t in self._tracks.values()]
+        return [t[self.GPX_IDX] for f in self.model for t in f.iterchildren()]
 
-
-class MainWindow:
     def __init__(self, ui_dir, files):
         self.recent = Gtk.RecentManager.get_default()
 
         self.wTree = Gtk.Builder()
         self.wTree.set_translation_domain('gpxviewer')
         self.wTree.add_from_file("%sgpxviewer.ui" % ui_dir)
+
+        # track_name, gpx, [OsmGpsMapTrack]
+        self.model = Gtk.TreeStore(str, object, object)
 
         signals = {
             "on_windowMain_destroy": self.quit,
@@ -205,10 +180,6 @@ class MainWindow:
 
         self.wTree.get_object('menuitemOpenBy').set_submenu(submenu_open_with)
 
-        self.trackManager = _TrackManager()
-        self.trackManager.connect("track-added", self.on_track_added)
-        self.trackManager.connect("track-removed", self.on_track_removed)
-
         self.wTree.get_object("menuitemHelp").connect("activate",
                                                       lambda *a: show_url("https://answers.launchpad.net/gpxviewer"))
         self.wTree.get_object("menuitemTranslate").connect("activate", lambda *a: show_url(
@@ -216,13 +187,13 @@ class MainWindow:
         self.wTree.get_object("menuitemReportProblem").connect("activate", lambda *a: show_url(
             "https://bugs.launchpad.net/gpxviewer/+filebug"))
 
-        self.tv = Gtk.TreeView(self.trackManager.model)
+        self.tv = Gtk.TreeView(self.model)
         self.tv.get_selection().connect("changed", self.on_selection_changed)
         self.tv.append_column(
             Gtk.TreeViewColumn(
                 "Track Name",
                 Gtk.CellRendererText(),
-                text=self.trackManager.NAME_IDX
+                text=self.NAME_IDX
             )
         )
         self.wTree.get_object("scrolledwindow1").add(self.tv)
@@ -256,13 +227,11 @@ class MainWindow:
             i = 0
             for filename in files:
                 self.loadingFiles = i
-                trace = self.load_gpx(filename)
+                self.load_gpx(filename)
                 if i < LAZY_LOAD_AFTER_N_FILES:
                     i += 1
                 else:
-                    # select the last loaded trace
                     self.loadingFiles = 0
-                    self.select_trace(trace)
                     break
         else:
             self.loadingFiles = len(files)
@@ -296,22 +265,14 @@ class MainWindow:
         if not _iter:
             return
 
-        trace, tracks = self.trackManager.get_trace_from_model(_iter)
-        self.select_trace(trace)
+        trace = self.model.get_value(_iter, self.GPX_IDX)
+        tracks = self.model.get_value(_iter, self.OSM_IDX)
+        self.select_trace(self.model[_iter])
 
         # highlight current track
         self.select_tracks(tracks, ALPHA_SELECTED)
         # dim other tracks
-        self.select_tracks(self.trackManager.get_other_tracks(trace), ALPHA_UNSELECTED)
-
-    def on_track_added(self, tm, trace, tracks):
-        for t in tracks:
-            self.map.track_add(t)
-        self.select_trace(trace)
-
-    def on_track_removed(self, tm, trace, tracks):
-        for t in tracks:
-            self.map.track_remove(t)
+        self.select_tracks(self.get_other_tracks(trace), ALPHA_UNSELECTED)
 
     def update_tiles_queued(self, map_, paramspec):
         if self.map.props.tiles_queued > 0:
@@ -328,7 +289,7 @@ class MainWindow:
     def show_statistics(self, item):
         ws = stats.WeekStats()
         ss = stats.AvgSpeedStats()
-        for t in self.trackManager.get_all_traces():
+        for t in self.get_all_traces():
             ws.addTrace(t)
             ss.addTrace(t)
 
@@ -346,22 +307,33 @@ class MainWindow:
         dialog.show_all()
 
     def select_tracks(self, tracks, alpha):
+        if not tracks:
+            return
         for t in tracks:
             t.props.alpha = alpha
 
-    def select_trace(self, trace):
-        if self.loadingFiles:
+    def select_trace(self, row):
+        if not row[self.GPX_IDX]:
+            self.set_distance_label()
+            self.set_maximum_speed_label()
+            self.set_average_speed_label()
+            self.set_duration_label()
+            self.set_logging_date_label()
+            self.set_logging_time_label()
+
+            self.currentFilename = row[self.NAME_IDX]
+            self.mainWindow.set_title(_("GPX Viewer - %s") % row[self.NAME_IDX])
             return
 
         self.zoom = 12
-        distance = trace.tracks[0].get_moving_data().moving_distance
-        maximum_speed = trace.tracks[0].get_moving_data().max_speed
-        average_speed = stats.get_average_speed(trace.tracks[0])
-        duration = trace.tracks[0].get_moving_data().moving_time
-        clat = trace.tracks[0].get_center().latitude
-        clon = trace.tracks[0].get_center().longitude
-        gpxfrom = trace.tracks[0].segments[0].points[0].time.astimezone(tz.tzlocal())
-        gpxto = trace.tracks[0].segments[-1].points[-1].time.astimezone(tz.tzlocal())
+        distance = row[self.GPX_IDX].get_moving_data().moving_distance
+        maximum_speed = row[self.GPX_IDX].get_moving_data().max_speed
+        average_speed = stats.get_average_speed(row[self.GPX_IDX])
+        duration = row[self.GPX_IDX].get_moving_data().moving_time
+        clat = row[self.GPX_IDX].get_center().latitude
+        clon = row[self.GPX_IDX].get_center().longitude
+        gpxfrom = row[self.GPX_IDX].segments[0].points[0].time.astimezone(tz.tzlocal())
+        gpxto = row[self.GPX_IDX].segments[-1].points[-1].time.astimezone(tz.tzlocal())
 
         self.set_distance_label(round(distance / 1000, 2))
         self.set_maximum_speed_label(maximum_speed)
@@ -370,8 +342,8 @@ class MainWindow:
         self.set_logging_date_label(gpxfrom.strftime("%x"))
         self.set_logging_time_label(gpxfrom.strftime("%X"), gpxto.strftime("%X"))
 
-        self.currentFilename = trace.name
-        self.mainWindow.set_title(_("GPX Viewer - %s") % trace.name)
+        self.currentFilename = row.get_parent()[self.NAME_IDX]
+        self.mainWindow.set_title(_("GPX Viewer - %s") % row[self.GPX_IDX].name)
 
         if self.autoCenter:
             self.set_centre(clat, clon)
@@ -383,11 +355,14 @@ class MainWindow:
             self.show_gpx_error()
             return None
 
-        for track in tracks:
-            self.trackManager.add_track(filename, track)
-        if self.trackManager.num_traces() > 1:
+        parent = self.model.append(None, [filename, None, None])
+        for i, track in enumerate(tracks):
+            self.add_track(parent, track)
+        if len(self.model) > 1 or len(tracks) > 1:
             self.wTree.get_object("checkmenuitemShowSidebar").set_active(True)
             self.show_track_selector()
+        else:
+            self.select_trace(next(self.model[0].iterchildren()))
         return track
 
     def open_gpx(self, *args):
@@ -461,15 +436,25 @@ class MainWindow:
     def button_track_add_clicked(self, *args):
         self.open_gpx()
 
+    def remove_track(self, tracks):
+        for t in tracks:
+            self.map.track_remove(t)
+
     def button_track_delete_clicked(self, *args):
         model, _iter = self.tv.get_selection().get_selected()
-        if _iter:
-            self.trackManager.delete_trace_from_model(_iter)
+        if not _iter:
+            return
+        if self.model.get_value(_iter, self.OSM_IDX):
+            self.remove_track(self.model.get_value(_iter, self.OSM_IDX))
+        else:
+            for child in self.model[_iter].iterchildren():
+                self.remove_track(child[self.OSM_IDX])
+        self.model.remove(_iter)
 
     def button_track_properties_clicked(self, *args):
         model, _iter = self.tv.get_selection().get_selected()
         if _iter:
-            trace, OsmGpsMapTracks = self.trackManager.get_trace_from_model(_iter)
+            OsmGpsMapTracks = self.model.get_value(_iter, self.OSM_IDX)
             colorseldlg = Gtk.ColorSelectionDialog("Select track color")
             colorseldlg.get_color_selection().set_current_color(OsmGpsMapTracks[0].props.color.to_color())
             result = colorseldlg.run()
