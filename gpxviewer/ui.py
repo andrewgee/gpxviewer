@@ -383,6 +383,7 @@ class MainWindow:
             trace = GPXTrace(filename)
             self.trackManager.add_trace(trace)
             if self.trackManager.num_traces() > 1:
+                self.wTree.get_object("checkmenuitemShowSidebar").set_active(True)
                 self.show_track_selector()
             return trace
         except Exception as e:
