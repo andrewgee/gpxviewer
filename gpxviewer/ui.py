@@ -37,7 +37,6 @@ from . import stats
 
 from gpxpy import parse
 from gpxpy.gpx import GPXException
-from dateutil import tz
 from colorsys import hsv_to_rgb
 
 import locale
@@ -334,8 +333,8 @@ class MainWindow:
         duration = row[self.GPX_IDX].get_moving_data().moving_time
         clat = row[self.GPX_IDX].get_center().latitude
         clon = row[self.GPX_IDX].get_center().longitude
-        gpxfrom = row[self.GPX_IDX].segments[0].points[0].time.astimezone(tz.tzlocal())
-        gpxto = row[self.GPX_IDX].segments[-1].points[-1].time.astimezone(tz.tzlocal())
+        gpxfrom = row[self.GPX_IDX].get_time_bounds().start_time
+        gpxto = row[self.GPX_IDX].get_time_bounds().end_time
 
         self.set_distance_label(round(distance / 1000, 2))
         self.set_maximum_speed_label(maximum_speed)
@@ -343,8 +342,12 @@ class MainWindow:
         hours, remain = divmod(duration, 3600)
         minutes, seconds = divmod(remain, 60)
         self.set_duration_label(hours, minutes, seconds)
-        self.set_logging_date_label(gpxfrom.strftime("%x"))
-        self.set_logging_time_label(gpxfrom.strftime("%X"), gpxto.strftime("%X"))
+        self.set_logging_date_label('--')
+        self.set_logging_time_label('--', '--')
+        if gpxfrom:
+            self.set_logging_date_label(gpxfrom.strftime("%x"))
+            if gpxto:
+                self.set_logging_time_label(gpxfrom.strftime("%X"), gpxto.strftime("%X"))
 
         self.currentFilename = row.get_parent()[self.NAME_IDX]
         self.mainWindow.set_title(_("GPX Viewer - %s") % row[self.GPX_IDX].name)
