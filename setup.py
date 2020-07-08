@@ -15,7 +15,7 @@ setup(name="gpxviewer",
 	license="GNU General Public License (GPL)",
 	platforms="linux",
 	packages=["gpxviewer"],
-	install_requires=['PyGObject', 'pycairo', 'matplotlib', 'gpxpy', 'python-dateutil'],
+	install_requires=['PyGObject', 'pycairo', 'matplotlib', 'gpxpy'],
 	data_files=[
 		('share/gpxviewer/ui/', ['ui/gpxviewer.ui', 'ui/gpxviewer.png', 'ui/gpxviewer.svg']),
 		('share/pixmaps', ['ui/gpxviewer.svg']) 
