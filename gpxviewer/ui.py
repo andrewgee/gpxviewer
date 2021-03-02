@@ -136,6 +136,7 @@ class MainWindow:
             tile_cache=os.path.join(
                 GLib.get_user_cache_dir(),
                 'gpxviewer', 'tiles'))
+        self.map.set_property("map-source", OsmGpsMap.MapSource_t.OPENSTREETMAP)
         self.map.layer_add(
             OsmGpsMap.MapOsd(
                 show_dpad=False,
