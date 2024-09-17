@@ -489,7 +489,7 @@
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">GPX Viewer</property>
-    <property name="version">1.1.0</property>
+    <property name="version">1.2.0</property>
     <property name="copyright" translatable="yes">Copyright (C) Andrew Gee 2009</property>
     <property name="comments" translatable="yes">GPX Viewer is an application that allows
 users to easily view GPS traces they 
