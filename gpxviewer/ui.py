@@ -177,7 +177,7 @@ class MainWindow:
             'merkaartor': N_('Merkaartor'),
             'gpsprune': N_('GPSprune'),
             'viking': N_('Viking'),
-            'gpsmaster': N_('GPS-Master)'
+            'gpsmaster': N_('GPS-Master'),
         }
         submenu_open_with = Gtk.Menu()
         for prog, progname in programs.items():
